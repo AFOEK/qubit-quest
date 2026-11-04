@@ -2,51 +2,59 @@
 
 University of Waterloo IBM Qiskit Fall Fest 2026
 
-15 courses · 67 lessons · approximately 607 minutes of reading and short practice, before extended labs or projects. Times are estimates. This is a self-paced pathway; an event workshop can use a shorter selection.
+19 courses · 89 lessons · approximately 845 minutes of reading and short practice, before extended labs or projects. Times are estimates. This is a self-paced pathway; an event workshop can use a shorter selection.
 
 ## Recommended progression
 
 1. **Mathematics:** an optional primer in complex numbers, linear algebra, tensor products, probability, eigenvalues, and calculus. Basic arithmetic is enough to start.
-2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Algorithm I → Algorithm II → Noises and Error Correction.
-3. **Applications:** Algorithm III supplies the hybrid-computing bridge, then learners can choose Chemistry I–III, Machine Learning I–III, or both.
+2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Algorithm I → Algorithm II → Noises and Error Correction → Error Mitigation.
+3. **Applications:** Applied Optimization explains QUBO/Ising modeling before Algorithm III introduces QAOA and other applications. After the algorithms, choose Cryptography I–II, Chemistry I–III, Machine Learning I–III, or several branches. These branches do not require one another.
 
-Prerequisites are recommendations. Lessons remain open so experienced learners can skip ahead and beginners can revisit earlier ideas. Repeated concepts first introduce the idea, then develop circuit mechanics or an application: entanglement leads to Bell/GHZ states, QPE leads to energy estimation, and VQE leads to molecular chemistry. Shor’s factoring algorithm and the Shor error-correcting code are separate topics.
+Prerequisites are recommendations. Lessons remain open so experienced learners can skip ahead and beginners can revisit earlier ideas. Cryptography I uses the state, entanglement, and Bell-test foundations; Cryptography II also builds on the Shor/Grover material. Chemistry and ML use the hybrid-computing ideas in Algorithm III.
+
+Repeated concepts first introduce the idea, then develop circuit mechanics or an application: entanglement leads to Bell/GHZ states, introductory Grover search leads to iteration geometry and amplitude amplification, QPE leads to QAE and energy estimation, and VQE leads to molecular chemistry. Algorithm II places amplification and QPE before QAE. Shor’s factoring algorithm and the Shor error-correcting code are separate topics. Existing lesson IDs remain stable as sections are inserted.
 
 ## Course map
 
-| Order | Course                      | Path                 | Lessons | Estimated minutes | Recommended before         |
-| ----- | --------------------------- | -------------------- | ------- | ----------------- | -------------------------- |
-| 1     | Mathematical foundations    | Mathematics          | 5       | 34                | Basic arithmetic           |
-| 2     | Quantum Mechanics Theories  | Quantum fundamentals | 5       | 35                | Mathematical foundations   |
-| 3     | Qubits Theories             | Quantum fundamentals | 4       | 28                | Quantum Mechanics Theories |
-| 4     | Gates I                     | Quantum fundamentals | 5       | 34                | Qubits Theories            |
-| 5     | Gates II                    | Quantum fundamentals | 4       | 31                | Gates I                    |
-| 6     | Algorithm I                 | Quantum fundamentals | 9       | 80                | Gates II                   |
-| 7     | Algorithm II                | Quantum fundamentals | 5       | 47                | Algorithm I                |
-| 8     | Noises and Error Correction | Quantum fundamentals | 6       | 57                | Algorithm II               |
-| 9     | Algorithm III               | Applications         | 4       | 39                | Algorithm II               |
-| 10    | Chemistry I                 | Applications         | 6       | 63                | Algorithm III              |
-| 11    | Chemistry II                | Applications         | 3       | 36                | Chemistry I                |
-| 12    | Chemistry III               | Applications         | 2       | 23                | Chemistry II               |
-| 13    | Machine Learning I          | Applications         | 3       | 29                | Algorithm III              |
-| 14    | Machine Learning II         | Applications         | 2       | 23                | Machine Learning I         |
-| 15    | Machine Learning III        | Applications         | 4       | 48                | Machine Learning II        |
+| Order | Course                      | Path                 | Lessons | Estimated minutes | Recommended before           |
+| ----- | --------------------------- | -------------------- | ------- | ----------------- | ---------------------------- |
+| 1     | Mathematical foundations    | Mathematics          | 5       | 34                | Basic arithmetic             |
+| 2     | Quantum Mechanics Theories  | Quantum fundamentals | 5       | 35                | Mathematical foundations     |
+| 3     | Qubits Theories             | Quantum fundamentals | 4       | 28                | Quantum Mechanics Theories   |
+| 4     | Gates I                     | Quantum fundamentals | 5       | 34                | Qubits Theories              |
+| 5     | Gates II                    | Quantum fundamentals | 4       | 31                | Gates I                      |
+| 6     | Algorithm I                 | Quantum fundamentals | 9       | 80                | Gates II                     |
+| 7     | Algorithm II                | Quantum fundamentals | 9       | 89                | Algorithm I                  |
+| 8     | Noises and Error Correction | Quantum fundamentals | 6       | 57                | Algorithm II                 |
+| 9     | Error Mitigation            | Quantum fundamentals | 5       | 57                | Noises and Error Correction  |
+| 10    | Applied Optimization        | Applications         | 3       | 34                | Algorithm II                 |
+| 11    | Algorithm III               | Applications         | 4       | 39                | Applied Optimization         |
+| 12    | Cryptography I              | Applications         | 6       | 62                | Algorithm I                  |
+| 13    | Cryptography II             | Applications         | 4       | 43                | Cryptography I, Algorithm II |
+| 14    | Chemistry I                 | Applications         | 6       | 63                | Algorithm III                |
+| 15    | Chemistry II                | Applications         | 3       | 36                | Chemistry I                  |
+| 16    | Chemistry III               | Applications         | 2       | 23                | Chemistry II                 |
+| 17    | Machine Learning I          | Applications         | 3       | 29                | Algorithm III                |
+| 18    | Machine Learning II         | Applications         | 2       | 23                | Machine Learning I           |
+| 19    | Machine Learning III        | Applications         | 4       | 48                | Machine Learning II          |
 
 ## What a lesson contains
 
-Every lesson has an introductory or application explanation, an equation with definitions, a worked example, a practice prompt with a revealable solution, and a knowledge check. Successful completion awards 25 XP once. Search finds course names and topic tags; path filters and expandable courses keep the larger syllabus navigable. Earlier completions migrate to stable lesson IDs.
+Every lesson has an explanation, an equation with definitions, a worked example, a practice prompt with a revealable solution, and a knowledge check. Successful completion awards 25 XP once. Search finds course names and topic tags; path filters and expandable courses keep the larger syllabus navigable. Earlier completions migrate to stable lesson IDs.
 
 ### Executable experiments
 
 - **Browser gate explorer:** exact pure-state H/X/Y/Z/S/T sequences, probabilities, and a Bloch vector. Compatible lessons preload their example sequence. Some gates are illustrated through decompositions, such as SX = HSH.
-- **Existing Qiskit labs:** Bell-pair preparation, four-item Grover search, a two-qubit QFT, one-edge QAOA with a fixed mixer, and a manually swept toy spin energy experiment. Lesson buttons select the matching experiment.
-- **Guided exercises:** rotations and larger circuits beyond the browser controls; hidden-problem reasoning; noisy channels and codes; molecular model preparation; kernels, classifiers, and neural architectures; photonic sampling. Their calculations and expected answers are included in the lessons. Full molecular execution, noisy simulation, automated optimization, photonic sampling, and ML training require additional implementations.
+- **Existing Qiskit labs:** Bell-pair preparation, four-item Grover search, a two-qubit QFT, one-edge QAOA with a fixed mixer, and a manually swept toy spin energy experiment. Lesson buttons select the matching experiment. The deeper Grover lesson explicitly distinguishes its eight-item calculation from the existing four-item executable lab.
+- **Guided exercises:** larger algorithms and quantum walks; QAE; QKD and post-quantum cryptography; QUBO/Ising construction; noise and mitigation calculations; molecular model preparation; kernels, classifiers, neural architectures, and photonic sampling. Their reasoning and expected answers are included in the lessons. Full protocol implementations, calibrated noisy simulations, molecular execution, automated optimization, photonic sampling, and ML training require additional implementations.
 
-The toy spin energy experiment uses −ZI − IZ + 0.5XX in arbitrary units. Molecular lessons explicitly require a chemistry driver, declared geometry/basis/active space, mapping, energy offsets, and a validated reference. They do not relabel the toy model as H₂.
+The toy spin energy experiment uses −ZI − IZ + 0.5XX in arbitrary units. Molecular lessons explicitly require a chemistry driver, declared geometry/basis/active space, mapping, energy offsets, and a validated reference.
+
+Error Mitigation distinguishes dynamical decoupling (suppression), Pauli twirling (noise tailoring), and readout/ZNE/PEC estimators (bias reduction with calibration and sampling tradeoffs). These methods do not replace encoded quantum error correction. Cryptography distinguishes QKD with authenticated classical messages from post-quantum algorithms running on classical computers.
 
 ## Suggested event sampler
 
-For an introductory workshop, use Meet your first qubit → Superposition and interference → X/Y/Z → H → Build and decode the four Bell states, then demonstrate one application such as QAOA or variational energy. Insert the math primer when participants need it. Reserve the specialist oracle, chemistry, QEC, and ML sequences for follow-up sessions and independent study.
+For an introductory workshop, use Meet your first qubit → Superposition and interference → X/Y/Z → H → Build and decode the four Bell states, then demonstrate one application such as QAOA or variational energy. Insert the math primer when participants need it. Use the QUBO/Ising lessons before asking learners to construct an optimization Hamiltonian. BB84 offers a communication-focused follow-up. Reserve the specialist oracle, mitigation, QEC, chemistry, and ML sequences for follow-up sessions and independent study.
 
 ## Full syllabus
 
@@ -170,27 +178,33 @@ Construct entangled states, then use oracles and interference to reveal hidden s
 | Hidden subgroup problem: the common pattern   | Introduction | Hidden subgroup problem; Abelian groups; Cosets                 | 9       | Guided practice + worked answer     |
 | Hidden shift: find a displaced function       | Introduction | Hidden shift problem; Function promises; Fourier methods        | 9       | Guided practice + worked answer     |
 | Hidden linear function: a structured relation | Introduction | Hidden linear function problem; Quadratic forms; Circuit depth  | 10      | Guided practice + worked answer     |
-| Find it with Grover: an extra search lesson   | Core         | Grover’s algorithm; Amplitude amplification; Search             | 8       | Worked practice + grover Qiskit lab |
+| Find it with Grover: the introductory picture | Introduction | Grover’s algorithm; Amplitude amplification; Search             | 8       | Worked practice + grover Qiskit lab |
 
 ### Algorithm II
 
-Connect transforms and eigenphases to period finding, then prepare for hybrid computation with parameterized circuits.
+Develop Grover search, amplitude amplification, and quantum walks, then connect Fourier transforms and phase estimation to QAE, period finding, and parameterized circuits.
 
 **Recommended before:** Algorithm I.
 
 **Learning outcomes:**
 
+- Choose Grover iteration counts and distinguish amplification from amplitude estimation.
+- Explain coherent quantum walks and their graph-dependent behavior.
 - Distinguish the Hadamard transform from the QFT.
 - Trace QPE and the quantum part of Shor’s algorithm.
 - Define an ansatz, parameters, and a measured objective.
 
-| Lesson                                      | Depth | Topics                                                                       | Minutes | Activity                         |
-| ------------------------------------------- | ----- | ---------------------------------------------------------------------------- | ------- | -------------------------------- |
-| Hadamard transform over bit strings         | Core  | Hadamard transform; Walsh–Hadamard transform; Binary Fourier transform       | 8       | Guided practice + worked answer  |
-| QFT: read the rhythm of phases              | Core  | QFT; Quantum Fourier transform; Fourier basis                                | 9       | Worked practice + qft Qiskit lab |
-| QPE: estimate a unitary eigenphase          | Core  | QPE; Quantum phase estimation; Controlled powers; Inverse QFT                | 10      | Guided practice + worked answer  |
-| Shor’s algorithm: period finding to factors | Core  | Shor’s algorithm; Order finding; Modular exponentiation; Continued fractions | 11      | Guided practice + worked answer  |
-| Parameterized quantum circuits              | Core  | Parameterized quantum circuits; PQC; Ansatz; Parameter-shift rule            | 9       | Guided practice + worked answer  |
+| Lesson                                            | Depth        | Topics                                                                          | Minutes | Activity                            |
+| ------------------------------------------------- | ------------ | ------------------------------------------------------------------------------- | ------- | ----------------------------------- |
+| Hadamard transform over bit strings               | Core         | Hadamard transform; Walsh–Hadamard transform; Binary Fourier transform          | 8       | Guided practice + worked answer     |
+| Grover’s algorithm: geometry and iteration counts | Core         | Grover’s algorithm; Search; Oracle queries; Grover iterations                   | 10      | Worked practice + grover Qiskit lab |
+| Amplitude amplification beyond uniform search     | Core         | Amplitude amplification; Good-state reflections; State preparation              | 10      | Guided practice + worked answer     |
+| Quantum random walks: coherent motion on a graph  | Introduction | Quantum random walks; Quantum walks; Discrete-time walks; Continuous-time walks | 10      | Guided practice + worked answer     |
+| QFT: read the rhythm of phases                    | Core         | QFT; Quantum Fourier transform; Fourier basis                                   | 9       | Worked practice + qft Qiskit lab    |
+| QPE: estimate a unitary eigenphase                | Core         | QPE; Quantum phase estimation; Controlled powers; Inverse QFT                   | 10      | Guided practice + worked answer     |
+| QAE: estimate an amplitude using eigenphases      | Core         | Quantum amplitude estimation; QAE; Amplitude estimation; Monte Carlo estimation | 12      | Guided practice + worked answer     |
+| Shor’s algorithm: period finding to factors       | Core         | Shor’s algorithm; Order finding; Modular exponentiation; Continued fractions    | 11      | Guided practice + worked answer     |
+| Parameterized quantum circuits                    | Core         | Parameterized quantum circuits; PQC; Ansatz; Parameter-shift rule               | 9       | Guided practice + worked answer     |
 
 ### Noises and Error Correction
 
@@ -213,11 +227,49 @@ Connect decoherence to concrete noise channels, then learn how redundancy and sy
 | QEC and the nine-qubit Shor code             | Core  | QEC; Quantum error correction; Syndromes; Shor code; Repetition code | 12      | Guided practice + worked answer |
 | Toric code: local checks, global information | Core  | Toric code; Stabilizers; Topological codes; Surface code             | 11      | Guided practice + worked answer |
 
+### Error Mitigation
+
+Build on noise channels and QEC to distinguish noise suppression, noise tailoring, and statistical mitigation. Learn dynamical decoupling, Pauli twirling, twirled readout, ZNE, and PEC with their calibration and sampling costs.
+
+**Recommended before:** Noises and Error Correction.
+
+**Learning outcomes:**
+
+- Explain which error sources each method targets and how it differs from QEC.
+- Calculate simple twirled-readout and zero-noise estimates.
+- Interpret quasiprobability weights and the sampling overhead of PEC.
+
+| Lesson                                             | Depth       | Topics                                                                                                 | Minutes | Activity                        |
+| -------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------ | ------- | ------------------------------- |
+| Dynamical decoupling: refocus idle evolution       | Core        | Dynamical decoupling; Spin echo; Noise suppression; Idle errors                                        | 10      | Guided practice + worked answer |
+| Pauli twirling: tailor the effective noise         | Core        | Pauli twirling; Randomized compiling; Noise tailoring; Pauli channels                                  | 11      | Guided practice + worked answer |
+| Readout error mitigation with twirled measurements | Application | Readout error mitigation; Twirled readout; Twirled Readout Error eXtinction; TREX; Assignment matrices | 12      | Guided practice + worked answer |
+| ZNE: extrapolate toward zero noise                 | Application | Zero-noise extrapolation; ZNE; Noise scaling; Gate folding                                             | 12      | Guided practice + worked answer |
+| PEC: cancel a calibrated noise model statistically | Application | Probabilistic error cancellation; PEC; Quasiprobabilities; Sampling overhead                           | 12      | Guided practice + worked answer |
+
+### Applied Optimization
+
+Translate a classical objective and its constraints into QUBO and Ising costs, then verify the mapping before running QAOA or another solver.
+
+**Recommended before:** Algorithm II.
+
+**Learning outcomes:**
+
+- Construct a binary quadratic objective with explicit penalty terms.
+- Convert binary variables to Ising spins and Pauli-Z operators.
+- Validate a problem Hamiltonian by checking feasible assignments and exact small-instance energies.
+
+| Lesson                                              | Depth       | Topics                                                                                                               | Minutes | Activity                        |
+| --------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| QUBO: objectives, binary variables, and constraints | Core        | QUBO; Quadratic unconstrained binary optimization; Constraint penalties; Binary variables                            | 11      | Guided practice + worked answer |
+| Ising: from binary costs to Pauli Z                 | Core        | Ising; Ising Hamiltonian; QUBO-to-Ising mapping; Pauli Z                                                             | 11      | Guided practice + worked answer |
+| Map a classical problem to a Hamiltonian            | Application | Mapping classical problems to Hamiltonians; Problem Hamiltonians; Maximum-weight independent set; Penalty validation | 12      | Guided practice + worked answer |
+
 ### Algorithm III
 
 Use the circuit tools for optimization, variational energy, and spectral estimation, then compare them with the photonic model of boson sampling.
 
-**Recommended before:** Algorithm II.
+**Recommended before:** Applied Optimization.
 
 **Learning outcomes:**
 
@@ -231,6 +283,46 @@ Use the circuit tools for optimization, variational energy, and spectral estimat
 | VQE: optimize a trial energy              | Application  | VQE; Variational quantum eigensolver; Variational principle; Hamiltonians     | 10      | Worked practice + toy variational energy Qiskit lab |
 | Phase estimation as an energy measurement | Application  | Phase estimation; Energy estimation; Hamiltonian simulation; Spectral methods | 10      | Guided practice + worked answer                     |
 | Boson sampling: a photonic sampling task  | Introduction | Boson sampling; Linear optics; Photons; Permanents                            | 9       | Guided practice + worked answer                     |
+
+### Cryptography I
+
+Use nonorthogonal states and entanglement to understand quantum key distribution, from BB84 and B92 to E91 and device-independent security.
+
+**Recommended before:** Algorithm I.
+
+**Learning outcomes:**
+
+- Explain no-cloning and the role of authenticated classical communication.
+- Trace sifting, testing, reconciliation, and privacy amplification in QKD.
+- Compare prepare-and-measure, entanglement-based, and device-independent protocols.
+
+| Lesson                                                 | Depth        | Topics                                                                              | Minutes | Activity                        |
+| ------------------------------------------------------ | ------------ | ----------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| No-cloning: why unknown states cannot be copied        | Core         | No-cloning theorem; No-cloning theorems; Nonorthogonal states; Quantum cryptography | 8       | Guided practice + worked answer |
+| QKD: from quantum signals to a secret key              | Introduction | QKD; Quantum key distribution; Sifting; Privacy amplification; Authentication       | 9       | Guided practice + worked answer |
+| BB84: two bases, four signal states                    | Application  | BB84; Prepare-and-measure QKD; Quantum bit error rate; QBER                         | 11      | Guided practice + worked answer |
+| E91: distribute entanglement, test correlations        | Application  | E91; Entanglement-based QKD; Bell tests; Singlet state                              | 11      | Guided practice + worked answer |
+| B92: two nonorthogonal states and inconclusive results | Application  | B92; Nonorthogonal signal states; Unambiguous state discrimination                  | 11      | Guided practice + worked answer |
+| Device-independent QKD: security from tested behavior  | Introduction | Device-independent QKD; DIQKD; CHSH; Detection loophole                             | 12      | Guided practice + worked answer |
+
+### Cryptography II
+
+Compare post-quantum algorithms running on classical computers: lattice-based key establishment/signatures, hash-based signatures, and code-based cryptography.
+
+**Recommended before:** Cryptography I, Algorithm II.
+
+**Learning outcomes:**
+
+- Distinguish post-quantum cryptography from QKD and quantum hardware.
+- Explain the mathematical assumptions behind lattice, hash, and code families.
+- Separate key encapsulation from signatures and recognize standardized scheme names.
+
+| Lesson                                                               | Depth        | Topics                                                                       | Minutes | Activity                        |
+| -------------------------------------------------------------------- | ------------ | ---------------------------------------------------------------------------- | ------- | ------------------------------- |
+| Post-quantum cryptography: classical algorithms for a quantum threat | Introduction | Post-quantum cryptography; PQC; Key encapsulation; Digital signatures        | 10      | Guided practice + worked answer |
+| Lattice-based cryptography and noisy equations                       | Core         | Lattice-based cryptography; Learning with errors; LWE; ML-KEM; ML-DSA        | 11      | Guided practice + worked answer |
+| Hash-based signatures and one-time key logic                         | Core         | Hash-based signatures; Lamport signatures; Merkle trees; SLH-DSA             | 11      | Guided practice + worked answer |
+| Code-based cryptography and syndrome decoding                        | Core         | Code-based cryptography; Syndrome decoding; McEliece; Error-correcting codes | 11      | Guided practice + worked answer |
 
 ### Chemistry I
 
@@ -344,7 +436,13 @@ Build intuition for trainable quantum models, recurrent hybrids, and one- and tw
 
 - [IBM: Basics of Quantum Information](https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information) — states, measurements, circuits, and entanglement.
 - [IBM: Fundamentals of Quantum Algorithms](https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms) — algorithmic background and query models.
+- [Brassard et al.: Quantum Amplitude Amplification and Estimation](https://arxiv.org/abs/quant-ph/0005055) — amplification and standard QAE.
 - [IBM: Foundations of Quantum Error Correction](https://quantum.cloud.ibm.com/learning/en/courses/foundations-of-quantum-error-correction) — error correction and stabilizers.
+- [IBM: Error mitigation and suppression techniques](https://quantum.cloud.ibm.com/docs/en/guides/error-mitigation-and-suppression-techniques) — dynamical decoupling, twirling, readout mitigation, ZNE, and PEC in a hardware execution context.
+- [Ekert: Quantum cryptography based on Bell’s theorem](https://doi.org/10.1103/PhysRevLett.67.661) — E91.
+- [Bennett: Quantum cryptography using any two nonorthogonal states](https://doi.org/10.1103/PhysRevLett.68.3121) — B92.
+- [NIST FIPS 203: ML-KEM](https://csrc.nist.gov/pubs/fips/203/final), [FIPS 204: ML-DSA](https://csrc.nist.gov/pubs/fips/204/final), and [FIPS 205: SLH-DSA](https://csrc.nist.gov/pubs/fips/205/final) — standardized classical post-quantum constructions and their distinct roles.
+- [Qiskit Optimization documentation](https://qiskit-community.github.io/qiskit-optimization/) — quadratic programs and optimization workflows.
 - [Qiskit Nature documentation](https://qiskit-community.github.io/qiskit-nature/) — molecular drivers, electronic structure, mappings, and solvers.
 - [Qiskit Machine Learning documentation](https://qiskit-community.github.io/qiskit-machine-learning/) — kernels, neural networks, and classifiers.
 - [Bravyi, Gosset, and König: Quantum advantage with shallow circuits](https://arxiv.org/abs/1704.00690) — the specialized hidden linear function relation introduced in Algorithm I.
@@ -352,4 +450,4 @@ Build intuition for trainable quantum models, recurrent hybrids, and one- and tw
 
 ## Maintaining the curriculum
 
-The source of truth is apps/web/src/curriculum.ts and the typed modules in apps/web/src/curriculum/. Keep lesson IDs stable. New lessons need substantive worked practice and a correct, unique quiz answer. Lab links must select an experiment the application can execute. Run npm test and npm run build; the curriculum checks protect requested-topic coverage, references, and the historical progress migration. If lesson order, counts, or scope changes, update this guide alongside the code.
+The source of truth is apps/web/src/curriculum.ts and the typed modules in apps/web/src/curriculum/. Keep lesson IDs stable. New lessons need substantive worked practice and a correct, unique quiz answer. Lab links must select an experiment the application can execute. Run npm test, npm run format:check, and npm run build; the curriculum checks protect requested-topic coverage, prerequisite ordering, references, and historical progress migration. If lesson order, counts, or scope changes, update this guide alongside the code.
