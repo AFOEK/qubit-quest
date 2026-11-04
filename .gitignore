@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+apps/unity/Library/
+apps/unity/Temp/
+apps/unity/Logs/
+apps/unity/Obj/
+apps/unity/Builds/
+.DS_Store
