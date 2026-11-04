@@ -103,7 +103,7 @@ export function LessonDialog({
           <p key={paragraph}>{paragraph}</p>
         ))}
         <section className="math-card" aria-label="Mathematical explanation">
-          <h3>The math, unpacked</h3>
+          <h3>{lesson.math.label ?? 'The math, unpacked'}</h3>
           <pre>{lesson.math.formula}</pre>
           <p>{lesson.math.explanation}</p>
         </section>

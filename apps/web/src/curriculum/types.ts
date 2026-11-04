@@ -12,7 +12,7 @@ export interface Lesson {
   level: 'Introduction' | 'Core' | 'Application';
   topics: string[];
   body: string[];
-  math: { formula: string; explanation: string };
+  math: { formula: string; explanation: string; label?: string };
   example: string;
   practice: { prompt: string; answer: string };
   question: string;

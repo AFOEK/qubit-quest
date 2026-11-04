@@ -2,55 +2,67 @@
 
 University of Waterloo IBM Qiskit Fall Fest 2026
 
-19 courses · 89 lessons · approximately 845 minutes of reading and short practice, before extended labs or projects. Times are estimates. This is a self-paced pathway; an event workshop can use a shorter selection.
+27 courses · 119 lessons · approximately 1190 minutes of reading and short practice, before extended labs or projects. Times are estimates. This is a self-paced pathway; an event workshop can use a shorter selection.
 
 ## Recommended progression
 
 1. **Mathematics:** an optional primer in complex numbers, linear algebra, tensor products, probability, eigenvalues, and calculus. Basic arithmetic is enough to start.
-2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Algorithm I → Algorithm II → Noises and Error Correction → Error Mitigation.
-3. **Applications:** Applied Optimization explains QUBO/Ising modeling before Algorithm III introduces QAOA and other applications. After the algorithms, choose Cryptography I–II, Chemistry I–III, Machine Learning I–III, or several branches. These branches do not require one another.
+2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Software and Compilation → Algorithm I → Algorithm II → Noises and Error Correction → Error Mitigation → Hardware I–IV. Hardware is a specialist branch after the software/noise prerequisites; learners can follow the recommended prerequisite links to choose another branch.
+3. **Applications:** Applied Optimization explains QUBO/Ising modeling before Algorithm III introduces QAOA and other applications. After Algorithm III, choose Classical–Quantum Boundaries I–III, Cryptography I–II, Chemistry I–III, Machine Learning I–III, or several branches. These branches do not require one another.
 
-Prerequisites are recommendations. Lessons remain open so experienced learners can skip ahead and beginners can revisit earlier ideas. Cryptography I uses the state, entanglement, and Bell-test foundations; Cryptography II also builds on the Shor/Grover material. Chemistry and ML use the hybrid-computing ideas in Algorithm III.
+Prerequisites are recommendations. Lessons remain open so experienced learners can skip ahead and beginners can revisit earlier ideas. Cryptography I uses the state, entanglement, and Bell-test foundations; Cryptography II also builds on the Shor/Grover material. Chemistry and ML use the hybrid-computing ideas in Algorithm III. Classical–Quantum Boundaries uses its variational-energy background, introduces diagrams and Schmidt tools first, then MPS/MPO and DMRG/TEBD, then TTN/MERA/PEPS. Hardware proceeds from microwave physics through pulse descriptions, characterization, and effective-Hamiltonian models.
 
-Repeated concepts first introduce the idea, then develop circuit mechanics or an application: entanglement leads to Bell/GHZ states, introductory Grover search leads to iteration geometry and amplitude amplification, QPE leads to QAE and energy estimation, and VQE leads to molecular chemistry. Algorithm II places amplification and QPE before QAE. Shor’s factoring algorithm and the Shor error-correcting code are separate topics. Existing lesson IDs remain stable as sections are inserted.
+Repeated concepts first introduce the idea, then develop circuit mechanics or an application: entanglement leads to Bell/GHZ states, introductory Grover search leads to iteration geometry and amplitude amplification, QPE leads to QAE and energy estimation, and VQE leads to molecular chemistry. Algorithm II places amplification and QPE before QAE. Shor’s factoring algorithm and the Shor error-correcting code are separate topics. OpenPulse first appears as a software introduction and becomes a detailed control-language study in Hardware II. Existing lesson IDs remain stable as sections are inserted.
 
 ## Course map
 
-| Order | Course                      | Path                 | Lessons | Estimated minutes | Recommended before           |
-| ----- | --------------------------- | -------------------- | ------- | ----------------- | ---------------------------- |
-| 1     | Mathematical foundations    | Mathematics          | 5       | 34                | Basic arithmetic             |
-| 2     | Quantum Mechanics Theories  | Quantum fundamentals | 5       | 35                | Mathematical foundations     |
-| 3     | Qubits Theories             | Quantum fundamentals | 4       | 28                | Quantum Mechanics Theories   |
-| 4     | Gates I                     | Quantum fundamentals | 5       | 34                | Qubits Theories              |
-| 5     | Gates II                    | Quantum fundamentals | 4       | 31                | Gates I                      |
-| 6     | Algorithm I                 | Quantum fundamentals | 9       | 80                | Gates II                     |
-| 7     | Algorithm II                | Quantum fundamentals | 9       | 89                | Algorithm I                  |
-| 8     | Noises and Error Correction | Quantum fundamentals | 6       | 57                | Algorithm II                 |
-| 9     | Error Mitigation            | Quantum fundamentals | 5       | 57                | Noises and Error Correction  |
-| 10    | Applied Optimization        | Applications         | 3       | 34                | Algorithm II                 |
-| 11    | Algorithm III               | Applications         | 4       | 39                | Applied Optimization         |
-| 12    | Cryptography I              | Applications         | 6       | 62                | Algorithm I                  |
-| 13    | Cryptography II             | Applications         | 4       | 43                | Cryptography I, Algorithm II |
-| 14    | Chemistry I                 | Applications         | 6       | 63                | Algorithm III                |
-| 15    | Chemistry II                | Applications         | 3       | 36                | Chemistry I                  |
-| 16    | Chemistry III               | Applications         | 2       | 23                | Chemistry II                 |
-| 17    | Machine Learning I          | Applications         | 3       | 29                | Algorithm III                |
-| 18    | Machine Learning II         | Applications         | 2       | 23                | Machine Learning I           |
-| 19    | Machine Learning III        | Applications         | 4       | 48                | Machine Learning II          |
+| Order | Course                           | Path                 | Lessons | Estimated minutes | Recommended before                                    |
+| ----- | -------------------------------- | -------------------- | ------- | ----------------- | ----------------------------------------------------- |
+| 1     | Mathematical foundations         | Mathematics          | 5       | 34                | Basic arithmetic                                      |
+| 2     | Quantum Mechanics Theories       | Quantum fundamentals | 5       | 35                | Mathematical foundations                              |
+| 3     | Qubits Theories                  | Quantum fundamentals | 4       | 28                | Quantum Mechanics Theories                            |
+| 4     | Gates I                          | Quantum fundamentals | 5       | 34                | Qubits Theories                                       |
+| 5     | Gates II                         | Quantum fundamentals | 4       | 31                | Gates I                                               |
+| 6     | Software and Compilation         | Quantum fundamentals | 4       | 40                | Gates II                                              |
+| 7     | Algorithm I                      | Quantum fundamentals | 9       | 80                | Gates II                                              |
+| 8     | Algorithm II                     | Quantum fundamentals | 9       | 89                | Algorithm I                                           |
+| 9     | Noises and Error Correction      | Quantum fundamentals | 6       | 57                | Algorithm II                                          |
+| 10    | Error Mitigation                 | Quantum fundamentals | 5       | 57                | Noises and Error Correction                           |
+| 11    | Hardware I                       | Quantum fundamentals | 3       | 34                | Software and Compilation, Noises and Error Correction |
+| 12    | Hardware II                      | Quantum fundamentals | 4       | 44                | Hardware I                                            |
+| 13    | Hardware III                     | Quantum fundamentals | 4       | 47                | Hardware II                                           |
+| 14    | Hardware IV                      | Quantum fundamentals | 3       | 39                | Hardware III                                          |
+| 15    | Applied Optimization             | Applications         | 3       | 34                | Algorithm II                                          |
+| 16    | Algorithm III                    | Applications         | 4       | 39                | Applied Optimization                                  |
+| 17    | Classical–Quantum Boundaries I   | Applications         | 5       | 57                | Algorithm III                                         |
+| 18    | Classical–Quantum Boundaries II  | Applications         | 4       | 49                | Classical–Quantum Boundaries I                        |
+| 19    | Classical–Quantum Boundaries III | Applications         | 3       | 35                | Classical–Quantum Boundaries II                       |
+| 20    | Cryptography I                   | Applications         | 6       | 62                | Algorithm I                                           |
+| 21    | Cryptography II                  | Applications         | 4       | 43                | Cryptography I, Algorithm II                          |
+| 22    | Chemistry I                      | Applications         | 6       | 63                | Algorithm III                                         |
+| 23    | Chemistry II                     | Applications         | 3       | 36                | Chemistry I                                           |
+| 24    | Chemistry III                    | Applications         | 2       | 23                | Chemistry II                                          |
+| 25    | Machine Learning I               | Applications         | 3       | 29                | Algorithm III                                         |
+| 26    | Machine Learning II              | Applications         | 2       | 23                | Machine Learning I                                    |
+| 27    | Machine Learning III             | Applications         | 4       | 48                | Machine Learning II                                   |
 
 ## What a lesson contains
 
-Every lesson has an explanation, an equation with definitions, a worked example, a practice prompt with a revealable solution, and a knowledge check. Successful completion awards 25 XP once. Search finds course names and topic tags; path filters and expandable courses keep the larger syllabus navigable. Earlier completions migrate to stable lesson IDs.
+Every lesson has an explanation, an equation or program excerpt with definitions, a worked example, a practice prompt with a revealable solution, and a knowledge check. Successful completion awards 25 XP once. Search finds course names and topic tags; path filters and expandable courses keep the larger syllabus navigable. Earlier completions migrate to stable lesson IDs.
 
 ### Executable experiments
 
 - **Browser gate explorer:** exact pure-state H/X/Y/Z/S/T sequences, probabilities, and a Bloch vector. Compatible lessons preload their example sequence. Some gates are illustrated through decompositions, such as SX = HSH.
 - **Existing Qiskit labs:** Bell-pair preparation, four-item Grover search, a two-qubit QFT, one-edge QAOA with a fixed mixer, and a manually swept toy spin energy experiment. Lesson buttons select the matching experiment. The deeper Grover lesson explicitly distinguishes its eight-item calculation from the existing four-item executable lab.
-- **Guided exercises:** larger algorithms and quantum walks; QAE; QKD and post-quantum cryptography; QUBO/Ising construction; noise and mitigation calculations; molecular model preparation; kernels, classifiers, neural architectures, and photonic sampling. Their reasoning and expected answers are included in the lessons. Full protocol implementations, calibrated noisy simulations, molecular execution, automated optimization, photonic sampling, and ML training require additional implementations.
+- **Guided exercises:** OpenQASM program reading and compilation reasoning; tensor diagrams/contractions, Schmidt truncation, MPS/MPO and tensor solvers; microwave/pulse models, characterization, and Hamiltonian engineering; larger algorithms and quantum walks; QAE; QKD and post-quantum cryptography; QUBO/Ising construction; noise and mitigation calculations; molecular model preparation; kernels, classifiers, neural architectures, and photonic sampling. Their reasoning and expected answers are included in the lessons. QASM execution, tensor-network solvers, hardware pulse execution, full protocol implementations, calibrated noisy simulations, molecular execution, automated optimization, photonic sampling, and ML training require additional implementations.
 
 The toy spin energy experiment uses −ZI − IZ + 0.5XX in arbitrary units. Molecular lessons explicitly require a chemistry driver, declared geometry/basis/active space, mapping, energy offsets, and a validated reference.
 
 Error Mitigation distinguishes dynamical decoupling (suppression), Pauli twirling (noise tailoring), and readout/ZNE/PEC estimators (bias reduction with calibration and sampling tradeoffs). These methods do not replace encoded quantum error correction. Cryptography distinguishes QKD with authenticated classical messages from post-quantum algorithms running on classical computers.
+
+## Software and hardware compatibility
+
+OpenQASM is a language family; compiler/importer coverage and device execution support are separate. OpenPulse is an evolving target-dependent calibration grammar, distinct from the historical JSON wire format. The software/hardware exercises include program interpretation and analytic models; they submit no hardware jobs and install no additional dependencies. Qiskit Pulse was removed in Qiskit 2.0. The Qiskit Dynamics upstream repository is archived and marked deprecated, so its lesson is a historical, version-specific reference. A future executable pulse-model lab must select a compatible supported stack and validate its assumptions.
 
 ## Suggested event sampler
 
@@ -156,6 +168,25 @@ Move from fixed gates to rotations, phase gates and their daggers, arbitrary uni
 | Unitary gates and inverse circuits  | Core  | Unitary; Unitary matrices; Circuit inverses     | 8       | Guided practice + worked answer        |
 | SX: the square root of X            | Core  | SX gate; Square root of X; Native gates         | 7       | Worked practice + browser gate circuit |
 
+### Software and Compilation
+
+Connect gate circuits to portable program descriptions, target-aware transpilation, OpenQASM 3 control flow, and the introductory role of pulse-level calibration.
+
+**Recommended before:** Gates II.
+
+**Learning outcomes:**
+
+- Read a small OpenQASM 2 circuit and distinguish source formats from device support.
+- Explain decomposition, layout, routing, optimization, and scheduling.
+- Compare OpenQASM 3 programs with target-specific OpenPulse calibrations.
+
+| Lesson                                              | Depth        | Topics                                                                          | Minutes | Activity                          |
+| --------------------------------------------------- | ------------ | ------------------------------------------------------------------------------- | ------- | --------------------------------- |
+| OpenQASM: a language for circuit exchange           | Introduction | OpenQASM; OpenQASM 2; Quantum assembly; Circuit interchange                     | 9       | Worked practice + bell Qiskit lab |
+| Transpilation: make a circuit fit its target        | Core         | Transpilation; Basis gates; Layout; Routing; Scheduling                         | 11      | Guided practice + worked answer   |
+| OpenQASM 3.0: classical control and timing          | Core         | OpenQASM 3.0; OpenQASM3.0; OpenQASM 3; Dynamic circuits; Classical control flow | 11      | Guided practice + worked answer   |
+| OpenPulse: where circuit instructions meet controls | Introduction | OpenPulse; Pulse-level programming; Calibration grammar                         | 9       | Guided practice + worked answer   |
+
 ### Algorithm I
 
 Construct entangled states, then use oracles and interference to reveal hidden structure. Specialized hidden-problem lessons introduce their promises and limits rather than assuming a full complexity-theory background.
@@ -247,6 +278,80 @@ Build on noise channels and QEC to distinguish noise suppression, noise tailorin
 | ZNE: extrapolate toward zero noise                 | Application | Zero-noise extrapolation; ZNE; Noise scaling; Gate folding                                             | 12      | Guided practice + worked answer |
 | PEC: cancel a calibrated noise model statistically | Application | Probabilistic error cancellation; PEC; Quasiprobabilities; Sampling overhead                           | 12      | Guided practice + worked answer |
 
+### Hardware I
+
+Connect two-level energy splittings to microwave resonance, rotating-frame drives, and shaped pulse envelopes. Examples use an explicitly simplified superconducting-qubit model.
+
+**Recommended before:** Software and Compilation, Noises and Error Correction.
+
+**Learning outcomes:**
+
+- Distinguish carrier frequency, detuning, and Rabi rate with consistent units.
+- Relate resonant control Hamiltonians to RX/RY rotations.
+- Compare square, Gaussian, Gaussian-square, and DRAG pulse ideas.
+
+| Lesson                                          | Depth        | Topics                                                                              | Minutes | Activity                        |
+| ----------------------------------------------- | ------------ | ----------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| Microwave resonance: match an energy transition | Introduction | Microwave drives and resonance; Microwave resonance; Transition frequency; Detuning | 10      | Guided practice + worked answer |
+| Microwave drives: rotations in a rotating frame | Core         | Microwave drives; Rotating frame; Rotating-wave approximation; Quadrature control   | 12      | Guided practice + worked answer |
+| Pulse envelopes: shapes, bandwidth, and leakage | Core         | Pulse envelopes; Pulse shapes; Gaussian pulses; Gaussian-square pulses; DRAG        | 12      | Guided practice + worked answer |
+
+### Hardware II
+
+Develop the OpenPulse introduction into ports, frames, timed instructions, and defcal bindings. Read provider-dependent control descriptions without assuming an available pulse backend.
+
+**Recommended before:** Hardware I.
+
+**Learning outcomes:**
+
+- Distinguish physical ports, stateful frames, and waveforms.
+- Track instruction timing and acquisition separately from gate semantics.
+- Explain calibration selection and compile-time duration requirements.
+
+| Lesson                                              | Depth | Topics                                                                      | Minutes | Activity                        |
+| --------------------------------------------------- | ----- | --------------------------------------------------------------------------- | ------- | ------------------------------- |
+| OpenPulse: a target-dependent control description   | Core  | OpenPulse; OpenPulse grammar; Control stack; Pulse scheduling               | 10      | Guided practice + worked answer |
+| Ports and frames: resources, clocks, and phase      | Core  | Ports and frames; Ports; Frames; Carrier phase; Virtual Z                   | 11      | Guided practice + worked answer |
+| Instructions: play, capture, delay, and synchronize | Core  | Instructions; OpenPulse instructions; Play; Capture; Delay; Barrier         | 11      | Guided practice + worked answer |
+| Defcal: bind an instruction to a calibration        | Core  | Defcal; Define calibration; Calibration definitions; Physical qubit binding | 12      | Guided practice + worked answer |
+
+### Hardware III
+
+Design a characterization sequence: establish readout and device parameters, locate transitions with spectroscopy, fit Rabi rotations, and distinguish relaxation from coherence decay.
+
+**Recommended before:** Hardware II.
+
+**Learning outcomes:**
+
+- Separate fitting, calibration updates, and independent validation.
+- Interpret spectroscopy and Rabi traces with explicit units.
+- Distinguish T₁, Ramsey T₂*, echo T₂, and model-dependent dephasing relations.
+
+| Lesson                                                    | Depth       | Topics                                                                                                  | Minutes | Activity                        |
+| --------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| Hardware calibration and characterization: close the loop | Application | Hardware calibration & characterization; Hardware calibration; Characterization; Calibration validation | 11      | Guided practice + worked answer |
+| Spectroscopy: locate and fit a transition                 | Application | Spectroscopy; Frequency sweeps; Resonance fitting; Linewidth                                            | 11      | Guided practice + worked answer |
+| Rabi experiments: calibrate rotation angles               | Application | Rabi experiments; Rabi oscillations; π pulse; π/2 pulse                                                 | 12      | Guided practice + worked answer |
+| Coherence measurements: T₁, Ramsey, and echo              | Application | Coherence measurements; T1 measurements; Ramsey; T2 star; Spin echo                                     | 13      | Guided practice + worked answer |
+
+### Hardware IV
+
+Build and validate driven Hamiltonian models, understand the cross-resonance interaction, and study Qiskit Dynamics as an archived, version-specific simulation toolkit.
+
+**Recommended before:** Hardware III.
+
+**Learning outcomes:**
+
+- Explain frame changes and effective-Hamiltonian approximations.
+- Distinguish a desired cross-resonance ZX term from unwanted couplings.
+- Specify and validate a time-dependent simulation without assuming current pulse execution support.
+
+| Lesson                                                          | Depth       | Topics                                                                                                       | Minutes | Activity                        |
+| --------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------ | ------- | ------------------------------- |
+| Advanced Hamiltonian engineering and simulation                 | Core        | Advanced Hamiltonian engineering & simulation; Hamiltonian engineering; Average Hamiltonian; Toggling frames | 13      | Guided practice + worked answer |
+| Cross-resonance: drive one qubit near another’s transition      | Core        | Cross-resonance effect; CR; Cross-resonance; ZX interaction; Echoed cross-resonance                          | 13      | Guided practice + worked answer |
+| Qiskit Dynamics: model-driven simulation and version boundaries | Application | Qiskit Dynamics; Time-dependent simulation; Lindblad models; Simulation validation                           | 13      | Guided practice + worked answer |
+
 ### Applied Optimization
 
 Translate a classical objective and its constraints into QUBO and Ising costs, then verify the mapping before running QAOA or another solver.
@@ -283,6 +388,63 @@ Use the circuit tools for optimization, variational energy, and spectral estimat
 | VQE: optimize a trial energy              | Application  | VQE; Variational quantum eigensolver; Variational principle; Hamiltonians     | 10      | Worked practice + toy variational energy Qiskit lab |
 | Phase estimation as an energy measurement | Application  | Phase estimation; Energy estimation; Hamiltonian simulation; Spectral methods | 10      | Guided practice + worked answer                     |
 | Boson sampling: a photonic sampling task  | Introduction | Boson sampling; Linear optics; Photons; Permanents                            | 9       | Guided practice + worked answer                     |
+
+### Classical–Quantum Boundaries I
+
+Read tensor diagrams, plan contractions, and use Schmidt spectra to understand when a quantum state can be represented accurately with limited classical resources.
+
+**Recommended before:** Algorithm III.
+
+**Learning outcomes:**
+
+- Translate Penrose-style tensor diagrams into index sums.
+- Relate Schmidt rank and entropy to representation cost.
+- Calculate discarded weight and normalized truncation fidelity.
+
+| Lesson                                                    | Depth        | Topics                                                                                          | Minutes | Activity                        |
+| --------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| Penrose graphical calculus: tensors as connected diagrams | Introduction | Penrose graphical calculus; Tensor diagrams; Tensor indices                                     | 10      | Guided practice + worked answer |
+| Tensor contractions: the order changes the cost           | Core         | Tensor contractions; Contraction order; Intermediate tensors; Classical simulation cost         | 11      | Guided practice + worked answer |
+| Schmidt decomposition: expose bipartite structure         | Core         | Schmidt decomposition; Singular value decomposition; Schmidt rank; Reduced density matrices     | 12      | Guided practice + worked answer |
+| Entanglement scaling: area laws and volume laws           | Core         | Entanglement scaling; Area law; Volume law; Entanglement entropy                                | 12      | Guided practice + worked answer |
+| Schmidt truncation: accuracy has a measurable price       | Core         | Schmidt truncation; Schmidt decomposition and truncation; Discarded weight; Truncation fidelity | 12      | Guided practice + worked answer |
+
+### Classical–Quantum Boundaries II
+
+Use one-dimensional tensor networks to represent states and operators, optimize ground states with DMRG, and follow time evolution with TEBD.
+
+**Recommended before:** Classical–Quantum Boundaries I.
+
+**Learning outcomes:**
+
+- Distinguish MPS state tensors from MPO operator tensors.
+- Explain variational DMRG sweeps and their convergence checks.
+- Separate time-step, bond-dimension, and truncation errors in TEBD.
+
+| Lesson                                         | Depth       | Topics                                                                                             | Minutes | Activity                        |
+| ---------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| MPS: a chain representation of a quantum state | Core        | Matrix product states; MPS; Bond dimension; Canonical forms                                        | 12      | Guided practice + worked answer |
+| MPO: represent observables and Hamiltonians    | Core        | Matrix product operators; MPO; Operator tensors; Expectation contractions                          | 11      | Guided practice + worked answer |
+| DMRG: variational ground-state sweeps          | Application | Density matrix renormalization group; DMRG; Variational tensor networks; Ground-state optimization | 13      | Guided practice + worked answer |
+| TEBD: local gates, SVDs, and time evolution    | Application | Time-evolving block decimation; TEBD; Suzuki–Trotter decomposition; Entanglement growth            | 13      | Guided practice + worked answer |
+
+### Classical–Quantum Boundaries III
+
+Compare tree, multiscale, and two-dimensional tensor networks: TTN, MERA, and PEPS. Match geometry and entanglement structure to contraction and optimization costs.
+
+**Recommended before:** Classical–Quantum Boundaries II.
+
+**Learning outcomes:**
+
+- Explain tree and multiscale structures and the purpose of disentanglers.
+- Relate PEPS geometry to two-dimensional area-law states.
+- Separate compact representability from efficient contraction.
+
+| Lesson                                               | Depth | Topics                                                                                          | Minutes | Activity                        |
+| ---------------------------------------------------- | ----- | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------- |
+| TTN: hierarchical tree tensor networks               | Core  | TTN; Tree tensor networks; Isometries; Hierarchical contraction                                 | 11      | Guided practice + worked answer |
+| MERA: disentangle before coarse-graining             | Core  | MERA; Multiscale entanglement renormalization ansatz; Disentanglers; Causal cones               | 12      | Guided practice + worked answer |
+| PEPS: networks shaped like a two-dimensional lattice | Core  | PEPS; Projected entangled pair states; Two-dimensional tensor networks; Approximate contraction | 12      | Guided practice + worked answer |
 
 ### Cryptography I
 
@@ -447,6 +609,15 @@ Build intuition for trainable quantum models, recurrent hybrids, and one- and tw
 - [Qiskit Machine Learning documentation](https://qiskit-community.github.io/qiskit-machine-learning/) — kernels, neural networks, and classifiers.
 - [Bravyi, Gosset, and König: Quantum advantage with shallow circuits](https://arxiv.org/abs/1704.00690) — the specialized hidden linear function relation introduced in Algorithm I.
 - [Aaronson and Arkhipov: The Computational Complexity of Linear Optics](https://arxiv.org/abs/1011.3245) — ideal boson-sampling complexity assumptions.
+
+- [OpenQASM 3.0 specification](https://openqasm.com/versions/3.0/index.html), [pulse-level calibration definitions](https://openqasm.com/language/pulses.html), and [OpenPulse grammar](https://openqasm.com/language/openpulse.html) — language features, ports, frames, instructions, and defcal.
+- [Qiskit 2.0 Pulse removal note](https://github.com/Qiskit/qiskit/blob/main/releasenotes/notes/2.0/remove-pulse-eb43f66499092489.yaml) — the SDK version boundary.
+- [Qiskit Dynamics repository](https://github.com/qiskit-community/qiskit-dynamics) — archived/deprecated status and historical solver documentation.
+- [Schollwöck: The density-matrix renormalization group in the age of matrix product states](https://arxiv.org/abs/1008.3477) — MPS/MPO, DMRG, and tensor-network foundations.
+- [Vidal: Efficient simulation of one-dimensional quantum many-body systems](https://arxiv.org/abs/quant-ph/0310089) — local updates and TEBD.
+- [Vidal: Entanglement renormalization](https://doi.org/10.1103/PhysRevLett.99.220405) — disentanglers and multiscale networks.
+- [Verstraete and Cirac: Renormalization algorithms for quantum-many body systems in two and higher dimensions](https://arxiv.org/abs/cond-mat/0407066) — PEPS.
+- [Motzoi et al.: Simple pulses for elimination of leakage in weakly nonlinear qubits](https://doi.org/10.1103/PhysRevLett.103.110501) — DRAG motivation.
 
 ## Maintaining the curriculum
 

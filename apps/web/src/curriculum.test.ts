@@ -43,6 +43,39 @@ const requiredTopics: Record<string, string[]> = {
     'Unitary',
     'SX gate',
   ],
+  'software-compilation': ['OpenQASM', 'Transpilation', 'OpenQASM 3.0', 'OpenPulse'],
+  'boundaries-1': [
+    'Penrose graphical calculus',
+    'Tensor contractions',
+    'Entanglement scaling',
+    'Schmidt decomposition',
+    'Schmidt truncation',
+  ],
+  'boundaries-2': [
+    'Matrix product states',
+    'MPS',
+    'Matrix product operators',
+    'MPO',
+    'Density matrix renormalization group',
+    'DMRG',
+    'Time-evolving block decimation',
+    'TEBD',
+  ],
+  'boundaries-3': ['PEPS', 'MERA', 'TTN'],
+  'hardware-1': ['Microwave drives and resonance', 'Pulse envelopes', 'Pulse shapes'],
+  'hardware-2': ['OpenPulse', 'Ports and frames', 'Instructions', 'Defcal', 'Define calibration'],
+  'hardware-3': [
+    'Hardware calibration & characterization',
+    'Spectroscopy',
+    'Rabi experiments',
+    'Coherence measurements',
+  ],
+  'hardware-4': [
+    'Advanced Hamiltonian engineering & simulation',
+    'Cross-resonance effect',
+    'CR',
+    'Qiskit Dynamics',
+  ],
   'algorithms-1': [
     'Entanglement',
     'Bell states',
@@ -193,8 +226,40 @@ describe('expanded learning path', () => {
       'error-mitigation',
     ]);
     expect(searchCourses('QAE').map((course) => course.id)).toEqual(['algorithms-2']);
+    expect(searchCourses('Schmidt truncation').map((course) => course.id)).toEqual([
+      'boundaries-1',
+    ]);
+    expect(searchCourses('DMRG').map((course) => course.id)).toEqual(['boundaries-2']);
+    expect(searchCourses('OpenQASM 3.0').map((course) => course.id)).toEqual([
+      'software-compilation',
+    ]);
+    expect(searchCourses('Qiskit Dynamics').map((course) => course.id)).toEqual(['hardware-4']);
+    expect(searchCourses('OpenQASM3.0').map((course) => course.id)).toEqual([
+      'software-compilation',
+    ]);
+    expect(searchCourses('Classical-Quantum Boundaries').map((course) => course.id)).toEqual([
+      'boundaries-1',
+      'boundaries-2',
+      'boundaries-3',
+    ]);
     expect(searchCourses('Simon', 'applications')).toEqual([]);
     expect(searchCourses('unknown-topic-123')).toEqual([]);
     expect(searchCourses('')).toHaveLength(courses.length);
+  });
+
+  it('introduces compilation, hardware controls, and Schmidt tools before their uses', () => {
+    const order = (id: string) => courses.findIndex((course) => course.id === id);
+    expect(order('gates-2')).toBeLessThan(order('software-compilation'));
+    expect(order('software-compilation')).toBeLessThan(order('hardware-1'));
+    expect(order('noise-qec')).toBeLessThan(order('hardware-1'));
+    for (let stage = 1; stage < 4; stage++)
+      expect(order(`hardware-${stage}`)).toBeLessThan(order(`hardware-${stage + 1}`));
+    expect(order('algorithms-3')).toBeLessThan(order('boundaries-1'));
+    expect(order('boundaries-1')).toBeLessThan(order('boundaries-2'));
+    expect(order('boundaries-2')).toBeLessThan(order('boundaries-3'));
+    const tools = courses.find((course) => course.id === 'boundaries-1')!.lessons;
+    expect(tools.findIndex((lesson) => lesson.id === 'schmidt-decomposition')).toBeLessThan(
+      tools.findIndex((lesson) => lesson.id === 'schmidt-truncation'),
+    );
   });
 });
