@@ -14,3 +14,4 @@ apps/unity/Logs/
 apps/unity/Obj/
 apps/unity/Builds/
 .DS_Store
+.vercel/
