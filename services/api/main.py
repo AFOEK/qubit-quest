@@ -4,7 +4,7 @@ import os
 from typing import Literal
 
 import numpy as np
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
 from qiskit import QuantumCircuit

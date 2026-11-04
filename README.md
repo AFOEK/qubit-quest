@@ -44,12 +44,13 @@ docs/              Architecture, demo, and roadmap
 npm test
 npm run build
 python -m pytest services/api -q
+npm run format:check
 ```
 
 The API limits circuits to six qubits, 64 gates, and 8,192 shots. Simulations are local and ideal. Qiskit bitstrings put qubit 0 at the right. `StatevectorSampler` results are samples; exact probabilities and amplitudes are also returned. See [architecture](docs/architecture.md) and [judge demo](docs/demo.md).
 
 ## Team workflow
 
-Clone `https://github.com/minhajuddinm/qubit-quest.git`, create a branch such as `feat/quest-interactions`, and open a small PR. Keep generated builds, Python environments, Unity caches, credentials, and large recordings out of Git. Agree on ownership before changing shared files. Run the checks above before merging. The creator's GitHub account owns the repository; collaborator invitations require acceptance.
+Clone `https://github.com/minhajuddinm/qubit-quest.git`, create a branch such as `feat/quest-interactions`, and open a small PR. Keep generated builds, Python environments, Unity caches, credentials, and large recordings out of Git. Agree on ownership before changing shared files. Run `npm run format` after editing web code or docs, then the checks above before merging. The creator's GitHub account owns the repository; collaborator invitations require acceptance.
 
 This is a hackathon MVP, with local profiles rather than authentication or a shared database. Public production deployment needs an API host, HTTPS, explicit allowed origins, resource limits, and a frontend `/api` reverse proxy. `npm run build` alone creates only the web frontend. No real quantum hardware jobs are submitted.
