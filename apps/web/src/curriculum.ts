@@ -3,6 +3,9 @@ import { foundations } from './curriculum/foundations';
 import { qubitsAndGates } from './curriculum/qubits-gates';
 import { algorithms } from './curriculum/algorithms';
 import { noise } from './curriculum/noise';
+import { errorMitigation } from './curriculum/error-mitigation';
+import { appliedOptimization } from './curriculum/optimization';
+import { cryptography } from './curriculum/cryptography';
 import { chemistry } from './curriculum/chemistry';
 import { machineLearning } from './curriculum/machine-learning';
 import type { Course, TrackId } from './curriculum/types';
@@ -23,7 +26,8 @@ export const tracks: { id: TrackId; title: string; description: string }[] = [
   {
     id: 'applications',
     title: 'Applications',
-    description: 'Explore optimization, chemistry, and machine learning with meaningful baselines.',
+    description:
+      'Explore optimization, cryptography, chemistry, and machine learning with explicit assumptions and meaningful baselines.',
   },
 ];
 
@@ -34,7 +38,10 @@ export const courses: Course[] = [
   ...qubitsAndGates,
   ...algorithms.filter((c) => c.track === 'fundamentals'),
   ...noise,
+  ...errorMitigation,
+  ...appliedOptimization,
   ...algorithms.filter((c) => c.track === 'applications'),
+  ...cryptography,
   ...chemistry,
   ...machineLearning,
 ];

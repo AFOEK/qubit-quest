@@ -1,4 +1,5 @@
 import type { Course } from './types';
+import { searchAndWalkLessons, amplitudeEstimationLesson } from './algorithm-extensions';
 
 export const algorithms: Course[] = [
   {
@@ -255,9 +256,9 @@ export const algorithms: Course[] = [
       },
       {
         id: 'grover-search',
-        title: 'Find it with Grover: an extra search lesson',
+        title: 'Find it with Grover: the introductory picture',
         time: 8,
-        level: 'Core',
+        level: 'Introduction',
         topics: ['Grover’s algorithm', 'Amplitude amplification', 'Search'],
         body: [
           'Keep the original app’s search experiment as a bridge from phase oracles to amplitude amplification. Search four candidates with one marked item, 11. The oracle flips its phase; diffusion turns the phase pattern into a larger solution amplitude.',
@@ -281,6 +282,7 @@ export const algorithms: Course[] = [
         correct: 1,
         why: 'The oracle marks by phase; diffusion amplifies the resulting amplitude pattern.',
         lab: { kind: 'algorithm', name: 'grover' },
+        followUp: ['grover-geometry', 'amplitude-amplification'],
       },
     ],
   },
@@ -291,9 +293,11 @@ export const algorithms: Course[] = [
     icon: '≋',
     color: 'blue',
     description:
-      'Connect transforms and eigenphases to period finding, then prepare for hybrid computation with parameterized circuits.',
+      'Develop Grover search, amplitude amplification, and quantum walks, then connect Fourier transforms and phase estimation to QAE, period finding, and parameterized circuits.',
     prerequisites: ['algorithms-1'],
     outcomes: [
+      'Choose Grover iteration counts and distinguish amplification from amplitude estimation.',
+      'Explain coherent quantum walks and their graph-dependent behavior.',
       'Distinguish the Hadamard transform from the QFT.',
       'Trace QPE and the quantum part of Shor’s algorithm.',
       'Define an ansatz, parameters, and a measured objective.',
@@ -324,6 +328,7 @@ export const algorithms: Course[] = [
         correct: 2,
         why: 'The characters of (ℤ₂)ⁿ have phases (−1)ˣ·ʸ.',
       },
+      ...searchAndWalkLessons,
       {
         id: 'qft',
         title: 'QFT: read the rhythm of phases',
@@ -377,8 +382,9 @@ export const algorithms: Course[] = [
         answers: ['A SWAP alone', 'The inverse QFT', 'A measurement before the controlled powers'],
         correct: 1,
         why: 'The inverse QFT converts the phase gradient into an estimate in the computational basis.',
-        followUp: ['phase-estimation-energy'],
+        followUp: ['qae', 'phase-estimation-energy'],
       },
+      amplitudeEstimationLesson,
       {
         id: 'shor',
         title: 'Shor’s algorithm: period finding to factors',
@@ -454,7 +460,7 @@ export const algorithms: Course[] = [
     color: 'peach',
     description:
       'Use the circuit tools for optimization, variational energy, and spectral estimation, then compare them with the photonic model of boson sampling.',
-    prerequisites: ['algorithms-2'],
+    prerequisites: ['applied-optimization'],
     outcomes: [
       'Interpret QAOA and VQE objectives and resource costs.',
       'Apply phase estimation to energy with a declared convention.',
