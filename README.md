@@ -21,11 +21,14 @@ In another terminal, run `npm run dev` and open **http://127.0.0.1:5173**. The d
 
 ## What works
 
-- Eight lessons: qubits, superposition, gates, entanglement, Grover, QFT, QAOA, and variational energy. Quizzes award XP once; progress stays in browser storage.
+- Fifteen courses and 67 lessons: an optional math primer, quantum mechanics, qubits, Gates I–II, Algorithm I–III, noise/error correction, Chemistry I–III, and Machine Learning I–III. Each lesson includes explained mathematics, a worked example, practice with a revealable answer, and a quiz. See the [curriculum guide](docs/curriculum.md) for the full syllabus and recommended paths.
+- Search by topic, filter by learning path, expand courses, and follow recommended prerequisites. Quizzes award XP once; stable lesson IDs preserve browser-local progress, including migration from the original eight lessons.
 - Single-qubit H/X/Y/Z/S/T gate explorer with exact complex arithmetic, a Bloch visualization, and Qiskit verification with sampled counts.
 - Qiskit two-qubit Bell, Grover search, QFT, single-edge QAOA, and a parameterized toy spin energy experiment.
 - Interactive Three.js lab, desktop orbit controls, WebXR entry on compatible devices, and controller-trigger gate cycling.
 - Unity scripts and scene generator for a native Quest 3 implementation. **Native Unity compilation and headset operation remain unverified.** See [Unity setup](apps/unity/README.md).
+
+The curriculum distinguishes live lab experiments from guided calculations and model-design exercises. Molecular chemistry, noisy channels/QEC, and machine-learning workflows are taught through worked exercises; the simulation API still offers the original bounded ideal circuits and toy spin model. Full molecular solvers, optimizers, photonic sampling, and ML training remain implementation milestones.
 
 ## Repository map
 

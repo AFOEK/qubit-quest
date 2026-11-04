@@ -1,106 +1,70 @@
-export const lessons = [
+import { mathematics } from './curriculum/mathematics';
+import { foundations } from './curriculum/foundations';
+import { qubitsAndGates } from './curriculum/qubits-gates';
+import { algorithms } from './curriculum/algorithms';
+import { noise } from './curriculum/noise';
+import { chemistry } from './curriculum/chemistry';
+import { machineLearning } from './curriculum/machine-learning';
+import type { Course, TrackId } from './curriculum/types';
+
+export type { Course, Lesson, Lab, TrackId } from './curriculum/types';
+
+export const tracks: { id: TrackId; title: string; description: string }[] = [
   {
-    title: 'Meet your first qubit',
-    unit: 'Foundations',
-    icon: '◉',
-    time: 3,
-    color: 'mint',
-    body: 'A classical bit is 0 or 1. A pure qubit state is α|0⟩ + β|1⟩, with |α|² + |β|² = 1. Measurement returns one classical outcome. The Bloch sphere represents the state, not the physical shape of a particle.',
-    question: 'A qubit is prepared in |0⟩. What does a Z-basis measurement return?',
-    answers: ['Always 0', 'Always 1', 'Half 0, half 1'],
-    correct: 0,
-    why: 'The amplitude of |0⟩ is 1, so its probability is |1|² = 1.',
-    experiment: ['X'],
+    id: 'mathematics',
+    title: 'Mathematics',
+    description: 'The language you need, introduced gently.',
   },
   {
-    title: 'A little superposition',
-    unit: 'Foundations',
-    icon: '✳',
-    time: 4,
-    color: 'mint',
-    body: 'The Hadamard gate takes |0⟩ to |+⟩ = (|0⟩ + |1⟩)/√2. Both outcomes have probability 1/2. This is a coherent state with relative phase, not a hidden classical coin flip. Apply H twice and the amplitudes interfere to recover |0⟩.',
-    question: 'Apply H and then H to |0⟩. What is the final state?',
-    answers: ['An unknown random bit', '|0⟩', '|1⟩'],
-    correct: 1,
-    why: 'H is its own inverse. Interference cancels the amplitude of |1⟩.',
-    experiment: ['H', 'H'],
+    id: 'fundamentals',
+    title: 'Quantum fundamentals',
+    description: 'From physical ideas to gates, algorithms, and reliable computation.',
   },
   {
-    title: 'Gates that change the story',
-    unit: 'Foundations',
-    icon: '↻',
-    time: 4,
-    color: 'mint',
-    body: 'X swaps the amplitudes of |0⟩ and |1⟩. Z flips the sign of the |1⟩ amplitude. S adds a relative phase of π/2. A phase change can leave measurement probabilities unchanged while changing future interference.',
-    question: 'Apply Z to |+⟩. What changes immediately?',
-    answers: ['Only the relative phase', 'The chance of 0 becomes 100%', 'The qubit is measured'],
-    correct: 0,
-    why: 'Z maps |+⟩ to |−⟩. Both still have 50/50 Z-basis probabilities.',
-    experiment: ['H', 'Z'],
+    id: 'applications',
+    title: 'Applications',
+    description: 'Explore optimization, chemistry, and machine learning with meaningful baselines.',
   },
-  {
-    title: 'Better together: entanglement',
-    unit: 'Algorithms',
-    icon: '∞',
-    time: 5,
-    color: 'blue',
-    body: 'H on qubit 0 followed by CX(0,1) prepares (|00⟩ + |11⟩)/√2. Outcomes are correlated. An individual qubit is mixed: its Bloch vector is at the center. Entanglement does not allow faster-than-light communication.',
-    question: 'Which outcome can an ideal Bell pair produce?',
-    answers: ['01', '10', '11'],
-    correct: 2,
-    why: 'Only 00 and 11 occur for this Bell state.',
-    experiment: ['H'],
-  },
-  {
-    title: 'Find it with Grover',
-    unit: 'Algorithms',
-    icon: '⌕',
-    time: 6,
-    color: 'blue',
-    body: 'Search four candidates with one marked item, 11. The oracle flips its phase. Diffusion converts that phase difference into a larger amplitude. One iteration gives probability 1 for 11 in this ideal two-qubit example. Large searches need a chosen iteration count and an implementable oracle.',
-    question: 'What does the phase oracle do to the marked item?',
-    answers: ['Measures it', 'Flips its phase', 'Deletes the other items'],
-    correct: 1,
-    why: 'The oracle marks a solution by phase; diffusion amplifies it.',
-    experiment: ['H'],
-  },
-  {
-    title: 'Read the rhythm: QFT',
-    unit: 'Algorithms',
-    icon: '≋',
-    time: 6,
-    color: 'blue',
-    body: 'The quantum Fourier transform changes between computational and Fourier bases. For input |01⟩, the two-qubit QFT has four equal output probabilities, but different complex phases. A histogram alone misses this structure.',
-    question: 'What distinguishes the QFT outputs for input |01⟩?',
-    answers: ['Their phases', 'Their total probability', 'Their qubit count'],
-    correct: 0,
-    why: 'Equal probabilities do not mean equal amplitudes. Complex phase matters.',
-    experiment: ['H', 'S'],
-  },
-  {
-    title: 'A better cut with QAOA',
-    unit: 'Optimization',
-    icon: '◇',
-    time: 7,
-    color: 'peach',
-    body: 'MaxCut divides vertices into groups to maximize crossing edges. Our smallest graph has one edge and two vertices. States 01 and 10 are optimal. QAOA alternates a cost unitary with a mixer. Move the cost angle in the algorithm lab and compare the expected cut.',
-    question: 'Which assignment cuts a single edge?',
-    answers: ['00', '11', '01'],
-    correct: 2,
-    why: 'An edge is cut when its endpoints belong to different groups.',
-    experiment: ['H'],
-  },
-  {
-    title: 'From qubits to chemistry',
-    unit: 'Chemistry',
-    icon: '⚛',
-    time: 8,
-    color: 'lavender',
-    body: 'Variational methods estimate energy with a parameterized circuit and update its angles to lower the result. Our lab uses a toy spin Hamiltonian −ZI − IZ + 0.5 XX, a precursor to molecular simulation. It is not a prediction for a real molecule; realistic chemistry needs a molecular Hamiltonian, mapping, and validated units.',
-    question: 'What does a variational eigensolver try to minimize?',
-    answers: ['The number of measurements only', 'The expected energy', 'The speed of light'],
-    correct: 1,
-    why: 'The variational principle bounds the ground energy from above for normalized trial states.',
-    experiment: ['H', 'S'],
-  },
-] as const;
+];
+
+// Keep the recommended foundations together before branching into applications.
+export const courses: Course[] = [
+  ...mathematics,
+  ...foundations,
+  ...qubitsAndGates,
+  ...algorithms.filter((c) => c.track === 'fundamentals'),
+  ...noise,
+  ...algorithms.filter((c) => c.track === 'applications'),
+  ...chemistry,
+  ...machineLearning,
+];
+
+export const lessons = courses.flatMap((course) =>
+  course.lessons.map((lesson) => ({
+    ...lesson,
+    courseId: course.id,
+    unit: course.title,
+    track: course.track,
+    color: course.color,
+    icon: course.icon,
+  })),
+);
+
+export const courseById = new Map(courses.map((course) => [course.id, course]));
+export const lessonById = new Map(lessons.map((lesson) => [lesson.id, lesson]));
+
+export function searchCourses(query: string, track: TrackId | 'all' = 'all') {
+  const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+  return courses.filter((course) => {
+    if (track !== 'all' && course.track !== track) return false;
+    const text = [
+      course.title,
+      course.description,
+      ...course.outcomes,
+      ...course.lessons.flatMap((lesson) => [lesson.title, ...lesson.topics]),
+    ]
+      .join(' ')
+      .toLocaleLowerCase();
+    return terms.every((term) => text.includes(term));
+  });
+}
