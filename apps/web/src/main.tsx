@@ -5,17 +5,18 @@ import {
   Glasses,
   Flame,
   Zap,
-  Check,
   ArrowRight,
   RotateCcw,
-  X,
   ChevronRight,
   Map,
   Atom,
   Menu,
 } from 'lucide-react';
 import { apply, initial, describe, type GateName } from './quantum';
-import { lessons } from './curriculum';
+import { lessons, courses, courseById, type Lab } from './curriculum';
+import { LearningTrail } from './LearningTrail';
+import { LessonDialog } from './LessonDialog';
+import { readProgress, progressKey } from './progress';
 import './style.css';
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
@@ -29,22 +30,6 @@ type Result = {
   exact_ground_energy?: number;
   expected_cut?: number;
 };
-function readProgress(): number[] {
-  try {
-    const a = JSON.parse(localStorage.getItem('qq.progress.v1') || '[]');
-    return Array.isArray(a)
-      ? ([
-          ...new Set(
-            a.filter(
-              (x: unknown) => Number.isInteger(x) && Number(x) >= 0 && Number(x) < lessons.length,
-            ),
-          ),
-        ] as number[])
-      : [];
-  } catch {
-    return [];
-  }
-}
 function Sphere({ x, y, z, large = false }: { x: number; y: number; z: number; large?: boolean }) {
   const px = 150 + x * 92 - y * 38,
     py = 147 - z * 95 + y * 23;
@@ -99,10 +84,8 @@ function Sphere({ x, y, z, large = false }: { x: number; y: number; z: number; l
 function App() {
   const requestVersion = useRef(0);
   const [page, setPage] = useState('learn'),
-    [completed, setCompleted] = useState(readProgress),
+    [completed, setCompleted] = useState(() => readProgress()),
     [lesson, setLesson] = useState<number | null>(null),
-    [answer, setAnswer] = useState<number | null>(null),
-    [feedback, setFeedback] = useState(false),
     [sequence, setSequence] = useState<GateName[]>(['H']),
     [tab, setTab] = useState('gates'),
     [algorithm, setAlgorithm] = useState('grover'),
@@ -114,54 +97,24 @@ function App() {
     [mobile, setMobile] = useState(false),
     [storageError, setStorageError] = useState('');
   useEffect(() => {
-    if (lesson === null) return;
-    const previous = document.activeElement as HTMLElement;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setLesson(null);
-        return;
-      }
-      if (e.key === 'Tab') {
-        const items = Array.from(
-          document.querySelectorAll<HTMLElement>('.lesson-modal button:not(:disabled)'),
-        );
-        const first = items[0],
-          last = items[items.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last?.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first?.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', handler);
-    return () => {
-      document.removeEventListener('keydown', handler);
-      previous?.focus();
-    };
-  }, [lesson]);
-  useEffect(() => {
     requestVersion.current += 1;
     setBusy(false);
     setResult(null);
     setError('');
   }, [sequence, tab, algorithm, angle]);
+
   const state = sequence.reduce((s, g) => apply(s, g), initial()),
     d = describe(state),
-    next = lessons.findIndex((_, i) => !completed.includes(i));
+    next = lessons.findIndex((item) => !completed.includes(item.id));
   function openLesson(i: number) {
     setLesson(i);
-    setAnswer(null);
-    setFeedback(false);
   }
   function complete() {
     if (lesson === null) return;
-    const updated = [...new Set([...completed, lesson])];
+    const updated = [...new Set([...completed, lessons[lesson].id])];
     setCompleted(updated);
     try {
-      localStorage.setItem('qq.progress.v1', JSON.stringify(updated));
+      localStorage.setItem(progressKey, JSON.stringify(updated));
     } catch {
       setStorageError('Progress is available for this session. Browser storage is unavailable.');
     }
@@ -199,10 +152,25 @@ function App() {
       if (request === requestVersion.current) setBusy(false);
     }
   }
+
   function changeSequence(s: GateName[]) {
     setSequence(s);
     setResult(null);
     setError('');
+  }
+  function launchLab(lab: Lab) {
+    setLesson(null);
+    setPage('lab');
+    setResult(null);
+    setError('');
+    if (lab.kind === 'gates') {
+      setTab('gates');
+      changeSequence([...lab.sequence]);
+    } else {
+      setTab('algorithms');
+      setAlgorithm(lab.name);
+      setAngle(Math.PI / 2);
+    }
   }
   const nav = [
     { id: 'learn', label: 'Learning trail', Icon: Map },
@@ -211,7 +179,7 @@ function App() {
   ];
   return (
     <div className="app">
-      <aside className={mobile ? 'sidebar visible' : 'sidebar'}>
+      <aside inert={lesson !== null || vr} className={mobile ? 'sidebar visible' : 'sidebar'}>
         <a href="#" className="brand" onClick={() => setPage('learn')}>
           <span className="brand-icon">
             <Atom size={28} />
@@ -253,7 +221,7 @@ function App() {
           </div>
         </div>
       </aside>
-      <div className="workspace">
+      <div className="workspace" inert={lesson !== null || vr}>
         <header>
           <button
             className="mobile-menu icon-button"
@@ -289,7 +257,10 @@ function App() {
                 <div>
                   <p className="hello">Hey, explorer ✺</p>
                   <h1>Make quantum click.</h1>
-                  <p>Big ideas. Small lessons. A whole new way to see the world.</p>
+                  <p>
+                    From the math to quantum mechanics, then into real applications. No physics
+                    degree required.
+                  </p>
                 </div>
                 <span className="edition">
                   Fall Fest ’26
@@ -307,16 +278,20 @@ function App() {
                   <p>
                     {next < 0
                       ? 'Keep your intuition sharp. Revisit a lesson or take an algorithm for a spin.'
-                      : 'Meet the smallest player in a very different kind of computer. Then put it to the test.'}
+                      : courseById.get(lessons[next].courseId)!.description}
                   </p>
                   <button className="primary" onClick={() => openLesson(next < 0 ? 0 : next)}>
-                    {completed.length ? 'Continue learning' : 'Start your journey'}
+                    {next < 0
+                      ? 'Review a lesson'
+                      : completed.length
+                        ? 'Continue learning'
+                        : 'Start your journey'}
                     <ArrowRight size={18} />
                   </button>
                   <div className="hero-meta">
-                    <span>◷ {next < 0 ? 3 : lessons[next].time} min</span>
-                    <span>✧ +25 XP</span>
-                    <span>No prerequisites</span>
+                    <span>◷ {next < 0 ? lessons[0].time : lessons[next].time} min</span>
+                    <span>{next < 0 ? '✧ All lessons complete' : '✧ +25 XP'}</span>
+                    <span>{next < 0 ? 'Review at your pace' : lessons[next].unit}</span>
                   </div>
                 </div>
                 <div className="hero-art">
@@ -327,67 +302,17 @@ function App() {
                 </div>
               </section>
               <div className="trail-layout">
-                <section className="trail">
-                  <div className="section-title">
-                    <h2>Your learning trail</h2>
-                    <span>
-                      {completed.length} / {lessons.length} complete
-                    </span>
-                  </div>
-                  {['Foundations', 'Algorithms', 'Optimization', 'Chemistry'].map((unit, u) => (
-                    <div className="unit" key={unit}>
-                      <div className="unit-heading">
-                        <span className={`unit-number u${u}`}>{u + 1}</span>
-                        <div>
-                          <h3>{unit}</h3>
-                          <p>
-                            {
-                              [
-                                'Build your quantum intuition',
-                                'Turn intuition into a superpower',
-                                'Find a better answer',
-                                'Explore matter, one state at a time',
-                              ][u]
-                            }
-                          </p>
-                        </div>
-                      </div>
-                      <div className="lesson-list">
-                        {lessons.map((l, i) =>
-                          l.unit === unit ? (
-                            <button
-                              key={l.title}
-                              className={`lesson-row ${completed.includes(i) ? 'done' : ''} ${next === i ? 'current' : ''}`}
-                              onClick={() => openLesson(i)}
-                            >
-                              <span className={`lesson-icon ${l.color}`}>
-                                {completed.includes(i) ? <Check size={23} /> : l.icon}
-                              </span>
-                              <span className="lesson-name">
-                                <strong>{l.title}</strong>
-                                <small>
-                                  {l.time} min <span>•</span> Interactive lesson
-                                </small>
-                              </span>
-                              {next === i ? (
-                                <span className="start-tag">Start</span>
-                              ) : (
-                                <ChevronRight size={18} />
-                              )}
-                            </button>
-                          ) : null,
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </section>
+                <LearningTrail completed={completed} next={next} onOpen={openLesson} />
                 <aside className="right-rail">
                   <div className="goal">
                     <div className="section-title">
                       <h3>Your learning spark</h3>
                       <Zap size={21} />
                     </div>
-                    <p>A little learning goes a long way.</p>
+                    <p>
+                      {courses.length} courses · {lessons.length} lessons.
+                      <br />A little learning goes a long way.
+                    </p>
                     <div className="goal-track">
                       <span
                         style={{ width: `${Math.min((completed.length * 25) / 50, 1) * 100}%` }}
@@ -681,77 +606,19 @@ function App() {
         </main>
       </div>
       {lesson !== null && (
-        <div className="modal-backdrop">
-          <section
-            className="lesson-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="lesson-title"
-          >
-            <button
-              autoFocus
-              className="close icon-button"
-              aria-label="Close lesson"
-              onClick={() => setLesson(null)}
-            >
-              <X />
-            </button>
-            <span className="pill">
-              {lessons[lesson].unit} · {lessons[lesson].time} min
-            </span>
-            <h2 id="lesson-title">{lessons[lesson].title}</h2>
-            <p>{lessons[lesson].body}</p>
-            <button
-              className="text-button"
-              onClick={() => {
-                changeSequence([...lessons[lesson].experiment] as GateName[]);
-                setLesson(null);
-                setPage('lab');
-                setTab('gates');
-              }}
-            >
-              <FlaskConical size={17} />
-              Try it in the gate explorer
-            </button>
-            <h3>{lessons[lesson].question}</h3>
-            <div className="answers" role="group" aria-label="Answer choices">
-              {lessons[lesson].answers.map((a, i) => (
-                <button
-                  key={a}
-                  aria-pressed={answer === i}
-                  disabled={feedback && answer === lessons[lesson].correct}
-                  className={answer === i ? 'chosen' : ''}
-                  onClick={() => {
-                    setAnswer(i);
-                    setFeedback(false);
-                  }}
-                >
-                  {a}
-                </button>
-              ))}
-            </div>
-            {feedback && (
-              <p role="status" className={answer === lessons[lesson].correct ? 'success' : 'error'}>
-                {answer === lessons[lesson].correct
-                  ? `Exactly! ${lessons[lesson].why}`
-                  : 'Give it another try. Revisit the explanation above.'}
-              </p>
-            )}
-            <button
-              className="primary"
-              disabled={answer === null}
-              onClick={() =>
-                feedback && answer === lessons[lesson].correct ? complete() : setFeedback(true)
-              }
-            >
-              {feedback && answer === lessons[lesson].correct
-                ? 'Complete lesson · +25 XP'
-                : 'Check my answer'}
-              <Check size={18} />
-            </button>
-            <small>Revisiting a completed lesson does not award extra XP.</small>
-          </section>
-        </div>
+        <LessonDialog
+          key={lessons[lesson].id}
+          lesson={lessons[lesson]}
+          courseId={lessons[lesson].courseId}
+          completed={completed.includes(lessons[lesson].id)}
+          onClose={() => setLesson(null)}
+          onComplete={complete}
+          onLab={launchLab}
+          onNavigate={(id) => {
+            const index = lessons.findIndex((item) => item.id === id);
+            if (index >= 0) openLesson(index);
+          }}
+        />
       )}
       {vr && (
         <Suspense

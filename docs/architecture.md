@@ -1,6 +1,10 @@
 # How it works
 
-The React client owns navigation, lesson quizzes, and browser-local progress. `quantum.ts` evaluates 2x2 complex gate matrices for immediate feedback. It is intentionally restricted to one qubit. Probabilities follow Born's rule and Bloch coordinates retain relative phase.
+The React client owns navigation, lesson quizzes, and browser-local progress. `curriculum.ts` assembles typed course modules in `curriculum/`: mathematics, quantum mechanics, qubits/gates, algorithms, noise/QEC, chemistry, and machine learning. Fifteen courses contain 67 lessons across mathematics, quantum fundamentals, and applications. `LearningTrail.tsx` handles topic search, track filters, course expansion, and prerequisite navigation. `LessonDialog.tsx` presents explanations, mathematics, worked examples, revealable practice, quizzes, and related lessons with focus trapping and background interaction disabled. Prerequisites guide the order without locking access. See [the curriculum guide](curriculum.md).
+
+Lesson lab links are discriminated unions: either a supported single-qubit gate sequence or one of the five existing named algorithm experiments. Opening an algorithm lesson selects its matching experiment, instead of substituting a single-qubit gate for a multi-qubit algorithm. The advanced molecular, noise, photonic, and ML lessons use guided calculations and workflow exercises; they do not add simulation endpoints.
+
+`quantum.ts` evaluates 2x2 complex gate matrices for immediate feedback. It is intentionally restricted to one qubit. Probabilities follow Born's rule and Bloch coordinates retain relative phase.
 
 The FastAPI service constructs allowlisted Qiskit circuits. `/api/simulate` returns initial and per-gate state snapshots, final exact amplitudes and probabilities, qubit-0 Bloch coordinates, circuit text, and finite-shot `StatevectorSampler` counts. `/api/algorithm` constructs the named two-qubit teaching circuits. Validation rejects invalid indices, unsupported gates, excessive shots, and oversized circuits. No user-supplied code is executed.
 
@@ -10,6 +14,6 @@ The QFT input is |01⟩, making the complex phase pattern observable in the retu
 
 WebXR uses Three.js and the same browser statevector functions; it does not call itself a Qiskit execution. Unity calls the Python API through a bounded JSON request. Both map the Bloch z axis to world up. The native Unity starter requires an XR rig, interactables, platform settings, and hardware validation.
 
-Progress schema: `qq.progress.v1`, an array of completed lesson indices. XP is derived from unique completions. No backend account exists. The learning spark reflects cumulative local progress capped at the first 50 XP milestone; a date-based daily counter is a roadmap item.
+Progress schema: `qq.progress.v2`, an array of stable completed lesson IDs. `progress.ts` validates and deduplicates IDs. When v2 is absent, it reads `qq.progress.v1` indices using the fixed historical eight-lesson order, so inserting or reordering courses does not misassign completions. The next successful completion saves v2; reading progress does not write storage. XP is derived from unique completions, and reviewing a completed lesson cannot add XP. Blocked or corrupt storage falls back to session learning. No backend account exists. The learning spark reflects cumulative local progress capped at the first 50 XP milestone; a date-based daily counter is a roadmap item.
 
 References: [Qiskit Statevector](https://docs.quantum.ibm.com/api/qiskit/qiskit.quantum_info.Statevector), [Qiskit primitives](https://quantum.cloud.ibm.com/docs/en/api/qiskit/primitives), [Unity Meta OpenXR example](https://github.com/Unity-Technologies/mr-example-meta-openxr).
