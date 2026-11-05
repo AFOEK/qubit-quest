@@ -2,6 +2,8 @@
 
 Guests can learn without registering. Their lesson IDs, selected goal, and daily answers remain in browser storage. Registering or signing in opens a separate account history; the form offers an explicit import of guest lesson completions. Importing is additive and deduplicated. Existing completions qualify for badges immediately, including lessons completed before prerequisites were enforced. Signing out returns to the browser's guest history. Account records never get copied into guest storage.
 
+Sign-in is optional for every learning trail, lesson, achievement, and daily quiz. The account dialog has a **Continue as guest** button, and the same option is available while checking a saved session, after it expires, or when account sync is unavailable. Choosing guest mode restores this browser's guest history without altering account records. The choice lasts for this tab, including reloads; signing in returns to account progress. Guest mode leaves an existing server session available; **Sign out** invalidates that session.
+
 ## Storage and sessions
 
 The local API automatically creates `data/learning.sqlite3`. The directory and SQLite files are excluded from Git and Vercel bundles. Restarting the API retains accounts. To use another SQLite location, export an absolute `DATABASE_URL`, such as `sqlite:////absolute/path/learning.sqlite3`.
@@ -12,7 +14,7 @@ Vercel never falls back to SQLite when `DATABASE_URL` is absent. Registration re
 
 Passwords use salted scrypt hashes. Sessions last 30 days, use random opaque tokens, and store only token hashes. Cookies are HttpOnly, SameSite=Lax, and Secure on Vercel; HTTPS cookies use the `__Host-` prefix. Each authenticated mutation also requires the session's `X-CSRF-Token`. Sign-out invalidates that session. Login and registration have database-backed attempt limits. Recovery emails and email verification require an email provider and are not implemented.
 
-Lesson completion sends the selected quiz answer. The API checks the answer and course prerequisites before saving. Unique database keys make completions and daily answers idempotent. XP, badges, and tiers remain derived from saved unique lessons, so a failed account save does not award provisional rewards. The lesson remains open with a retry message. A returning session loads its saved history; focusing the tab refreshes it for changes from another device. Expired sessions require sign-in before further account saves.
+Account lesson completion sends the selected quiz answer. The API checks the answer and course prerequisites before saving. Unique database keys make completions and daily answers idempotent. XP, badges, and tiers remain derived from saved unique lessons, so a failed account save does not award provisional rewards. The lesson remains open with a retry message. A returning session loads its saved history; focusing the tab refreshes it for changes from another device. Expired sessions require sign-in for further account saves, with guest learning always available as an alternative.
 
 ## Goal-based trails
 

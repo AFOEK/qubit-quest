@@ -66,11 +66,11 @@ export function DailyQuizView({ onSignIn }: { onSignIn: () => void }) {
       {!learner.user && (
         <div className="account-save-banner">
           <div>
-            <strong>Keep your daily streak on any device.</strong>
-            <p>Guest quiz progress stays in this browser.</p>
+            <strong>Daily quizzes are open to everyone.</strong>
+            <p>Guest progress stays in this browser. Sign in to sync across devices.</p>
           </div>
           <button className="text-button" onClick={onSignIn}>
-            Sign in to save <ArrowRight size={15} />
+            Sign in to sync <ArrowRight size={15} />
           </button>
         </div>
       )}
