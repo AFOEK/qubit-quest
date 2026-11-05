@@ -47,4 +47,4 @@ Names: `bell`, `grover`, `qft`, `optimization`, `chemistry`. Parameter ranges fr
 
 `GET /api/health` returns `{ "status": "ok", "engine": "qiskit", "version": "0.1.0" }`.
 
-This is a local hackathon API without authentication. Do not expose it publicly without a resource-limited host, rate limiting, and an explicit origin policy. Nothing in this API executes arbitrary Python or submits hardware jobs.
+Simulation endpoints are public and bounded. Account/progress mutations use cookie sessions, CSRF tokens, and an explicit origin policy. Authentication attempts are rate limited. Public hosting also needs HTTPS and platform resource limits. See [accounts and trails](accounts-and-trails.md) for the account API. Nothing in this API executes arbitrary Python or submits hardware jobs.

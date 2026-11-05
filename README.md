@@ -6,7 +6,7 @@ Our bridge is education: learners move from familiar bits and small experiments 
 
 ## Run locally
 
-Requires Node 22+ and Python 3.11–3.13. No IBM account, cloud credits, or API keys are needed.
+Requires Node 22+ and Python 3.11–3.13. Local development needs no IBM account, cloud credits, or API keys. Production account saving requires PostgreSQL.
 
 ```sh
 npm ci
@@ -21,9 +21,11 @@ In another terminal, run `npm run dev` and open **http://127.0.0.1:5173**. The d
 
 ## What works
 
-- Twenty-seven courses and 119 lessons: an optional math primer, quantum mechanics, qubits, Gates I–II, Software and Compilation, Algorithm I–III, noise/error correction, error mitigation, Hardware I–IV, applied optimization, Classical–Quantum Boundaries I–III, Cryptography I–II, Chemistry I–III, and Machine Learning I–III. Algorithm II develops Grover search, amplitude amplification, quantum walks, and QAE alongside Fourier and phase-estimation methods. Each lesson includes explained mathematics or program syntax, a worked example, practice with a revealable answer, and a quiz. See the [curriculum guide](docs/curriculum.md) for the full syllabus and recommended paths.
-- Search by topic, filter by learning path, expand courses, and follow recommended prerequisites. Quizzes award XP once; stable lesson IDs preserve browser-local progress, including migration from the original eight lessons.
+- Twenty-seven courses and 119 lessons: a math primer, quantum mechanics, qubits, Gates I–II, Software and Compilation, Algorithm I–III, noise/error correction, error mitigation, Hardware I–IV, applied optimization, Classical–Quantum Boundaries I–III, Cryptography I–II, Chemistry I–III, and Machine Learning I–III. Algorithm II develops Grover search, amplitude amplification, quantum walks, and QAE alongside Fourier and phase-estimation methods. Each lesson includes explained mathematics or program syntax, a worked example, practice with a revealable answer, and a quiz. See the [curriculum guide](docs/curriculum.md) for the full syllabus and recommended paths.
+- Choose one of seven goal-based trails, follow required courses in dependency order, and explore optional branches. Search and browse the full catalog at any time. New lessons unlock after prerequisite courses are complete; previously completed lessons remain reviewable.
 - Earn 27 named course-completion badges and progress through Bronze, Silver, Gold, and Platinum journey tiers. The achievements page includes earned/in-progress filters, badge search, and links to continue or review each course. XP milestones advance beyond the original 50 XP goal through the full 2,975 XP trail. Existing saved completions count automatically; reviews never grant duplicate rewards. See [achievements and milestones](docs/achievements.md).
+- Register and sign in with an email and password. Lessons, selected trail, and daily quiz history save to your account across devices. SQLite is used locally; deployment uses PostgreSQL. Guest learning remains available with browser storage and an explicit lesson import. See [accounts and trails](docs/accounts-and-trails.md).
+- Three daily quantum fun-fact questions with explanations, a first-answer score, and a participation streak. Questions reset at midnight in Toronto. Daily participation stays separate from course XP and badges.
 - Single-qubit H/X/Y/Z/S/T gate explorer with exact complex arithmetic, a Bloch visualization, and Qiskit verification with sampled counts.
 - Qiskit two-qubit Bell, Grover search, QFT, single-edge QAOA, and a parameterized toy spin energy experiment.
 - Interactive Three.js lab, desktop orbit controls, WebXR entry on compatible devices, and controller-trigger gate cycling.
@@ -38,7 +40,8 @@ Software, tensor-network, and hardware courses add guided program-reading, contr
 ```text
 apps/web/src/       React app, curriculum, statevector model, WebXR
 apps/unity/        Native Unity source and setup instructions
-services/api/      FastAPI, Qiskit circuits, physics/API tests
+services/api/      FastAPI, accounts, database, Qiskit circuits, API tests
+shared/            Generated learning manifest and daily question bank
 notebooks/         Explainable judge demo
 docs/              Architecture, demo, and roadmap
 .github/workflows/ Build and physics checks on pushes and PRs
@@ -59,4 +62,4 @@ The API limits circuits to six qubits, 64 gates, and 8,192 shots. Simulations ar
 
 Clone `https://github.com/minhajuddinm/qubit-quest.git`, create a branch such as `feat/quest-interactions`, and open a small PR. Keep generated builds, Python environments, Unity caches, credentials, and large recordings out of Git. Agree on ownership before changing shared files. Run `npm run format` after editing web code or docs, then the checks above before merging. The creator's GitHub account owns the repository; collaborator invitations require acceptance.
 
-This is a hackathon MVP, with local profiles rather than authentication or a shared database. Public production deployment needs an API host, HTTPS, explicit allowed origins, resource limits, and a frontend `/api` reverse proxy. `npm run build` alone creates only the web frontend. No real quantum hardware jobs are submitted.
+Local accounts automatically create `data/learning.sqlite3` (excluded from Git). For production, configure `DATABASE_URL` with a PostgreSQL connection string in Vercel before using accounts. See [deployment](docs/deployment.md). Public hosting needs HTTPS, explicit allowed origins, resource limits, and a frontend `/api` reverse proxy. `npm run build` alone creates only the web frontend. No real quantum hardware jobs are submitted.

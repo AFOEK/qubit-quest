@@ -8,7 +8,7 @@ export const mathematics: Course[] = [
     icon: '∑',
     color: 'mint',
     description:
-      'An optional bridge from school mathematics to the language of quantum computing. Start here if vectors, complex numbers, or probability feel unfamiliar.',
+      'A bridge from school mathematics to the language of quantum computing. Build confidence with vectors, complex numbers, and probability before starting quantum theory.',
     prerequisites: [],
     outcomes: [
       'Read complex amplitudes and calculate probabilities.',

@@ -6,3 +6,6 @@ dist
 *.tsbuildinfo
 apps/unity
 notebooks
+
+data/
+*.sqlite3*

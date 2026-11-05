@@ -19,14 +19,18 @@ export function LessonDialog({
   onComplete,
   onLab,
   onNavigate,
+  saving = false,
+  saveError = '',
 }: {
   lesson: Lesson;
   courseId: string;
   completed: boolean;
   onClose: () => void;
-  onComplete: () => void;
+  onComplete: (answer: number) => void;
   onLab: (lab: Lab) => void;
   onNavigate: (id: string) => void;
+  saving?: boolean;
+  saveError?: string;
 }) {
   const [answer, setAnswer] = useState<number | null>(null);
   const [feedback, setFeedback] = useState(false);
@@ -155,16 +159,23 @@ export function LessonDialog({
           )}
           <button
             className="primary"
-            disabled={answer === null}
-            onClick={() => (feedback && correct ? onComplete() : setFeedback(true))}
+            disabled={answer === null || saving}
+            onClick={() => (feedback && correct ? onComplete(answer!) : setFeedback(true))}
           >
-            {feedback && correct
-              ? completed
-                ? 'Finish review'
-                : `Complete lesson · +${XP_PER_LESSON} XP`
-              : 'Check my answer'}
+            {saving
+              ? 'Saving lesson…'
+              : feedback && correct
+                ? completed
+                  ? 'Finish review'
+                  : `Complete lesson · +${XP_PER_LESSON} XP`
+                : 'Check my answer'}
             <Check size={18} />
           </button>
+          {saveError && (
+            <p className="error" role="alert">
+              {saveError}
+            </p>
+          )}
           <small>Revisiting a completed lesson does not award extra XP.</small>
         </section>
         {lesson.followUp && (

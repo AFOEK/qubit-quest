@@ -12,12 +12,25 @@ import {
   Atom,
   Menu,
   Trophy,
+  Lightbulb,
+  UserRound,
+  Cloud,
 } from 'lucide-react';
 import { apply, initial, describe, type GateName } from './quantum';
 import { lessons, courseById, type Lab } from './curriculum';
 import { LearningTrail } from './LearningTrail';
 import { LessonDialog } from './LessonDialog';
-import { readProgress, progressKey, XP_PER_LESSON } from './progress';
+import { XP_PER_LESSON } from './progress';
+import { LearnerProvider, useLearner } from './LearnerProvider';
+import { AccountPanel } from './AccountPanel';
+import { DailyQuizView } from './DailyQuizView';
+import {
+  learningPaths,
+  lessonAvailable,
+  missingPrerequisites,
+  nextPathLesson,
+  type PathId,
+} from './learning-paths';
 import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
 import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
 import './style.css';
@@ -85,9 +98,10 @@ function Sphere({ x, y, z, large = false }: { x: number; y: number; z: number; l
   );
 }
 function App() {
+  const learner = useLearner();
+  const { completed, storageError } = learner;
   const requestVersion = useRef(0);
   const [page, setPage] = useState('learn'),
-    [completed, setCompleted] = useState(() => readProgress()),
     [lesson, setLesson] = useState<number | null>(null),
     [sequence, setSequence] = useState<GateName[]>(['H']),
     [tab, setTab] = useState('gates'),
@@ -98,18 +112,43 @@ function App() {
     [error, setError] = useState(''),
     [vr, setVr] = useState(false),
     [mobile, setMobile] = useState(false),
-    [storageError, setStorageError] = useState(''),
-    [notice, setNotice] = useState<RewardNotice | null>(null);
+    [notice, setNotice] = useState<RewardNotice | null>(null),
+    [accountOpen, setAccountOpen] = useState(false),
+    [accountMode, setAccountMode] = useState<'login' | 'register'>('login'),
+    [lessonSaving, setLessonSaving] = useState(false),
+    [lessonError, setLessonError] = useState(''),
+    [learningMessage, setLearningMessage] = useState(''),
+    [focusCourse, setFocusCourse] = useState<string | null>(null);
   useEffect(() => {
     requestVersion.current += 1;
     setBusy(false);
     setResult(null);
     setError('');
   }, [sequence, tab, algorithm, angle]);
+  useEffect(() => {
+    setNotice(null);
+    setLesson(null);
+    setLessonError('');
+    setLearningMessage('');
+  }, [learner.user?.id]);
 
   const state = sequence.reduce((s, g) => apply(s, g), initial()),
     d = describe(state),
-    next = lessons.findIndex((item) => !completed.includes(item.id));
+    next = nextPathLesson(learner.pathId, completed);
+  const pathTitle =
+    learningPaths.find((path) => path.id === learner.pathId)?.title ?? 'Full learning trail';
+  function openAccount(mode: 'login' | 'register' = 'login') {
+    setAccountMode(mode);
+    setAccountOpen(true);
+  }
+  async function choosePath(id: PathId) {
+    setLearningMessage('');
+    try {
+      await learner.choosePath(id);
+    } catch (error) {
+      setLearningMessage(error instanceof Error ? error.message : 'Could not save your path.');
+    }
+  }
   const rewards = getLearningProgress(completed);
   function viewAchievements() {
     setNotice(null);
@@ -117,26 +156,44 @@ function App() {
     setMobile(false);
   }
   function openLesson(i: number) {
+    if (lessonSaving) return;
+    const item = lessons[i];
+    if (!item) return;
     setNotice(null);
+    setLessonError('');
+    if (!lessonAvailable(item.id, completed)) {
+      const missing = missingPrerequisites(item.courseId, completed);
+      setLearningMessage(
+        `Finish ${missing.map((id) => courseById.get(id)?.title).join(', ')} to unlock ${item.unit}.`,
+      );
+      setLesson(null);
+      setPage('learn');
+      setFocusCourse(missing[0] ?? null);
+      return;
+    }
+    setLearningMessage('');
     setLesson(i);
   }
-  function complete() {
+  async function complete(answer: number) {
     if (lesson === null) return;
     if (completed.includes(lessons[lesson].id)) {
       setLesson(null);
       return;
     }
-    const updated = [...completed, lessons[lesson].id];
-    const reward = getRewardNotice(rewards, getLearningProgress(updated));
-    if (reward) setNotice(reward);
-    setCompleted(updated);
+    setLessonSaving(true);
+    setLessonError('');
     try {
-      localStorage.setItem(progressKey, JSON.stringify(updated));
-      setStorageError('');
-    } catch {
-      setStorageError('Progress is available for this session. Browser storage is unavailable.');
+      const updated = await learner.completeLesson(lessons[lesson].id, answer);
+      const reward = getRewardNotice(rewards, getLearningProgress(updated));
+      if (reward) setNotice(reward);
+      setLesson(null);
+    } catch (error) {
+      setLessonError(
+        error instanceof Error ? error.message : 'Could not save your lesson. Try again.',
+      );
+    } finally {
+      setLessonSaving(false);
     }
-    setLesson(null);
   }
   async function run() {
     const request = ++requestVersion.current;
@@ -177,6 +234,7 @@ function App() {
     setError('');
   }
   function launchLab(lab: Lab) {
+    if (lessonSaving) return;
     setLesson(null);
     setPage('lab');
     setResult(null);
@@ -193,12 +251,16 @@ function App() {
   const nav = [
     { id: 'learn', label: 'Learning trail', Icon: Map },
     { id: 'achievements', label: 'Achievements', Icon: Trophy },
+    { id: 'daily', label: 'Daily quiz', Icon: Lightbulb },
     { id: 'lab', label: 'Quantum lab', Icon: FlaskConical },
     { id: 'immersive', label: 'Immersive lab', Icon: Glasses },
   ];
   return (
     <div className="app">
-      <aside inert={lesson !== null || vr} className={mobile ? 'sidebar visible' : 'sidebar'}>
+      <aside
+        inert={lesson !== null || vr || accountOpen}
+        className={mobile ? 'sidebar visible' : 'sidebar'}
+      >
         <a href="#" className="brand" onClick={() => setPage('learn')}>
           <span className="brand-icon">
             <Atom size={28} />
@@ -240,14 +302,27 @@ function App() {
           </strong>
           <p>You don’t need a physics degree. Just a curious mind.</p>
         </div>
-        <div className="side-bottom">
-          <div className="avatar">Q</div>
+        <button
+          className="side-bottom learner-profile"
+          onClick={() => openAccount()}
+          disabled={learner.initializing || learner.saving}
+        >
+          <div className="avatar">{learner.user?.name[0]?.toUpperCase() ?? 'Q'}</div>
           <div>
-            Quantum explorer<small>{rewards.tier.name} tier · Local profile</small>
+            <span>{learner.user?.name ?? 'Guest explorer'}</span>
+            <small>
+              {learner.initializing
+                ? 'Checking account…'
+                : learner.expired
+                  ? 'Session expired · Sign in'
+                  : learner.user
+                    ? `${rewards.tier.name} · Your account`
+                    : 'Guest progress · Sign in'}
+            </small>
           </div>
-        </div>
+        </button>
       </aside>
-      <div className="workspace" inert={lesson !== null || vr}>
+      <div className="workspace" inert={lesson !== null || vr || accountOpen}>
         <header>
           <button
             className="mobile-menu icon-button"
@@ -267,10 +342,36 @@ function App() {
             <span>
               <Zap size={19} /> {rewards.xp} <small>XP</small>
             </span>
-            <div className="avatar small">Q</div>
+            <button
+              className="avatar small account-avatar"
+              aria-label={learner.user ? 'Open your account' : 'Sign in or register'}
+              title={learner.user ? learner.user.name : 'Sign in or register'}
+              onClick={() => openAccount()}
+              disabled={learner.initializing || learner.saving}
+            >
+              {learner.user?.name[0]?.toUpperCase() ?? <UserRound size={18} />}
+            </button>
           </div>
         </header>
         <main>
+          {learner.connectionError && (
+            <p className="account-status" role="status">
+              {learner.connectionError}
+            </p>
+          )}
+          {learner.expired && (
+            <div className="account-expired" role="alert">
+              <span>Your session expired. Sign in again to save account progress.</span>
+              <button className="text-button" onClick={() => openAccount()}>
+                Sign in
+              </button>
+            </div>
+          )}
+          {learningMessage && (
+            <p className="learning-message" role="status">
+              {learningMessage}
+            </p>
+          )}
           {storageError && (
             <p role="status" className="storage-warning">
               {storageError}
@@ -293,16 +394,34 @@ function App() {
                   <b>Learning by doing</b>
                 </span>
               </div>
+              {!learner.user && !learner.initializing && (
+                <div className="account-save-banner">
+                  <Cloud size={25} />
+                  <div>
+                    <strong>Your journey, saved.</strong>
+                    <p>
+                      Create an account to keep your path, lessons, and daily quizzes across
+                      devices.
+                    </p>
+                  </div>
+                  <button className="primary" onClick={() => openAccount('register')}>
+                    Create account
+                  </button>
+                  <button className="text-button" onClick={() => openAccount()}>
+                    Sign in
+                  </button>
+                </div>
+              )}
               <section className="hero">
                 <div className="hero-copy">
                   <span className="pill">
                     <span />
                     Your next discovery
                   </span>
-                  <h2>{next < 0 ? 'Look how far you’ve come.' : lessons[next].title}</h2>
+                  <h2>{next < 0 ? `${pathTitle} complete.` : lessons[next].title}</h2>
                   <p>
                     {next < 0
-                      ? 'Keep your intuition sharp. Revisit a lesson or take an algorithm for a spin.'
+                      ? 'You’ve finished the required lessons in this trail. Explore optional branches, review a lesson, or choose another goal.'
                       : courseById.get(lessons[next].courseId)!.description}
                   </p>
                   <button className="primary" onClick={() => openLesson(next < 0 ? 0 : next)}>
@@ -315,7 +434,7 @@ function App() {
                   </button>
                   <div className="hero-meta">
                     <span>◷ {next < 0 ? lessons[0].time : lessons[next].time} min</span>
-                    <span>{next < 0 ? '✧ All lessons complete' : `✧ +${XP_PER_LESSON} XP`}</span>
+                    <span>{next < 0 ? '✧ Required trail complete' : `✧ +${XP_PER_LESSON} XP`}</span>
                     <span>{next < 0 ? 'Review at your pace' : lessons[next].unit}</span>
                   </div>
                 </div>
@@ -332,12 +451,19 @@ function App() {
                   next={next}
                   onOpen={openLesson}
                   achievements={rewards.achievements}
+                  pathId={learner.pathId}
+                  onPathChange={(id) => void choosePath(id)}
+                  saving={learner.saving || learner.initializing}
+                  focusCourse={focusCourse}
+                  onFocused={() => setFocusCourse(null)}
                 />
                 <aside className="right-rail">
                   <LearningSpark
                     progress={rewards}
                     onView={viewAchievements}
                     savingAvailable={!storageError}
+                    accountSaved={Boolean(learner.user)}
+                    saving={learner.saving}
                   />
                   <div className="lab-invite">
                     <span className="mini-orbit">✳</span>
@@ -363,6 +489,8 @@ function App() {
                 </aside>
               </div>
             </>
+          ) : page === 'daily' ? (
+            <DailyQuizView onSignIn={() => openAccount()} />
           ) : page === 'achievements' ? (
             <AchievementsPage
               progress={rewards}
@@ -632,14 +760,21 @@ function App() {
       {notice && lesson === null && !vr && (
         <RewardToast notice={notice} onClose={() => setNotice(null)} onView={viewAchievements} />
       )}
+      {accountOpen && (
+        <AccountPanel initialMode={accountMode} onClose={() => setAccountOpen(false)} />
+      )}
       {lesson !== null && (
         <LessonDialog
           key={lessons[lesson].id}
           lesson={lessons[lesson]}
           courseId={lessons[lesson].courseId}
           completed={completed.includes(lessons[lesson].id)}
-          onClose={() => setLesson(null)}
-          onComplete={complete}
+          onClose={() => {
+            if (!lessonSaving) setLesson(null);
+          }}
+          onComplete={(answer) => void complete(answer)}
+          saving={lessonSaving || learner.initializing}
+          saveError={lessonError}
           onLab={launchLab}
           onNavigate={(id) => {
             const index = lessons.findIndex((item) => item.id === id);
@@ -663,6 +798,8 @@ function App() {
 }
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <LearnerProvider>
+      <App />
+    </LearnerProvider>
   </React.StrictMode>,
 );

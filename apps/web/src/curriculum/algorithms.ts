@@ -10,7 +10,7 @@ export const algorithms: Course[] = [
     color: 'blue',
     description:
       'Construct entangled states, then use oracles and interference to reveal hidden structure. Specialized hidden-problem lessons introduce their promises and limits rather than assuming a full complexity-theory background.',
-    prerequisites: ['gates-2'],
+    prerequisites: ['software-compilation'],
     outcomes: [
       'Build Bell and GHZ states and predict their measurements.',
       'Explain the promises behind Deutsch–Jozsa, Bernstein–Vazirani, and Simon.',
@@ -460,7 +460,7 @@ export const algorithms: Course[] = [
     color: 'peach',
     description:
       'Use the circuit tools for optimization, variational energy, and spectral estimation, then compare them with the photonic model of boson sampling.',
-    prerequisites: ['applied-optimization'],
+    prerequisites: ['algorithms-2', 'noise-qec'],
     outcomes: [
       'Interpret QAOA and VQE objectives and resource costs.',
       'Apply phase estimation to energy with a declared convention.',

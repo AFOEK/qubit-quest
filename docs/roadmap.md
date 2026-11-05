@@ -7,7 +7,7 @@
 - Add density-matrix noise experiments, syndrome extraction, and a separate photonic demonstration. The expanded curriculum currently teaches these through guided exercises.
 - Extend those noisy experiments with calibrated readout, ZNE, and PEC comparisons, including uncertainty and execution cost. Add guided BB84/B92 and small QUBO/Ising modeling labs, and dedicated amplitude-estimation and quantum-walk simulations; the current lessons supply worked reasoning exercises.
 - Add an OpenQASM inspection/transpilation sandbox with explicit supported syntax and targets, small tensor-contraction/SVD/MPS exercises with convergence controls, and hardware-model/characterization plots. Select a maintained compatible simulator before adding executable pulse models; the current Qiskit Dynamics lesson is a historical reference and no hardware calibration jobs are submitted.
-- Expand quizzes to multi-step prediction tasks and add spaced review. Make daily progress date-based.
-- Add controlled accounts and shared progress only when the team needs synchronization.
+- Expand quizzes to multi-step prediction tasks and add spaced review. Daily fun-fact quizzes and date-based participation streaks are implemented.
+- Configure production PostgreSQL and exercise cross-device accounts on the deployed domain. Add email verification and password recovery when an email provider is configured; current accounts support registration, password sign-in, and sign-out.
 - Host the Python API and web frontend behind HTTPS with a reverse proxy, rate limits, and deployment health checks.
 - Prepare presentation slides and rehearse the five-minute demo. Complete hackathon submission separately.

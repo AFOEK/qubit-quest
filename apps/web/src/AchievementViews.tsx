@@ -17,10 +17,14 @@ export function LearningSpark({
   progress,
   onView,
   savingAvailable = true,
+  accountSaved = false,
+  saving = false,
 }: {
   progress: LearningProgress;
   onView: () => void;
   savingAvailable?: boolean;
+  accountSaved?: boolean;
+  saving?: boolean;
 }) {
   const target = progress.nextMilestone ?? progress.milestones.at(-1);
   return (
@@ -76,9 +80,13 @@ export function LearningSpark({
         View achievements <ArrowRight size={15} />
       </button>
       <small>
-        {savingAvailable
-          ? 'Progress is saved on this browser.'
-          : 'Available for this session. Browser saving is unavailable.'}
+        {saving
+          ? 'Saving to your account…'
+          : accountSaved
+            ? 'Progress is saved to your account.'
+            : savingAvailable
+              ? 'Progress is saved on this browser.'
+              : 'Available for this session. Browser saving is unavailable.'}
       </small>
     </div>
   );
