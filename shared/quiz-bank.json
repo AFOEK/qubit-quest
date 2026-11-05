@@ -1,0 +1,278 @@
+[
+  {
+    "id": "sphere",
+    "title": "A sphere of possibilities",
+    "question": "What does the Bloch sphere represent?",
+    "answers": [
+      "A single qubit’s state",
+      "An electron’s physical orbit",
+      "Every state of an entire quantum computer"
+    ],
+    "correct": 0,
+    "explanation": "The Bloch sphere is a state-space model for one qubit. Pure states lie on its surface; mixed states lie inside."
+  },
+  {
+    "id": "teleport",
+    "title": "Beam me up?",
+    "question": "What is transferred in quantum teleportation?",
+    "answers": [
+      "Matter instantly",
+      "An unknown quantum state, using shared entanglement and classical communication",
+      "A message without any classical signal"
+    ],
+    "correct": 1,
+    "explanation": "Teleportation transfers state information. It needs entanglement and classical communication, so it does not send information faster than light."
+  },
+  {
+    "id": "phase",
+    "title": "Same histogram, different story",
+    "question": "Can two qubits look equally random when measured, yet respond differently to the next gate?",
+    "answers": [
+      "No, a count chart tells the whole story",
+      "Only if probabilities add up to two",
+      "Yes, they can have different relative phases"
+    ],
+    "correct": 2,
+    "explanation": "Two states can both give 50/50 outcomes but carry different phases. A later gate can turn that hidden difference into different measurement results."
+  },
+  {
+    "id": "hh",
+    "title": "Twice is a charm",
+    "question": "Starting in |0⟩, what do two ideal H gates do?",
+    "answers": [
+      "Return the state to |0⟩",
+      "Make the result permanently random",
+      "Measure the qubit twice"
+    ],
+    "correct": 0,
+    "explanation": "H² = I. The intermediate superposition interferes back into a definite |0⟩ state."
+  },
+  {
+    "id": "copy",
+    "title": "The quantum photocopier",
+    "question": "Can a universal device perfectly copy every unknown quantum state?",
+    "answers": [
+      "Yes, with a SWAP gate",
+      "No, the no-cloning theorem rules it out",
+      "Yes, if the device has enough shots"
+    ],
+    "correct": 1,
+    "explanation": "Known orthogonal basis states can be copied in that basis, but no single operation clones arbitrary unknown states."
+  },
+  {
+    "id": "qiskit-bits",
+    "title": "Read it from the right",
+    "question": "In a Qiskit computational-basis string, which qubit is the rightmost bit?",
+    "answers": ["The highest-numbered qubit", "A random qubit each shot", "Qubit 0"],
+    "correct": 2,
+    "explanation": "Qiskit writes the highest-index bit on the left and qubit 0 on the right. Declaring bit order prevents many circuit-reading mistakes."
+  },
+  {
+    "id": "shots",
+    "title": "A fair coin isn’t an exact count",
+    "question": "Does an ideal 50/50 state guarantee exactly 50 zeros in 100 shots?",
+    "answers": [
+      "No, finite samples fluctuate",
+      "Yes, by normalization",
+      "Only when amplitudes are real"
+    ],
+    "correct": 0,
+    "explanation": "Exact probabilities describe a distribution. A finite number of independent measurements fluctuates around the expected counts."
+  },
+  {
+    "id": "bell",
+    "title": "Better together",
+    "question": "Which outcomes occur for an ideal (|00⟩ + |11⟩)/√2 Bell state measured in Z?",
+    "answers": ["01 and 10 only", "00 and 11 only", "All four outcomes equally"],
+    "correct": 1,
+    "explanation": "Only 00 and 11 have nonzero amplitudes. Each individual qubit still looks random by itself."
+  },
+  {
+    "id": "grover",
+    "title": "Too much of a good search",
+    "question": "Can too many Grover iterations reduce success?",
+    "answers": [
+      "No, success always increases",
+      "No, each iteration deletes a wrong answer",
+      "Yes, the state can rotate past the success peak"
+    ],
+    "correct": 2,
+    "explanation": "Grover success oscillates with the iteration count. The oracle-plus-diffusion rotation can overshoot the desired direction."
+  },
+  {
+    "id": "qft",
+    "title": "A rhythm hidden in phase",
+    "question": "Why can a quantum experiment’s count chart miss part of the story?",
+    "answers": [
+      "It does not show the state’s complex phases",
+      "The total probability can secretly exceed one",
+      "It cannot record any zero outcomes"
+    ],
+    "correct": 0,
+    "explanation": "Measurement counts show probabilities, but omit phase. Later interference can reveal phase patterns, which is useful in Fourier-based quantum algorithms."
+  },
+  {
+    "id": "quantum-advantage",
+    "title": "Small demos, honest claims",
+    "question": "Does running a small circuit in a classical simulator prove practical quantum advantage?",
+    "answers": [
+      "Yes, because it uses quantum gates",
+      "No, advantage needs a meaningful task and resource comparison",
+      "Only if it uses at least two qubits"
+    ],
+    "correct": 1,
+    "explanation": "A simulator teaches mechanics. Demonstrating advantage requires comparing end-to-end resources against suitable classical methods."
+  },
+  {
+    "id": "qkd",
+    "title": "A key, not the whole message",
+    "question": "What does quantum key distribution primarily establish?",
+    "answers": [
+      "A faster-than-light message",
+      "A copy of every secret message",
+      "Shared secret key material under stated assumptions"
+    ],
+    "correct": 2,
+    "explanation": "QKD establishes key material and still needs authenticated classical communication. Message encryption is a separate step."
+  },
+  {
+    "id": "pqc",
+    "title": "Post-quantum on your laptop",
+    "question": "Does post-quantum cryptography need a quantum processor to run?",
+    "answers": [
+      "No, it uses classical algorithms designed against known quantum attacks",
+      "Yes, every operation needs an entangled pair",
+      "Only its hash functions need quantum hardware"
+    ],
+    "correct": 0,
+    "explanation": "PQC algorithms run on classical computers. They use different mathematical constructions from vulnerable factoring- and discrete-log-based schemes."
+  },
+  {
+    "id": "energy",
+    "title": "An energy with units",
+    "question": "What kind of unit is a hartree?",
+    "answers": ["A gate duration", "An energy unit", "A qubit temperature scale"],
+    "correct": 1,
+    "explanation": "Hartree is an energy unit used in atomic and molecular calculations. Always declare units and model choices when comparing molecular energies."
+  },
+  {
+    "id": "vqe",
+    "title": "A quantum–classical team",
+    "question": "Why does VQE pair a quantum processor with a classical computer?",
+    "answers": [
+      "The classical computer supplies free entanglement",
+      "The quantum processor cannot produce measurement results",
+      "A classical optimizer adjusts the quantum circuit’s settings"
+    ],
+    "correct": 2,
+    "explanation": "VQE is a hybrid method: quantum measurements estimate an energy, and a classical optimizer updates circuit parameters to seek a lower value. Both parts do useful work."
+  },
+  {
+    "id": "qubo",
+    "title": "A delivery route in disguise",
+    "question": "Which everyday task could be modeled as a QUBO optimization problem?",
+    "answers": [
+      "Choosing a low-cost delivery route using yes/no decisions",
+      "Making a perfect copy of an unknown qubit",
+      "Sending a message faster than light"
+    ],
+    "correct": 0,
+    "explanation": "QUBO models score combinations of binary decisions. Delivery routes, schedules, and other planning tasks can be encoded with costs and penalties for breaking constraints."
+  },
+  {
+    "id": "readout",
+    "title": "The last step can be noisy too",
+    "question": "What does readout error mitigation primarily target?",
+    "answers": [
+      "Every gate error automatically",
+      "Bias in recorded measurement outcomes under a calibrated model",
+      "The amount of entanglement in all states"
+    ],
+    "correct": 1,
+    "explanation": "Readout mitigation addresses the measurement response. It does not automatically remove state-preparation or gate errors."
+  },
+  {
+    "id": "echo",
+    "title": "A quantum echo",
+    "question": "Why do quantum experiments use a spin echo sequence?",
+    "answers": [
+      "To hear a sound coming from a qubit",
+      "To create a perfect copy of any state",
+      "To cancel certain accumulating phase errors"
+    ],
+    "correct": 2,
+    "explanation": "A carefully timed pulse can reverse the buildup of some phase errors, like runners turning around to regroup. It helps with some noise, but cannot undo every source of decoherence."
+  },
+  {
+    "id": "schmidt",
+    "title": "Random alone, connected together",
+    "question": "Can two qubits each look random while their measured results always match?",
+    "answers": [
+      "Yes, an ideal Bell pair can do this",
+      "No, random results can never be correlated",
+      "Only by sending a faster-than-light message"
+    ],
+    "correct": 0,
+    "explanation": "Measuring a Bell pair in the same computational basis gives matching bits, even though either bit alone is random. These correlations do not allow faster-than-light messages. Matching in just one basis alone is not enough to prove entanglement."
+  },
+  {
+    "id": "mps",
+    "title": "A shortcut for simulation",
+    "question": "Why can some many-qubit states still be simulated on an ordinary computer?",
+    "answers": [
+      "A classical computer can store every possible state for free",
+      "Limited entanglement can allow a compact representation",
+      "All quantum states have only two numbers"
+    ],
+    "correct": 1,
+    "explanation": "Methods such as matrix product states exploit structure and limited entanglement to store some states compactly. Stronger entanglement can make the same representation much more expensive."
+  },
+  {
+    "id": "microwave",
+    "title": "Cooking up a qubit rotation?",
+    "question": "What kind of waves often control superconducting qubits?",
+    "answers": [
+      "Audible sound waves",
+      "Visible laser light in every superconducting device",
+      "Microwave signals"
+    ],
+    "correct": 2,
+    "explanation": "Carefully shaped microwave pulses can drive transitions and rotations in superconducting qubits. Their frequency, duration, amplitude, and phase control the operation."
+  },
+  {
+    "id": "rabi",
+    "title": "A well-timed flip",
+    "question": "What does an ideal resonant π pulse do to a qubit initially in |0⟩?",
+    "answers": [
+      "Flip it to |1⟩",
+      "Copy it into two unknown states",
+      "Measure it without a detector"
+    ],
+    "correct": 0,
+    "explanation": "A π pulse rotates the state halfway around the Bloch sphere, taking |0⟩ to |1⟩ up to a phase. Experiments calibrate its timing by measuring Rabi oscillations."
+  },
+  {
+    "id": "amplitude",
+    "title": "Negative isn’t impossible",
+    "question": "Can a quantum amplitude be negative or complex?",
+    "answers": [
+      "No, amplitudes are probabilities",
+      "Yes; probabilities use squared magnitudes",
+      "Only after the state is measured"
+    ],
+    "correct": 1,
+    "explanation": "Amplitudes can be complex and interfere. Their squared magnitudes are nonnegative probabilities."
+  },
+  {
+    "id": "compilation",
+    "title": "The route matters",
+    "question": "Why keep a transpiler’s final qubit layout?",
+    "answers": [
+      "It records the learner’s browser size",
+      "It replaces the need for measurement",
+      "It explains where logical states ended up on physical qubits"
+    ],
+    "correct": 2,
+    "explanation": "Routing can move logical states. The final layout is needed to interpret later gates and readout correctly."
+  }
+]

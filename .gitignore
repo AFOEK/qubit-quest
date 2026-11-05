@@ -15,3 +15,7 @@ apps/unity/Obj/
 apps/unity/Builds/
 .DS_Store
 .vercel/
+/data/
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal

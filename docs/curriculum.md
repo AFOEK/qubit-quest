@@ -6,25 +6,25 @@ University of Waterloo IBM Qiskit Fall Fest 2026
 
 ## Recommended progression
 
-1. **Mathematics:** an optional primer in complex numbers, linear algebra, tensor products, probability, eigenvalues, and calculus. Basic arithmetic is enough to start.
+1. **Mathematics:** a required primer in complex numbers, linear algebra, tensor products, probability, eigenvalues, and calculus. Basic arithmetic is enough to start.
 2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Software and Compilation → Algorithm I → Algorithm II → Noises and Error Correction → Error Mitigation → Hardware I–IV. Hardware is a specialist branch after the software/noise prerequisites; learners can follow the recommended prerequisite links to choose another branch.
-3. **Applications:** Applied Optimization explains QUBO/Ising modeling before Algorithm III introduces QAOA and other applications. After Algorithm III, choose Classical–Quantum Boundaries I–III, Cryptography I–II, Chemistry I–III, Machine Learning I–III, or several branches. These branches do not require one another.
+3. **Applications:** Applied Optimization explains QUBO/Ising modeling before Algorithm III introduces QAOA and other applications. Classical–Quantum Boundaries and Chemistry follow Algorithm III. Machine Learning follows Algorithm II and noise/QEC; Cryptography branches from Algorithms I–II. These application branches do not require one another.
 
-Prerequisites are recommendations. Lessons remain open so experienced learners can skip ahead and beginners can revisit earlier ideas. Cryptography I uses the state, entanglement, and Bell-test foundations; Cryptography II also builds on the Shor/Grover material. Chemistry and ML use the hybrid-computing ideas in Algorithm III. Classical–Quantum Boundaries uses its variational-energy background, introduces diagrams and Schmidt tools first, then MPS/MPO and DMRG/TEBD, then TTN/MERA/PEPS. Hardware proceeds from microwave physics through pulse descriptions, characterization, and effective-Hamiltonian models.
+New lessons unlock when their prerequisite courses are complete. Previously completed lessons remain available for review, including imported legacy progress. Seven goal-based trails choose the required prerequisite courses and offer optional branches; see [accounts and trails](accounts-and-trails.md). Cryptography I uses the state, entanglement, and Bell-test foundations; Cryptography II also builds on the Shor/Grover material. Chemistry builds on Algorithm III. Machine learning branches after Algorithm II and noise/QEC, with applied optimization and Algorithm III offered as optional preparation. Classical–Quantum Boundaries uses its variational-energy background, introduces diagrams and Schmidt tools first, then MPS/MPO and DMRG/TEBD, then TTN/MERA/PEPS. Hardware proceeds from microwave physics through pulse descriptions, characterization, and effective-Hamiltonian models.
 
 Repeated concepts first introduce the idea, then develop circuit mechanics or an application: entanglement leads to Bell/GHZ states, introductory Grover search leads to iteration geometry and amplitude amplification, QPE leads to QAE and energy estimation, and VQE leads to molecular chemistry. Algorithm II places amplification and QPE before QAE. Shor’s factoring algorithm and the Shor error-correcting code are separate topics. OpenPulse first appears as a software introduction and becomes a detailed control-language study in Hardware II. Existing lesson IDs remain stable as sections are inserted.
 
 ## Course map
 
-| Order | Course                           | Path                 | Lessons | Estimated minutes | Recommended before                                    |
+| Order | Course                           | Path                 | Lessons | Estimated minutes | Required first                                        |
 | ----- | -------------------------------- | -------------------- | ------- | ----------------- | ----------------------------------------------------- |
-| 1     | Mathematical foundations         | Mathematics          | 5       | 34                | Basic arithmetic                                      |
+| 1     | Mathematical foundations         | Mathematics          | 5       | 34                | Basic arithmetic; no quantum background               |
 | 2     | Quantum Mechanics Theories       | Quantum fundamentals | 5       | 35                | Mathematical foundations                              |
 | 3     | Qubits Theories                  | Quantum fundamentals | 4       | 28                | Quantum Mechanics Theories                            |
 | 4     | Gates I                          | Quantum fundamentals | 5       | 34                | Qubits Theories                                       |
 | 5     | Gates II                         | Quantum fundamentals | 4       | 31                | Gates I                                               |
 | 6     | Software and Compilation         | Quantum fundamentals | 4       | 40                | Gates II                                              |
-| 7     | Algorithm I                      | Quantum fundamentals | 9       | 80                | Gates II                                              |
+| 7     | Algorithm I                      | Quantum fundamentals | 9       | 80                | Software and Compilation                              |
 | 8     | Algorithm II                     | Quantum fundamentals | 9       | 89                | Algorithm I                                           |
 | 9     | Noises and Error Correction      | Quantum fundamentals | 6       | 57                | Algorithm II                                          |
 | 10    | Error Mitigation                 | Quantum fundamentals | 5       | 57                | Noises and Error Correction                           |
@@ -33,7 +33,7 @@ Repeated concepts first introduce the idea, then develop circuit mechanics or an
 | 13    | Hardware III                     | Quantum fundamentals | 4       | 47                | Hardware II                                           |
 | 14    | Hardware IV                      | Quantum fundamentals | 3       | 39                | Hardware III                                          |
 | 15    | Applied Optimization             | Applications         | 3       | 34                | Algorithm II                                          |
-| 16    | Algorithm III                    | Applications         | 4       | 39                | Applied Optimization                                  |
+| 16    | Algorithm III                    | Applications         | 4       | 39                | Algorithm II, Noises and Error Correction             |
 | 17    | Classical–Quantum Boundaries I   | Applications         | 5       | 57                | Algorithm III                                         |
 | 18    | Classical–Quantum Boundaries II  | Applications         | 4       | 49                | Classical–Quantum Boundaries I                        |
 | 19    | Classical–Quantum Boundaries III | Applications         | 3       | 35                | Classical–Quantum Boundaries II                       |
@@ -42,7 +42,7 @@ Repeated concepts first introduce the idea, then develop circuit mechanics or an
 | 22    | Chemistry I                      | Applications         | 6       | 63                | Algorithm III                                         |
 | 23    | Chemistry II                     | Applications         | 3       | 36                | Chemistry I                                           |
 | 24    | Chemistry III                    | Applications         | 2       | 23                | Chemistry II                                          |
-| 25    | Machine Learning I               | Applications         | 3       | 29                | Algorithm III                                         |
+| 25    | Machine Learning I               | Applications         | 3       | 29                | Algorithm II, Noises and Error Correction             |
 | 26    | Machine Learning II              | Applications         | 2       | 23                | Machine Learning I                                    |
 | 27    | Machine Learning III             | Applications         | 4       | 48                | Machine Learning II                                   |
 
@@ -74,9 +74,9 @@ For an introductory workshop, use Meet your first qubit → Superposition and in
 
 ### Mathematical foundations
 
-An optional bridge from school mathematics to the language of quantum computing. Start here if vectors, complex numbers, or probability feel unfamiliar.
+A bridge from school mathematics to the language of quantum computing. Start here if vectors, complex numbers, or probability feel unfamiliar.
 
-**Recommended before:** Basic arithmetic; no quantum background.
+**Required first:** Basic arithmetic; no quantum background.
 
 **Learning outcomes:**
 
@@ -96,7 +96,7 @@ An optional bridge from school mathematics to the language of quantum computing.
 
 Learn what a quantum state predicts, how it evolves, and why quantum correlations differ from classical ones. This is the conceptual introduction; circuits come later.
 
-**Recommended before:** Mathematical foundations.
+**Required first:** Mathematical foundations.
 
 **Learning outcomes:**
 
@@ -116,7 +116,7 @@ Learn what a quantum state predicts, how it evolves, and why quantum correlation
 
 Translate the mechanics into a working qubit model: Hilbert space, superposition, interference, the Bloch sphere, decoherence, and superdense coding.
 
-**Recommended before:** Quantum Mechanics Theories.
+**Required first:** Quantum Mechanics Theories.
 
 **Learning outcomes:**
 
@@ -135,7 +135,7 @@ Translate the mechanics into a working qubit model: Hilbert space, superposition
 
 Build a circuit vocabulary with Pauli gates, Hadamard, controlled operations, Toffoli, SWAP, and measurement.
 
-**Recommended before:** Qubits Theories.
+**Required first:** Qubits Theories.
 
 **Learning outcomes:**
 
@@ -155,7 +155,7 @@ Build a circuit vocabulary with Pauli gates, Hadamard, controlled operations, To
 
 Move from fixed gates to rotations, phase gates and their daggers, arbitrary unitaries, and the square root of X.
 
-**Recommended before:** Gates I.
+**Required first:** Gates I.
 
 **Learning outcomes:**
 
@@ -174,7 +174,7 @@ Move from fixed gates to rotations, phase gates and their daggers, arbitrary uni
 
 Connect gate circuits to portable program descriptions, target-aware transpilation, OpenQASM 3 control flow, and the introductory role of pulse-level calibration.
 
-**Recommended before:** Gates II.
+**Required first:** Gates II.
 
 **Learning outcomes:**
 
@@ -193,7 +193,7 @@ Connect gate circuits to portable program descriptions, target-aware transpilati
 
 Construct entangled states, then use oracles and interference to reveal hidden structure. Specialized hidden-problem lessons introduce their promises and limits rather than assuming a full complexity-theory background.
 
-**Recommended before:** Gates II.
+**Required first:** Software and Compilation.
 
 **Learning outcomes:**
 
@@ -217,7 +217,7 @@ Construct entangled states, then use oracles and interference to reveal hidden s
 
 Develop Grover search, amplitude amplification, and quantum walks, then connect Fourier transforms and phase estimation to QAE, period finding, and parameterized circuits.
 
-**Recommended before:** Algorithm I.
+**Required first:** Algorithm I.
 
 **Learning outcomes:**
 
@@ -243,7 +243,7 @@ Develop Grover search, amplitude amplification, and quantum walks, then connect 
 
 Connect decoherence to concrete noise channels, then learn how redundancy and syndrome measurements protect quantum information.
 
-**Recommended before:** Algorithm II.
+**Required first:** Algorithm II.
 
 **Learning outcomes:**
 
@@ -264,7 +264,7 @@ Connect decoherence to concrete noise channels, then learn how redundancy and sy
 
 Build on noise channels and QEC to distinguish noise suppression, noise tailoring, and statistical mitigation. Learn dynamical decoupling, Pauli twirling, twirled readout, ZNE, and PEC with their calibration and sampling costs.
 
-**Recommended before:** Noises and Error Correction.
+**Required first:** Noises and Error Correction.
 
 **Learning outcomes:**
 
@@ -284,7 +284,7 @@ Build on noise channels and QEC to distinguish noise suppression, noise tailorin
 
 Connect two-level energy splittings to microwave resonance, rotating-frame drives, and shaped pulse envelopes. Examples use an explicitly simplified superconducting-qubit model.
 
-**Recommended before:** Software and Compilation, Noises and Error Correction.
+**Required first:** Software and Compilation, Noises and Error Correction.
 
 **Learning outcomes:**
 
@@ -302,7 +302,7 @@ Connect two-level energy splittings to microwave resonance, rotating-frame drive
 
 Develop the OpenPulse introduction into ports, frames, timed instructions, and defcal bindings. Read provider-dependent control descriptions without assuming an available pulse backend.
 
-**Recommended before:** Hardware I.
+**Required first:** Hardware I.
 
 **Learning outcomes:**
 
@@ -321,7 +321,7 @@ Develop the OpenPulse introduction into ports, frames, timed instructions, and d
 
 Design a characterization sequence: establish readout and device parameters, locate transitions with spectroscopy, fit Rabi rotations, and distinguish relaxation from coherence decay.
 
-**Recommended before:** Hardware II.
+**Required first:** Hardware II.
 
 **Learning outcomes:**
 
@@ -340,7 +340,7 @@ Design a characterization sequence: establish readout and device parameters, loc
 
 Build and validate driven Hamiltonian models, understand the cross-resonance interaction, and study Qiskit Dynamics as an archived, version-specific simulation toolkit.
 
-**Recommended before:** Hardware III.
+**Required first:** Hardware III.
 
 **Learning outcomes:**
 
@@ -358,7 +358,7 @@ Build and validate driven Hamiltonian models, understand the cross-resonance int
 
 Translate a classical objective and its constraints into QUBO and Ising costs, then verify the mapping before running QAOA or another solver.
 
-**Recommended before:** Algorithm II.
+**Required first:** Algorithm II.
 
 **Learning outcomes:**
 
@@ -376,7 +376,7 @@ Translate a classical objective and its constraints into QUBO and Ising costs, t
 
 Use the circuit tools for optimization, variational energy, and spectral estimation, then compare them with the photonic model of boson sampling.
 
-**Recommended before:** Applied Optimization.
+**Required first:** Algorithm II, Noises and Error Correction.
 
 **Learning outcomes:**
 
@@ -395,7 +395,7 @@ Use the circuit tools for optimization, variational energy, and spectral estimat
 
 Read tensor diagrams, plan contractions, and use Schmidt spectra to understand when a quantum state can be represented accurately with limited classical resources.
 
-**Recommended before:** Algorithm III.
+**Required first:** Algorithm III.
 
 **Learning outcomes:**
 
@@ -415,7 +415,7 @@ Read tensor diagrams, plan contractions, and use Schmidt spectra to understand w
 
 Use one-dimensional tensor networks to represent states and operators, optimize ground states with DMRG, and follow time evolution with TEBD.
 
-**Recommended before:** Classical–Quantum Boundaries I.
+**Required first:** Classical–Quantum Boundaries I.
 
 **Learning outcomes:**
 
@@ -434,7 +434,7 @@ Use one-dimensional tensor networks to represent states and operators, optimize 
 
 Compare tree, multiscale, and two-dimensional tensor networks: TTN, MERA, and PEPS. Match geometry and entanglement structure to contraction and optimization costs.
 
-**Recommended before:** Classical–Quantum Boundaries II.
+**Required first:** Classical–Quantum Boundaries II.
 
 **Learning outcomes:**
 
@@ -452,7 +452,7 @@ Compare tree, multiscale, and two-dimensional tensor networks: TTN, MERA, and PE
 
 Use nonorthogonal states and entanglement to understand quantum key distribution, from BB84 and B92 to E91 and device-independent security.
 
-**Recommended before:** Algorithm I.
+**Required first:** Algorithm I.
 
 **Learning outcomes:**
 
@@ -473,7 +473,7 @@ Use nonorthogonal states and entanglement to understand quantum key distribution
 
 Compare post-quantum algorithms running on classical computers: lattice-based key establishment/signatures, hash-based signatures, and code-based cryptography.
 
-**Recommended before:** Cryptography I, Algorithm II.
+**Required first:** Cryptography I, Algorithm II.
 
 **Learning outcomes:**
 
@@ -492,7 +492,7 @@ Compare post-quantum algorithms running on classical computers: lattice-based ke
 
 Build the chain from a molecule and its electronic approximations to a fermionic Hamiltonian and a qubit operator.
 
-**Recommended before:** Algorithm III.
+**Required first:** Algorithm III.
 
 **Learning outcomes:**
 
@@ -513,7 +513,7 @@ Build the chain from a molecule and its electronic approximations to a fermionic
 
 Plan reproducible H₂, LiH, and BeH₂ studies and understand the UCCSD ansatz. Guided molecular exercises build on the toy energy lab; full molecular execution needs a chemistry driver and solver.
 
-**Recommended before:** Chemistry I.
+**Required first:** Chemistry I.
 
 **Learning outcomes:**
 
@@ -531,7 +531,7 @@ Plan reproducible H₂, LiH, and BeH₂ studies and understand the UCCSD ansatz.
 
 Measure molecular properties and move beyond the ground state with explicit excited-state methods and validation.
 
-**Recommended before:** Chemistry II.
+**Required first:** Chemistry II.
 
 **Learning outcomes:**
 
@@ -547,7 +547,7 @@ Measure molecular properties and move beyond the ground state with explicit exci
 
 Encode classical data into quantum states, then construct Z and ZZ feature maps. Include preprocessing and state-preparation costs in the model.
 
-**Recommended before:** Algorithm III.
+**Required first:** Algorithm II, Noises and Error Correction.
 
 **Learning outcomes:**
 
@@ -565,7 +565,7 @@ Encode classical data into quantum states, then construct Z and ZZ feature maps.
 
 Turn feature-state overlaps into kernels, then train and evaluate a support-vector classifier without overstating quantum benefits.
 
-**Recommended before:** Machine Learning I.
+**Required first:** Machine Learning I.
 
 **Learning outcomes:**
 
@@ -581,7 +581,7 @@ Turn feature-state overlaps into kernels, then train and evaluate a support-vect
 
 Build intuition for trainable quantum models, recurrent hybrids, and one- and two-dimensional convolutional designs. These are model families with explicit design choices, not single standardized architectures.
 
-**Recommended before:** Machine Learning II.
+**Required first:** Machine Learning II.
 
 **Learning outcomes:**
 
@@ -623,4 +623,4 @@ Build intuition for trainable quantum models, recurrent hybrids, and one- and tw
 
 ## Maintaining the curriculum
 
-The source of truth is apps/web/src/curriculum.ts and the typed modules in apps/web/src/curriculum/. Keep lesson IDs stable. New lessons need substantive worked practice and a correct, unique quiz answer. Lab links must select an experiment the application can execute. Run npm test, npm run format:check, and npm run build; the curriculum checks protect requested-topic coverage, prerequisite ordering, references, and historical progress migration. If lesson order, counts, or scope changes, update this guide alongside the code.
+The source of truth is apps/web/src/curriculum.ts and the typed modules in apps/web/src/curriculum/. Keep lesson IDs stable. New lessons need substantive worked practice and a correct, unique quiz answer. Lab links must select an experiment the application can execute. Run npm run learning:sync after changing course IDs, quiz answers, prerequisites, or path definitions. Run npm test, npm run format:check, and npm run build; the curriculum checks protect requested-topic coverage, prerequisite ordering, references, and historical progress migration. If lesson order, counts, or scope changes, update this guide alongside the code.

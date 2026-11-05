@@ -1,24 +1,117 @@
-import { useState } from 'react';
-import { ArrowRight, Check, ChevronDown, ChevronRight, Search, Trophy, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Search,
+  Trophy,
+  X,
+  LockKeyhole,
+} from 'lucide-react';
 import { courses, courseById, lessons, searchCourses, tracks, type TrackId } from './curriculum';
 import type { Achievement } from './achievements';
+import {
+  learningPaths,
+  pathCourses,
+  courseFinished,
+  missingPrerequisites,
+  lessonAvailable,
+  type PathId,
+} from './learning-paths';
 
 export function LearningTrail({
   completed,
   next,
   onOpen,
   achievements,
+  pathId,
+  onPathChange,
+  saving,
+  focusCourse,
+  onFocused,
 }: {
   completed: string[];
   next: number;
   onOpen: (index: number) => void;
   achievements: Achievement[];
+  pathId: PathId;
+  onPathChange: (id: PathId) => void;
+  saving: boolean;
+  focusCourse: string | null;
+  onFocused: () => void;
 }) {
   const nextCourse = lessons[next]?.courseId ?? courses[0].id;
   const [query, setQuery] = useState('');
+  const [catalog, setCatalog] = useState(pathId === 'all');
+  const [includeOptional, setIncludeOptional] = useState(false);
+  const path = learningPaths.find((item) => item.id === pathId);
+  const scope = pathCourses(pathId);
+  const requiredLessons = lessons.filter((lesson) => scope.required.includes(lesson.courseId));
+  const doneRequired = requiredLessons.filter((lesson) => completed.includes(lesson.id)).length;
+  const stages = [
+    { title: 'Basics', ids: ['math', 'quantum-mechanics', 'qubits', 'gates-1', 'gates-2'] },
+    { title: 'Compilation', ids: ['software-compilation'] },
+    { title: 'Algorithms', ids: ['algorithms-1', 'algorithms-2'] },
+    { title: 'Noise', ids: ['noise-qec', 'error-mitigation'] },
+    {
+      title: 'Specialization',
+      ids: scope.required.filter(
+        (id) =>
+          ![
+            'math',
+            'quantum-mechanics',
+            'qubits',
+            'gates-1',
+            'gates-2',
+            'software-compilation',
+            'algorithms-1',
+            'algorithms-2',
+            'noise-qec',
+            'error-mitigation',
+          ].includes(id),
+      ),
+    },
+  ]
+    .map((stage) => ({ ...stage, ids: stage.ids.filter((id) => scope.required.includes(id)) }))
+    .filter((stage) => stage.ids.length);
+  useEffect(() => {
+    setCatalog(pathId === 'all');
+    setQuery('');
+    setTrack('all');
+    setIncludeOptional(false);
+  }, [pathId]);
+  useEffect(() => {
+    setExpanded((previous) => new Set([...previous, nextCourse]));
+  }, [nextCourse]);
+  useEffect(() => {
+    if (!focusCourse) return;
+    setCatalog(true);
+    setQuery('');
+    setTrack('all');
+    setExpanded((previous) => new Set([...previous, focusCourse]));
+    requestAnimationFrame(() =>
+      document
+        .getElementById(`course-${focusCourse}`)
+        ?.scrollIntoView({ block: 'start', behavior: 'smooth' }),
+    );
+    onFocused();
+  }, [focusCourse]);
   const [track, setTrack] = useState<TrackId | 'all'>('all');
   const [expanded, setExpanded] = useState(new Set([nextCourse]));
-  const shown = searchCourses(query, track);
+  const shown = searchCourses(query, track)
+    .filter(
+      (course) =>
+        catalog ||
+        pathId === 'all' ||
+        scope.required.includes(course.id) ||
+        (includeOptional && scope.optional.includes(course.id)),
+    )
+    .sort((a, b) =>
+      catalog || pathId === 'all'
+        ? 0
+        : Number(scope.required.includes(b.id)) - Number(scope.required.includes(a.id)),
+    );
   const indices = new Map(lessons.map((lesson, index) => [lesson.id, index]));
 
   function changeQuery(value: string) {
@@ -29,6 +122,7 @@ export function LearningTrail({
   }
 
   function jumpToCourse(id: string) {
+    if (!shown.some((course) => course.id === id)) setCatalog(true);
     setTrack('all');
     setQuery('');
     setExpanded((previous) => new Set([...previous, id]));
@@ -44,22 +138,96 @@ export function LearningTrail({
       <div className="section-title">
         <h2>Your learning trail</h2>
         <span>
-          {completed.length} / {lessons.length} complete
+          {doneRequired} / {requiredLessons.length} {path ? 'required lessons' : 'lessons'} complete
         </span>
       </div>
       <p className="trail-intro">
-        {courses.length} courses, one connected journey. Follow the order or choose a topic.
-        Prerequisites are recommendations; every lesson is open.
+        Choose a goal and follow its required courses. New lessons unlock after their prerequisites;
+        optional branches never block your main trail. Completed lessons remain available for
+        review.
       </p>
-      <div className="path-overview" aria-label="Recommended learning progression">
-        {tracks.map((item, index) => (
-          <div key={item.id}>
-            <span>{index + 1}</span>
-            <strong>{item.title}</strong>
-            {index < tracks.length - 1 && <ArrowRight size={14} aria-hidden="true" />}
-          </div>
-        ))}
+      <div className="path-choice">
+        <label>
+          What do you want to learn?
+          <select
+            aria-label="Learning goal"
+            value={pathId}
+            disabled={saving}
+            onChange={(event) => onPathChange(event.target.value as PathId)}
+          >
+            <option value="all">Explore the full catalog</option>
+            {learningPaths.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        {path && (
+          <>
+            <p>{path.description}</p>
+            <div className="path-summary">
+              <strong>
+                {scope.required.filter((id) => courseFinished(id, completed)).length} /{' '}
+                {scope.required.length} required courses complete
+              </strong>
+              <span>{scope.optional.length} optional courses</span>
+            </div>
+            <div
+              className="goal-track"
+              role="progressbar"
+              aria-label={`${path.title} required progress`}
+              aria-valuemin={0}
+              aria-valuemax={requiredLessons.length}
+              aria-valuenow={doneRequired}
+            >
+              <span style={{ width: `${(100 * doneRequired) / requiredLessons.length}%` }} />
+            </div>
+          </>
+        )}
       </div>
+      {path && (
+        <div className="path-overview goal-stages" aria-label="Your path stages">
+          {stages.map((stage, index) => (
+            <div
+              key={stage.title}
+              className={
+                stage.ids.every((id) => courseFinished(id, completed)) ? 'stage-complete' : ''
+              }
+            >
+              <span>
+                {stage.ids.every((id) => courseFinished(id, completed)) ? (
+                  <Check size={13} />
+                ) : (
+                  index + 1
+                )}
+              </span>
+              <strong>{stage.title}</strong>
+              {index < stages.length - 1 && <ArrowRight size={13} aria-hidden="true" />}
+            </div>
+          ))}
+        </div>
+      )}
+      {path && (
+        <div className="path-view-controls">
+          <button aria-pressed={!catalog} onClick={() => setCatalog(false)}>
+            My required trail
+          </button>
+          <button aria-pressed={catalog} onClick={() => setCatalog(true)}>
+            Browse all {courses.length} courses
+          </button>
+          {!catalog && scope.optional.length > 0 && (
+            <label>
+              <input
+                type="checkbox"
+                checked={includeOptional}
+                onChange={(event) => setIncludeOptional(event.target.checked)}
+              />
+              Show optional branches
+            </label>
+          )}
+        </div>
+      )}
       <div className="course-filters" role="group" aria-label="Filter by learning path">
         <button aria-pressed={track === 'all'} onClick={() => setTrack('all')}>
           All courses
@@ -85,7 +253,7 @@ export function LearningTrail({
         )}
       </div>
       <p className="catalog-status" role="status">
-        Showing {shown.length} of {courses.length} courses
+        Showing {shown.length} {catalog || pathId === 'all' ? 'catalog' : 'trail'} courses
         {track !== 'all' && ` · ${tracks.find((item) => item.id === track)?.title}`}
       </p>
       {shown.length === 0 && (
@@ -97,6 +265,7 @@ export function LearningTrail({
             onClick={() => {
               setTrack('all');
               changeQuery('');
+              setCatalog(true);
             }}
           >
             Reset filters <ArrowRight size={16} />
@@ -107,10 +276,18 @@ export function LearningTrail({
         const achievement = achievements.find((item) => item.courseId === course.id)!;
         const done = course.lessons.filter((lesson) => completed.includes(lesson.id)).length;
         const isOpen = expanded.has(course.id);
-        const number = courses.indexOf(course) + 1;
+        const optional = Boolean(
+          path && !scope.required.includes(course.id) && scope.optional.includes(course.id),
+        );
+        const number =
+          catalog || pathId === 'all'
+            ? courses.indexOf(course) + 1
+            : (optional ? scope.optional : scope.required).indexOf(course.id) + 1;
+        const missing = missingPrerequisites(course.id, completed);
+        const locked = missing.length > 0 && !achievement.earned;
         return (
           <section
-            className={`course-card ${isOpen ? 'expanded' : ''}`}
+            className={`course-card ${isOpen ? 'expanded' : ''} ${locked ? 'prerequisite-locked' : ''}`}
             key={course.id}
             id={`course-${course.id}`}
             aria-labelledby={`title-${course.id}`}
@@ -137,6 +314,16 @@ export function LearningTrail({
                     {tracks.find((item) => item.id === course.track)?.title}
                   </span>
                   <span className="course-title">{course.title}</span>
+                  <span className="course-route-label">
+                    {optional ? 'Optional branch' : path && !catalog ? 'Required' : 'Course'}
+                    {locked && (
+                      <>
+                        {' '}
+                        · <LockKeyhole size={10} />
+                        Prerequisites needed
+                      </>
+                    )}
+                  </span>
                   <small>
                     {course.lessons.length} lessons ·{' '}
                     {course.lessons.reduce((sum, lesson) => sum + lesson.time, 0)} min · {done}/
@@ -151,6 +338,13 @@ export function LearningTrail({
               </button>
             </h3>
             <p className="course-description">{course.description}</p>
+            {locked && (
+              <p className="course-lock-note">
+                <LockKeyhole size={13} />
+                Finish {missing.map((id) => courseById.get(id)?.title).join(', ')} to unlock new
+                lessons.
+              </p>
+            )}
             <div
               className="course-progress"
               role="progressbar"
@@ -165,7 +359,7 @@ export function LearningTrail({
               {isOpen && (
                 <>
                   <div className="course-prerequisites">
-                    <strong>Before this course</strong>
+                    <strong>Required first</strong>
                     {course.prerequisites.length ? (
                       course.prerequisites.map((id) => (
                         <button key={id} onClick={() => jumpToCourse(id)}>
@@ -208,6 +402,7 @@ export function LearningTrail({
                         <button
                           key={lesson.id}
                           className={`lesson-row ${isDone ? 'done' : ''} ${next === index ? 'current' : ''}`}
+                          disabled={!lessonAvailable(lesson.id, completed) || saving}
                           onClick={() => onOpen(index)}
                         >
                           <span className={`lesson-icon ${course.color}`} aria-hidden="true">

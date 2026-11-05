@@ -68,7 +68,7 @@ The learning spark displays actual accumulated XP against the next unreached che
 
 ## Saving and announcements
 
-Badges, tiers, and milestones are derived from validated unique lesson IDs in qq.progress.v2. No second reward ledger or account is introduced. The existing migration from qq.progress.v1 still applies. Reloading recomputes earned rewards without replaying unlock announcements. A new completion can show a dismissible badge/tier or milestone notice; a review shows no new notice. If saving fails, progress and rewards remain available for the current session and the app explains that browser saving is unavailable.
+Badges, tiers, and milestones are derived from validated unique lesson IDs from account progress, or qq.progress.v2 for a guest. No second reward ledger is needed. The existing migration from qq.progress.v1 still applies. Reloading recomputes earned rewards without replaying unlock announcements. A new completion can show a dismissible badge/tier or milestone notice; a review shows no new notice. If guest browser saving fails, rewards remain available for the current session with a notice. An account save must succeed before XP or rewards are shown; a failed request leaves the lesson open for retry. Daily fun-fact quizzes build a separate participation streak and do not grant course XP.
 
 ## Validation
 

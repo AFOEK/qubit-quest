@@ -9,7 +9,7 @@ export const machineLearning: Course[] = [
     color: 'peach',
     description:
       'Encode classical data into quantum states, then construct Z and ZZ feature maps. Include preprocessing and state-preparation costs in the model.',
-    prerequisites: ['algorithms-3'],
+    prerequisites: ['algorithms-2', 'noise-qec'],
     outcomes: [
       'Compare angle and amplitude encoding with worked inputs.',
       'Explain Z and ZZ feature maps.',

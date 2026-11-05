@@ -6,16 +6,36 @@ from typing import Literal
 import numpy as np
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 from pydantic import BaseModel, Field, model_validator
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import QFTGate
 from qiskit.primitives import StatevectorSampler
 from qiskit.quantum_info import Statevector, partial_trace, SparsePauliOp
+try:
+    from .accounts import router as account_router
+except ImportError:
+    from accounts import router as account_router
 
 app = FastAPI(title="Qubit Quest simulation API", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=os.getenv(
     "ALLOWED_ORIGINS", "http://127.0.0.1:5173,http://localhost:5173"
-).split(","), allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+).split(","), allow_credentials=True, allow_methods=["GET", "POST"], allow_headers=["Content-Type", "X-CSRF-Token"])
+app.include_router(account_router)
+
+
+@app.middleware("http")
+async def private_learning_responses(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith(("/api/account/", "/api/progress", "/api/daily-quiz")):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@app.exception_handler(SQLAlchemyError)
+async def unavailable_storage(_request, _error):
+    return JSONResponse(status_code=503, content={"detail": "Account saving is unavailable. Please try again later. Your last saved progress is safe."})
 
 
 class Gate(BaseModel):

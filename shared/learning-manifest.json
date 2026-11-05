@@ -1,0 +1,370 @@
+{
+  "courses": [
+    {
+      "id": "math",
+      "title": "Mathematical foundations",
+      "prerequisites": [],
+      "lessons": [
+        { "id": "complex-amplitudes", "correct": 1 },
+        { "id": "vectors-matrices", "correct": 2 },
+        { "id": "tensor-products", "correct": 0 },
+        { "id": "probability-expectation", "correct": 1 },
+        { "id": "eigenvalues-calculus", "correct": 2 }
+      ]
+    },
+    {
+      "id": "quantum-mechanics",
+      "title": "Quantum Mechanics Theories",
+      "prerequisites": ["math"],
+      "lessons": [
+        { "id": "dirac-states", "correct": 0 },
+        { "id": "wave-functions", "correct": 1 },
+        { "id": "schrodinger", "correct": 2 },
+        { "id": "entanglement-intro", "correct": 0 },
+        { "id": "bells-theorem", "correct": 1 }
+      ]
+    },
+    {
+      "id": "qubits",
+      "title": "Qubits Theories",
+      "prerequisites": ["quantum-mechanics"],
+      "lessons": [
+        { "id": "first-qubit", "correct": 0 },
+        { "id": "superposition", "correct": 1 },
+        { "id": "bloch-decoherence", "correct": 2 },
+        { "id": "superdense-coding", "correct": 0 }
+      ]
+    },
+    {
+      "id": "gates-1",
+      "title": "Gates I",
+      "prerequisites": ["qubits"],
+      "lessons": [
+        { "id": "pauli-gates", "correct": 0 },
+        { "id": "hadamard-gate", "correct": 1 },
+        { "id": "controlled-gates", "correct": 2 },
+        { "id": "toffoli-swap", "correct": 0 },
+        { "id": "measurement-gate", "correct": 1 }
+      ]
+    },
+    {
+      "id": "gates-2",
+      "title": "Gates II",
+      "prerequisites": ["gates-1"],
+      "lessons": [
+        { "id": "rotation-gates", "correct": 2 },
+        { "id": "phase-daggers", "correct": 0 },
+        { "id": "unitary-gates", "correct": 1 },
+        { "id": "sx-gate", "correct": 2 }
+      ]
+    },
+    {
+      "id": "software-compilation",
+      "title": "Software and Compilation",
+      "prerequisites": ["gates-2"],
+      "lessons": [
+        { "id": "openqasm", "correct": 1 },
+        { "id": "transpilation", "correct": 0 },
+        { "id": "openqasm-3", "correct": 1 },
+        { "id": "openpulse-intro", "correct": 0 }
+      ]
+    },
+    {
+      "id": "algorithms-1",
+      "title": "Algorithm I",
+      "prerequisites": ["software-compilation"],
+      "lessons": [
+        { "id": "bell-states", "correct": 2 },
+        { "id": "ghz", "correct": 0 },
+        { "id": "deutsch-jozsa", "correct": 1 },
+        { "id": "bernstein-vazirani", "correct": 2 },
+        { "id": "simon", "correct": 0 },
+        { "id": "hidden-subgroup", "correct": 1 },
+        { "id": "hidden-shift", "correct": 2 },
+        { "id": "hidden-linear-function", "correct": 0 },
+        { "id": "grover-search", "correct": 1 }
+      ]
+    },
+    {
+      "id": "algorithms-2",
+      "title": "Algorithm II",
+      "prerequisites": ["algorithms-1"],
+      "lessons": [
+        { "id": "hadamard-transform", "correct": 2 },
+        { "id": "grover-geometry", "correct": 1 },
+        { "id": "amplitude-amplification", "correct": 0 },
+        { "id": "quantum-random-walks", "correct": 2 },
+        { "id": "qft", "correct": 0 },
+        { "id": "qpe", "correct": 1 },
+        { "id": "qae", "correct": 1 },
+        { "id": "shor", "correct": 2 },
+        { "id": "parameterized-circuits", "correct": 0 }
+      ]
+    },
+    {
+      "id": "noise-qec",
+      "title": "Noises and Error Correction",
+      "prerequisites": ["algorithms-2"],
+      "lessons": [
+        { "id": "noise-channels", "correct": 1 },
+        { "id": "damping-channels", "correct": 2 },
+        { "id": "bit-phase-flip", "correct": 0 },
+        { "id": "depolarizing", "correct": 1 },
+        { "id": "qec-shor-code", "correct": 2 },
+        { "id": "toric-code", "correct": 0 }
+      ]
+    },
+    {
+      "id": "error-mitigation",
+      "title": "Error Mitigation",
+      "prerequisites": ["noise-qec"],
+      "lessons": [
+        { "id": "dynamical-decoupling", "correct": 1 },
+        { "id": "pauli-twirling", "correct": 0 },
+        { "id": "twirled-readout", "correct": 2 },
+        { "id": "zne", "correct": 0 },
+        { "id": "pec", "correct": 1 }
+      ]
+    },
+    {
+      "id": "hardware-1",
+      "title": "Hardware I",
+      "prerequisites": ["software-compilation", "noise-qec"],
+      "lessons": [
+        { "id": "microwave-resonance", "correct": 1 },
+        { "id": "rotating-frame-drives", "correct": 0 },
+        { "id": "pulse-envelopes", "correct": 2 }
+      ]
+    },
+    {
+      "id": "hardware-2",
+      "title": "Hardware II",
+      "prerequisites": ["hardware-1"],
+      "lessons": [
+        { "id": "openpulse-control", "correct": 0 },
+        { "id": "ports-frames", "correct": 1 },
+        { "id": "pulse-instructions", "correct": 2 },
+        { "id": "defcal", "correct": 0 }
+      ]
+    },
+    {
+      "id": "hardware-3",
+      "title": "Hardware III",
+      "prerequisites": ["hardware-2"],
+      "lessons": [
+        { "id": "hardware-calibration", "correct": 0 },
+        { "id": "spectroscopy", "correct": 1 },
+        { "id": "rabi-experiments", "correct": 2 },
+        { "id": "coherence-measurements", "correct": 0 }
+      ]
+    },
+    {
+      "id": "hardware-4",
+      "title": "Hardware IV",
+      "prerequisites": ["hardware-3"],
+      "lessons": [
+        { "id": "hamiltonian-engineering", "correct": 1 },
+        { "id": "cross-resonance", "correct": 2 },
+        { "id": "qiskit-dynamics", "correct": 0 }
+      ]
+    },
+    {
+      "id": "applied-optimization",
+      "title": "Applied Optimization",
+      "prerequisites": ["algorithms-2"],
+      "lessons": [
+        { "id": "qubo", "correct": 1 },
+        { "id": "ising-mapping", "correct": 0 },
+        { "id": "classical-problem-hamiltonians", "correct": 2 }
+      ]
+    },
+    {
+      "id": "algorithms-3",
+      "title": "Algorithm III",
+      "prerequisites": ["algorithms-2", "noise-qec"],
+      "lessons": [
+        { "id": "qaoa", "correct": 2 },
+        { "id": "variational-energy", "correct": 0 },
+        { "id": "phase-estimation-energy", "correct": 1 },
+        { "id": "boson-sampling", "correct": 2 }
+      ]
+    },
+    {
+      "id": "boundaries-1",
+      "title": "Classical–Quantum Boundaries I",
+      "prerequisites": ["algorithms-3"],
+      "lessons": [
+        { "id": "penrose-calculus", "correct": 0 },
+        { "id": "tensor-contractions", "correct": 1 },
+        { "id": "schmidt-decomposition", "correct": 2 },
+        { "id": "entanglement-scaling", "correct": 0 },
+        { "id": "schmidt-truncation", "correct": 1 }
+      ]
+    },
+    {
+      "id": "boundaries-2",
+      "title": "Classical–Quantum Boundaries II",
+      "prerequisites": ["boundaries-1"],
+      "lessons": [
+        { "id": "mps", "correct": 2 },
+        { "id": "mpo", "correct": 0 },
+        { "id": "dmrg", "correct": 1 },
+        { "id": "tebd", "correct": 2 }
+      ]
+    },
+    {
+      "id": "boundaries-3",
+      "title": "Classical–Quantum Boundaries III",
+      "prerequisites": ["boundaries-2"],
+      "lessons": [
+        { "id": "ttn", "correct": 0 },
+        { "id": "mera", "correct": 1 },
+        { "id": "peps", "correct": 2 }
+      ]
+    },
+    {
+      "id": "cryptography-1",
+      "title": "Cryptography I",
+      "prerequisites": ["algorithms-1"],
+      "lessons": [
+        { "id": "no-cloning", "correct": 0 },
+        { "id": "qkd", "correct": 1 },
+        { "id": "bb84", "correct": 2 },
+        { "id": "e91", "correct": 0 },
+        { "id": "b92", "correct": 1 },
+        { "id": "device-independent-qkd", "correct": 2 }
+      ]
+    },
+    {
+      "id": "cryptography-2",
+      "title": "Cryptography II",
+      "prerequisites": ["cryptography-1", "algorithms-2"],
+      "lessons": [
+        { "id": "post-quantum-cryptography", "correct": 0 },
+        { "id": "lattice-cryptography", "correct": 1 },
+        { "id": "hash-signatures", "correct": 2 },
+        { "id": "code-based-cryptography", "correct": 0 }
+      ]
+    },
+    {
+      "id": "chemistry-1",
+      "title": "Chemistry I",
+      "prerequisites": ["algorithms-3"],
+      "lessons": [
+        { "id": "born-oppenheimer", "correct": 1 },
+        { "id": "hartree-fock", "correct": 2 },
+        { "id": "second-quantization", "correct": 0 },
+        { "id": "jordan-wigner", "correct": 1 },
+        { "id": "bravyi-kitaev-parity", "correct": 2 },
+        { "id": "molecular-hamiltonians", "correct": 0 }
+      ]
+    },
+    {
+      "id": "chemistry-2",
+      "title": "Chemistry II",
+      "prerequisites": ["chemistry-1"],
+      "lessons": [
+        { "id": "h2-energy", "correct": 1 },
+        { "id": "lih-beh2", "correct": 2 },
+        { "id": "uccsd", "correct": 0 }
+      ]
+    },
+    {
+      "id": "chemistry-3",
+      "title": "Chemistry III",
+      "prerequisites": ["chemistry-2"],
+      "lessons": [
+        { "id": "measuring-observables", "correct": 1 },
+        { "id": "excited-states", "correct": 2 }
+      ]
+    },
+    {
+      "id": "ml-1",
+      "title": "Machine Learning I",
+      "prerequisites": ["algorithms-2", "noise-qec"],
+      "lessons": [
+        { "id": "angle-encoding", "correct": 0 },
+        { "id": "amplitude-encoding", "correct": 1 },
+        { "id": "z-zz-feature-maps", "correct": 2 }
+      ]
+    },
+    {
+      "id": "ml-2",
+      "title": "Machine Learning II",
+      "prerequisites": ["ml-1"],
+      "lessons": [
+        { "id": "quantum-kernels", "correct": 0 },
+        { "id": "qsvm", "correct": 1 }
+      ]
+    },
+    {
+      "id": "ml-3",
+      "title": "Machine Learning III",
+      "prerequisites": ["ml-2"],
+      "lessons": [
+        { "id": "qnn-vqc", "correct": 2 },
+        { "id": "qlstm", "correct": 0 },
+        { "id": "qcnn-1d", "correct": 1 },
+        { "id": "qcnn-2d", "correct": 2 }
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "id": "foundations",
+      "title": "Quantum foundations",
+      "icon": "◉",
+      "description": "Build the math, circuit, algorithm, and noise foundations.",
+      "goals": ["error-mitigation"],
+      "optional": ["algorithms-3"]
+    },
+    {
+      "id": "qml",
+      "title": "Quantum machine learning",
+      "icon": "⌁",
+      "description": "From first qubits to encodings, quantum kernels, and trainable models.",
+      "goals": ["ml-3"],
+      "optional": ["applied-optimization", "algorithms-3", "error-mitigation", "boundaries-1"]
+    },
+    {
+      "id": "chemistry",
+      "title": "Quantum chemistry",
+      "icon": "⚛",
+      "description": "Prepare for molecular Hamiltonians, variational energies, and excited states.",
+      "goals": ["chemistry-3"],
+      "optional": ["applied-optimization", "error-mitigation", "boundaries-2"]
+    },
+    {
+      "id": "optimization",
+      "title": "Quantum optimization",
+      "icon": "◇",
+      "description": "Model classical problems, then understand QAOA and variational algorithms.",
+      "goals": ["applied-optimization", "algorithms-3"],
+      "optional": ["error-mitigation", "boundaries-1"]
+    },
+    {
+      "id": "cryptography",
+      "title": "Quantum cryptography",
+      "icon": "⌘",
+      "description": "Learn the foundations of QKD and classical post-quantum cryptography.",
+      "goals": ["cryptography-2", "noise-qec"],
+      "optional": ["error-mitigation", "algorithms-3"]
+    },
+    {
+      "id": "hardware",
+      "title": "Quantum hardware",
+      "icon": "∿",
+      "description": "Progress from circuits and compilation to pulse control and device characterization.",
+      "goals": ["hardware-4"],
+      "optional": ["error-mitigation", "algorithms-3", "boundaries-1"]
+    },
+    {
+      "id": "simulation",
+      "title": "Classical–quantum simulation",
+      "icon": "⋈",
+      "description": "Study tensor representations, entanglement limits, and classical simulation methods.",
+      "goals": ["boundaries-3"],
+      "optional": ["chemistry-1", "applied-optimization", "hardware-4"]
+    }
+  ]
+}

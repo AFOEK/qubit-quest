@@ -6,6 +6,12 @@ The frontend and Python API share the production domain. `/api/*` routes to `api
 
 No tokens or IBM credentials are needed. The simulations run on Vercel's CPU, not quantum hardware. First use can incur a Python/Qiskit cold start. Requests remain bounded to six qubits, 64 gates, and 8192 shots.
 
+For registration and cross-device progress, provision PostgreSQL and set `DATABASE_URL` in Vercel's environment variables before deploying. Use your provider's connection string and SSL parameters, such as `postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require`. Apply it to each environment that needs accounts, then redeploy. Keep preview databases separate from production data. Secure session cookies are enabled automatically on Vercel; other HTTPS hosts must set `COOKIE_SECURE=true`. The frontend and API should share their origin. No database credentials belong in Git or client-side Vite variables.
+
+The API creates its initial tables when a database is first used. Without a configured PostgreSQL URL on Vercel, guest learning remains available and account requests report that saving is unavailable. Local SQLite files are excluded from the function bundle; they are never used as temporary production storage. See [accounts and trails](accounts-and-trails.md).
+
 After deployment, verify the homepage, `GET /api/health`, an H/S request to `/api/simulate`, and a Grover request to `/api/algorithm`. Confirm the Qiskit buttons work from the actual deployed frontend. Use the production domain for sharing; preview links can have Vercel authentication enabled.
+
+Also register a test account, finish a lesson, change its learning goal, and answer a daily question. Sign in from a separate browser/device and verify those records load. Confirm the session cookie has HttpOnly, Secure, SameSite=Lax, and the `__Host-` prefix, then sign out and verify the session is invalidated.
 
 Future pushes to the connected GitHub production branch deploy automatically. Native Unity builds remain separate from this web deployment; point Unity's API Base URL to the production HTTPS origin.

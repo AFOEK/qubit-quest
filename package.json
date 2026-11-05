@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc -b && vite build",
+    "build": "npm run learning:check && tsc -b && vite build",
     "test": "vitest run",
     "preview": "vite preview --host 127.0.0.1",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "learning:sync": "node scripts/sync_learning.mjs",
+    "learning:check": "node scripts/sync_learning.mjs --check"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -22,6 +24,7 @@
     "@types/react-dom": "^19.2.0",
     "@types/three": "^0.180.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "esbuild": "^0.28.2",
     "prettier": "^3.9.10",
     "typescript": "~5.9.3",
     "vite": "^7.1.0",
