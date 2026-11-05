@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { ArrowRight, Check, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, ChevronRight, Search, Trophy, X } from 'lucide-react';
 import { courses, courseById, lessons, searchCourses, tracks, type TrackId } from './curriculum';
+import type { Achievement } from './achievements';
 
 export function LearningTrail({
   completed,
   next,
   onOpen,
+  achievements,
 }: {
   completed: string[];
   next: number;
   onOpen: (index: number) => void;
+  achievements: Achievement[];
 }) {
   const nextCourse = lessons[next]?.courseId ?? courses[0].id;
   const [query, setQuery] = useState('');
@@ -101,6 +104,7 @@ export function LearningTrail({
         </div>
       )}
       {shown.map((course) => {
+        const achievement = achievements.find((item) => item.courseId === course.id)!;
         const done = course.lessons.filter((lesson) => completed.includes(lesson.id)).length;
         const isOpen = expanded.has(course.id);
         const number = courses.indexOf(course) + 1;
@@ -180,6 +184,21 @@ export function LearningTrail({
                         <li key={outcome}>{outcome}</li>
                       ))}
                     </ul>
+                  </div>
+                  <div className={`course-badge-preview ${achievement.earned ? 'earned' : ''}`}>
+                    <Trophy size={21} aria-hidden="true" />
+                    <div>
+                      <span>
+                        {achievement.earned ? 'Course badge earned' : 'Your course badge'}
+                      </span>
+                      <strong>{achievement.title}</strong>
+                      <small>
+                        {achievement.earned
+                          ? 'Every lesson complete.'
+                          : `Complete all ${achievement.total} lessons to unlock.`}
+                      </small>
+                    </div>
+                    {achievement.earned && <Check size={18} aria-label="Earned" />}
                   </div>
                   <div className="lesson-list">
                     {course.lessons.map((lesson) => {

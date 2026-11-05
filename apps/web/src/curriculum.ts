@@ -1,6 +1,7 @@
 import { mathematics } from './curriculum/mathematics';
 import { foundations } from './curriculum/foundations';
 import { qubitsAndGates } from './curriculum/qubits-gates';
+import { software } from './curriculum/software';
 import { algorithms } from './curriculum/algorithms';
 import { noise } from './curriculum/noise';
 import { errorMitigation } from './curriculum/error-mitigation';
@@ -8,6 +9,9 @@ import { appliedOptimization } from './curriculum/optimization';
 import { cryptography } from './curriculum/cryptography';
 import { chemistry } from './curriculum/chemistry';
 import { machineLearning } from './curriculum/machine-learning';
+import { hardwareControl } from './curriculum/hardware-control';
+import { hardwareExperiments } from './curriculum/hardware-experiments';
+import { boundaries } from './curriculum/boundaries';
 import type { Course, TrackId } from './curriculum/types';
 
 export type { Course, Lesson, Lab, TrackId } from './curriculum/types';
@@ -21,13 +25,14 @@ export const tracks: { id: TrackId; title: string; description: string }[] = [
   {
     id: 'fundamentals',
     title: 'Quantum fundamentals',
-    description: 'From physical ideas to gates, algorithms, and reliable computation.',
+    description:
+      'From physical ideas to gates, compilation, algorithms, noise, and hardware control.',
   },
   {
     id: 'applications',
     title: 'Applications',
     description:
-      'Explore optimization, cryptography, chemistry, and machine learning with explicit assumptions and meaningful baselines.',
+      'Explore simulation boundaries, optimization, cryptography, chemistry, and machine learning with explicit assumptions and meaningful baselines.',
   },
 ];
 
@@ -36,11 +41,15 @@ export const courses: Course[] = [
   ...mathematics,
   ...foundations,
   ...qubitsAndGates,
+  ...software,
   ...algorithms.filter((c) => c.track === 'fundamentals'),
   ...noise,
   ...errorMitigation,
+  ...hardwareControl,
+  ...hardwareExperiments,
   ...appliedOptimization,
   ...algorithms.filter((c) => c.track === 'applications'),
+  ...boundaries,
   ...cryptography,
   ...chemistry,
   ...machineLearning,
@@ -60,18 +69,20 @@ export const lessons = courses.flatMap((course) =>
 export const courseById = new Map(courses.map((course) => [course.id, course]));
 export const lessonById = new Map(lessons.map((lesson) => [lesson.id, lesson]));
 
+const searchText = (value: string) => value.toLocaleLowerCase().replace(/[‐‑‒–—−]/g, '-');
+
 export function searchCourses(query: string, track: TrackId | 'all' = 'all') {
-  const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+  const terms = searchText(query).trim().split(/\s+/).filter(Boolean);
   return courses.filter((course) => {
     if (track !== 'all' && course.track !== track) return false;
-    const text = [
-      course.title,
-      course.description,
-      ...course.outcomes,
-      ...course.lessons.flatMap((lesson) => [lesson.title, ...lesson.topics]),
-    ]
-      .join(' ')
-      .toLocaleLowerCase();
+    const text = searchText(
+      [
+        course.title,
+        course.description,
+        ...course.outcomes,
+        ...course.lessons.flatMap((lesson) => [lesson.title, ...lesson.topics]),
+      ].join(' '),
+    );
     return terms.every((term) => text.includes(term));
   });
 }

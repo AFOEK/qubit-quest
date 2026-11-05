@@ -21,14 +21,17 @@ In another terminal, run `npm run dev` and open **http://127.0.0.1:5173**. The d
 
 ## What works
 
-- Nineteen courses and 89 lessons: an optional math primer, quantum mechanics, qubits, Gates I–II, Algorithm I–III, noise/error correction, error mitigation, applied optimization, Cryptography I–II, Chemistry I–III, and Machine Learning I–III. Algorithm II develops Grover search, amplitude amplification, quantum walks, and QAE alongside Fourier and phase-estimation methods. Each lesson includes explained mathematics, a worked example, practice with a revealable answer, and a quiz. See the [curriculum guide](docs/curriculum.md) for the full syllabus and recommended paths.
+- Twenty-seven courses and 119 lessons: an optional math primer, quantum mechanics, qubits, Gates I–II, Software and Compilation, Algorithm I–III, noise/error correction, error mitigation, Hardware I–IV, applied optimization, Classical–Quantum Boundaries I–III, Cryptography I–II, Chemistry I–III, and Machine Learning I–III. Algorithm II develops Grover search, amplitude amplification, quantum walks, and QAE alongside Fourier and phase-estimation methods. Each lesson includes explained mathematics or program syntax, a worked example, practice with a revealable answer, and a quiz. See the [curriculum guide](docs/curriculum.md) for the full syllabus and recommended paths.
 - Search by topic, filter by learning path, expand courses, and follow recommended prerequisites. Quizzes award XP once; stable lesson IDs preserve browser-local progress, including migration from the original eight lessons.
+- Earn 27 named course-completion badges and progress through Bronze, Silver, Gold, and Platinum journey tiers. The achievements page includes earned/in-progress filters, badge search, and links to continue or review each course. XP milestones advance beyond the original 50 XP goal through the full 2,975 XP trail. Existing saved completions count automatically; reviews never grant duplicate rewards. See [achievements and milestones](docs/achievements.md).
 - Single-qubit H/X/Y/Z/S/T gate explorer with exact complex arithmetic, a Bloch visualization, and Qiskit verification with sampled counts.
 - Qiskit two-qubit Bell, Grover search, QFT, single-edge QAOA, and a parameterized toy spin energy experiment.
 - Interactive Three.js lab, desktop orbit controls, WebXR entry on compatible devices, and controller-trigger gate cycling.
 - Unity scripts and scene generator for a native Quest 3 implementation. **Native Unity compilation and headset operation remain unverified.** See [Unity setup](apps/unity/README.md).
 
 The curriculum distinguishes live lab experiments from guided calculations and model-design exercises. Molecular chemistry, noisy channels/QEC, mitigation, cryptography, optimization modeling, and machine-learning workflows are taught through worked exercises; the simulation API still offers the original bounded ideal circuits and toy spin model. Full molecular solvers, optimizers, mitigation experiments, protocol implementations, photonic sampling, and ML training remain implementation milestones.
+
+Software, tensor-network, and hardware courses add guided program-reading, contraction, truncation, pulse-model, and characterization exercises. They do not add a QASM execution service, tensor-network solver, or hardware pulse access. OpenPulse is taught as an evolving, target-dependent calibration grammar. Qiskit Pulse was removed in Qiskit 2.0; Qiskit Dynamics is archived/deprecated and is covered as a version-specific historical model/solver reference. These lessons do not change project dependencies.
 
 ## Repository map
 

@@ -1,6 +1,7 @@
 import { lessons } from './curriculum';
 
 export const progressKey = 'qq.progress.v2';
+export const XP_PER_LESSON = 25;
 const validIds = new Set(lessons.map((lesson) => lesson.id));
 // v1 used array positions. Keep this historical order independent of the new trail.
 const legacyLessonIds = [

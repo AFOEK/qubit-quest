@@ -11,12 +11,15 @@ import {
   Map,
   Atom,
   Menu,
+  Trophy,
 } from 'lucide-react';
 import { apply, initial, describe, type GateName } from './quantum';
-import { lessons, courses, courseById, type Lab } from './curriculum';
+import { lessons, courseById, type Lab } from './curriculum';
 import { LearningTrail } from './LearningTrail';
 import { LessonDialog } from './LessonDialog';
-import { readProgress, progressKey } from './progress';
+import { readProgress, progressKey, XP_PER_LESSON } from './progress';
+import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
+import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
 import './style.css';
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
@@ -95,7 +98,8 @@ function App() {
     [error, setError] = useState(''),
     [vr, setVr] = useState(false),
     [mobile, setMobile] = useState(false),
-    [storageError, setStorageError] = useState('');
+    [storageError, setStorageError] = useState(''),
+    [notice, setNotice] = useState<RewardNotice | null>(null);
   useEffect(() => {
     requestVersion.current += 1;
     setBusy(false);
@@ -106,15 +110,29 @@ function App() {
   const state = sequence.reduce((s, g) => apply(s, g), initial()),
     d = describe(state),
     next = lessons.findIndex((item) => !completed.includes(item.id));
+  const rewards = getLearningProgress(completed);
+  function viewAchievements() {
+    setNotice(null);
+    setPage('achievements');
+    setMobile(false);
+  }
   function openLesson(i: number) {
+    setNotice(null);
     setLesson(i);
   }
   function complete() {
     if (lesson === null) return;
-    const updated = [...new Set([...completed, lessons[lesson].id])];
+    if (completed.includes(lessons[lesson].id)) {
+      setLesson(null);
+      return;
+    }
+    const updated = [...completed, lessons[lesson].id];
+    const reward = getRewardNotice(rewards, getLearningProgress(updated));
+    if (reward) setNotice(reward);
     setCompleted(updated);
     try {
       localStorage.setItem(progressKey, JSON.stringify(updated));
+      setStorageError('');
     } catch {
       setStorageError('Progress is available for this session. Browser storage is unavailable.');
     }
@@ -174,6 +192,7 @@ function App() {
   }
   const nav = [
     { id: 'learn', label: 'Learning trail', Icon: Map },
+    { id: 'achievements', label: 'Achievements', Icon: Trophy },
     { id: 'lab', label: 'Quantum lab', Icon: FlaskConical },
     { id: 'immersive', label: 'Immersive lab', Icon: Glasses },
   ];
@@ -194,13 +213,20 @@ function App() {
             <button
               key={id}
               className={page === id ? 'nav active' : 'nav'}
+              aria-current={page === id ? 'page' : undefined}
               onClick={() => {
                 setPage(id);
                 setMobile(false);
+                setNotice(null);
               }}
             >
               <Icon size={21} />
               {label}
+              {id === 'achievements' && (
+                <span className="nav-count">
+                  {rewards.earnedCount}/{rewards.totalCourses}
+                </span>
+              )}
               {id === 'immersive' && <span className="tiny">VR</span>}
             </button>
           ))}
@@ -217,7 +243,7 @@ function App() {
         <div className="side-bottom">
           <div className="avatar">Q</div>
           <div>
-            Quantum explorer<small>Local learning profile</small>
+            Quantum explorer<small>{rewards.tier.name} tier · Local profile</small>
           </div>
         </div>
       </aside>
@@ -232,25 +258,24 @@ function App() {
           </button>
           <span className="breadcrumb">
             Your quantum journey <ChevronRight size={14} />{' '}
-            <b>
-              {page === 'learn'
-                ? 'Learning trail'
-                : page === 'lab'
-                  ? 'Quantum lab'
-                  : 'Immersive lab'}
-            </b>
+            <b>{nav.find((item) => item.id === page)?.label}</b>
           </span>
           <div className="stats">
             <span title="Completed lessons">
               <Flame size={19} /> {completed.length} <small>lessons</small>
             </span>
             <span>
-              <Zap size={19} /> {completed.length * 25} <small>XP</small>
+              <Zap size={19} /> {rewards.xp} <small>XP</small>
             </span>
             <div className="avatar small">Q</div>
           </div>
         </header>
         <main>
+          {storageError && (
+            <p role="status" className="storage-warning">
+              {storageError}
+            </p>
+          )}
           {page === 'learn' ? (
             <>
               <div className="page-heading">
@@ -290,7 +315,7 @@ function App() {
                   </button>
                   <div className="hero-meta">
                     <span>◷ {next < 0 ? lessons[0].time : lessons[next].time} min</span>
-                    <span>{next < 0 ? '✧ All lessons complete' : '✧ +25 XP'}</span>
+                    <span>{next < 0 ? '✧ All lessons complete' : `✧ +${XP_PER_LESSON} XP`}</span>
                     <span>{next < 0 ? 'Review at your pace' : lessons[next].unit}</span>
                   </div>
                 </div>
@@ -302,28 +327,18 @@ function App() {
                 </div>
               </section>
               <div className="trail-layout">
-                <LearningTrail completed={completed} next={next} onOpen={openLesson} />
+                <LearningTrail
+                  completed={completed}
+                  next={next}
+                  onOpen={openLesson}
+                  achievements={rewards.achievements}
+                />
                 <aside className="right-rail">
-                  <div className="goal">
-                    <div className="section-title">
-                      <h3>Your learning spark</h3>
-                      <Zap size={21} />
-                    </div>
-                    <p>
-                      {courses.length} courses · {lessons.length} lessons.
-                      <br />A little learning goes a long way.
-                    </p>
-                    <div className="goal-track">
-                      <span
-                        style={{ width: `${Math.min((completed.length * 25) / 50, 1) * 100}%` }}
-                      />
-                    </div>
-                    <div className="goal-caption">
-                      <strong>{Math.min(completed.length * 25, 50)} / 50 XP</strong>
-                      <span>First milestone</span>
-                    </div>
-                    <small>Progress is saved on this browser.</small>
-                  </div>
+                  <LearningSpark
+                    progress={rewards}
+                    onView={viewAchievements}
+                    savingAvailable={!storageError}
+                  />
                   <div className="lab-invite">
                     <span className="mini-orbit">✳</span>
                     <h3>
@@ -348,6 +363,16 @@ function App() {
                 </aside>
               </div>
             </>
+          ) : page === 'achievements' ? (
+            <AchievementsPage
+              progress={rewards}
+              onOpenLesson={(id) => {
+                const index = lessons.findIndex((item) => item.id === id);
+                if (index >= 0) {
+                  openLesson(index);
+                }
+              }}
+            />
           ) : page === 'lab' ? (
             <>
               <div className="page-heading">
@@ -602,9 +627,11 @@ function App() {
               Project on GitHub
             </a>
           </footer>
-          {storageError && <p role="status">{storageError}</p>}
         </main>
       </div>
+      {notice && lesson === null && !vr && (
+        <RewardToast notice={notice} onClose={() => setNotice(null)} onView={viewAchievements} />
+      )}
       {lesson !== null && (
         <LessonDialog
           key={lessons[lesson].id}
