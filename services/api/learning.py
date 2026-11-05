@@ -5,12 +5,12 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 SHARED = Path(__file__).resolve().parents[2] / "shared"
-MANIFEST = json.loads((SHARED / "learning-manifest.json").read_text())
+MANIFEST = json.loads((SHARED / "learning-manifest.json").read_text(encoding="utf-8"))
 COURSES = {course["id"]: course for course in MANIFEST["courses"]}
 LESSONS = {lesson["id"]: {**lesson, "course_id": course["id"]}
            for course in MANIFEST["courses"] for lesson in course["lessons"]}
 PATHS = {path["id"] for path in MANIFEST["paths"]} | {"all"}
-QUIZZES = json.loads((SHARED / "quiz-bank.json").read_text())
+QUIZZES = json.loads((SHARED / "quiz-bank.json").read_text(encoding="utf-8"))
 TIMEZONE = ZoneInfo("America/Toronto")
 
 
