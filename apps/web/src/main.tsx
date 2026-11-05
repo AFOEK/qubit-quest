@@ -19,7 +19,7 @@ import { LearningTrail } from './LearningTrail';
 import { LessonDialog } from './LessonDialog';
 import { readProgress, progressKey, XP_PER_LESSON } from './progress';
 import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
-import { AchievementsPage, LearningSpark, RewardToast } from './Achievements';
+import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
 import './style.css';
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
