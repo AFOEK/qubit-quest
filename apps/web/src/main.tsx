@@ -354,16 +354,42 @@ function App() {
           </div>
         </header>
         <main>
+          {learner.initializing && (
+            <div className="account-status account-choice" role="status">
+              <span>Checking for a saved account. You can start learning as a guest.</span>
+              <button className="text-button" onClick={learner.continueAsGuest}>
+                Continue as guest
+              </button>
+            </div>
+          )}
           {learner.connectionError && (
-            <p className="account-status" role="status">
-              {learner.connectionError}
-            </p>
+            <div className="account-status account-choice" role="status">
+              <span>{learner.connectionError}</span>
+              {learner.user && (
+                <button
+                  className="text-button"
+                  disabled={learner.saving}
+                  onClick={learner.continueAsGuest}
+                >
+                  Continue as guest
+                </button>
+              )}
+            </div>
           )}
           {learner.expired && (
             <div className="account-expired" role="alert">
-              <span>Your session expired. Sign in again to save account progress.</span>
+              <span>
+                Your session expired. Sign in to sync your account, or keep learning as a guest.
+              </span>
               <button className="text-button" onClick={() => openAccount()}>
                 Sign in
+              </button>
+              <button
+                className="text-button"
+                disabled={learner.saving}
+                onClick={learner.continueAsGuest}
+              >
+                Continue as guest
               </button>
             </div>
           )}
@@ -398,10 +424,10 @@ function App() {
                 <div className="account-save-banner">
                   <Cloud size={25} />
                   <div>
-                    <strong>Your journey, saved.</strong>
+                    <strong>No account needed. Start exploring.</strong>
                     <p>
-                      Create an account to keep your path, lessons, and daily quizzes across
-                      devices.
+                      Guest progress is saved in this browser. An optional account keeps your path,
+                      lessons, and daily quizzes across devices.
                     </p>
                   </div>
                   <button className="primary" onClick={() => openAccount('register')}>

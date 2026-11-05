@@ -101,8 +101,8 @@ export function AccountPanel({
         <>
           <p>
             {learner.expired
-              ? 'Your session expired. Sign in again to keep saving your progress.'
-              : 'Save your progress, follow a learning path, and return on any device.'}
+              ? 'Your session expired. Sign in to sync your account, or continue as a guest.'
+              : 'Sign-in is optional. An account saves your learning progress across devices.'}
           </p>
           <div className="auth-tabs" role="group" aria-label="Account action">
             {(['login', 'register'] as const).map((value) => (
@@ -181,11 +181,23 @@ export function AccountPanel({
               {busy ? 'Please wait…' : mode === 'register' ? 'Create account' : 'Sign in'}
             </button>
           </form>
-          <p className="account-guest-note">
-            You can close this window and keep learning as a guest.
-          </p>
         </>
       )}
+      <button
+        className="text-button guest-mode-button"
+        disabled={busy || learner.saving}
+        onClick={() => {
+          learner.continueAsGuest();
+          onClose();
+        }}
+      >
+        Continue as guest
+      </button>
+      <p className="account-guest-note">
+        {learner.user
+          ? 'Guest mode uses this browser’s history. Your account progress stays saved. Use Sign out to end your account session.'
+          : 'Lessons, learning trails, achievements, and daily quizzes are available without an account. Guest progress stays in this browser.'}
+      </p>
       {error && (
         <p className="error" role="alert">
           {error}

@@ -18,6 +18,22 @@ import {
 import { isPathId, lessonAvailable, type PathId } from './learning-paths';
 
 const pathKey = 'qq.path.v1';
+const guestModeKey = 'qq.guest-mode.v1';
+function guestModeSelected() {
+  try {
+    return sessionStorage.getItem(guestModeKey) === 'true';
+  } catch {
+    return false;
+  }
+}
+function rememberGuestMode(enabled: boolean) {
+  try {
+    if (enabled) sessionStorage.setItem(guestModeKey, 'true');
+    else sessionStorage.removeItem(guestModeKey);
+  } catch {
+    // The current tab can still use guest mode when browser storage is blocked.
+  }
+}
 function guestPath(): PathId {
   try {
     const value = localStorage.getItem(pathKey);
@@ -31,14 +47,15 @@ function useLearnerState() {
     [completed, setCompleted] = useState(readProgress),
     [pathId, setPathId] = useState<PathId>(guestPath),
     [dailyAnswers, setDailyAnswers] = useState<DailyAnswer[]>(readDaily),
-    [initializing, setInitializing] = useState(true),
+    [initializing, setInitializing] = useState(() => !guestModeSelected()),
     [expired, setExpired] = useState(false),
     [saving, setSaving] = useState(false),
     [storageError, setStorageError] = useState(''),
     [connectionError, setConnectionError] = useState('');
   const csrf = useRef(''),
     identity = useRef(0),
-    pending = useRef(false);
+    pending = useRef(false),
+    initialRequest = useRef<AbortController | null>(null);
   function applyProgress(progress: SavedProgress) {
     setCompleted(normalizeProgress(progress.completedIds));
     setPathId(isPathId(progress.pathId) ? progress.pathId : 'foundations');
@@ -46,6 +63,7 @@ function useLearnerState() {
   }
   function applySession(session: SessionSnapshot) {
     identity.current++;
+    rememberGuestMode(false);
     csrf.current = session.csrfToken;
     setUser(session.user);
     setExpired(false);
@@ -54,7 +72,9 @@ function useLearnerState() {
     applyProgress(session.progress);
   }
   useEffect(() => {
+    if (guestModeSelected()) return;
     const controller = new AbortController();
+    initialRequest.current = controller;
     const version = identity.current;
     accountRequest<SessionSnapshot>('/account/session', {
       signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
@@ -63,7 +83,11 @@ function useLearnerState() {
         if (version === identity.current) applySession(session);
       })
       .catch((error) => {
-        if (!controller.signal.aborted && !(error instanceof ApiError && error.status === 401))
+        if (
+          version === identity.current &&
+          !controller.signal.aborted &&
+          !(error instanceof ApiError && error.status === 401)
+        )
           setConnectionError('Account saving is unavailable. You can continue as a guest.');
       })
       .finally(() => {
@@ -114,7 +138,8 @@ function useLearnerState() {
       setConnectionError('');
       return data;
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) setExpired(true);
+      if (version === identity.current && error instanceof ApiError && error.status === 401)
+        setExpired(true);
       throw error;
     } finally {
       pending.current = false;
@@ -181,15 +206,24 @@ function useLearnerState() {
     } catch (error) {
       if (!(error instanceof ApiError && error.status === 401)) throw error;
     }
+    continueAsGuest();
+  }
+  function continueAsGuest() {
     identity.current++;
+    initialRequest.current?.abort();
+    rememberGuestMode(true);
     csrf.current = '';
+    // Keep unsaved guest work in memory; account work remains only in its account.
+    if (user) {
+      setCompleted(readProgress());
+      setPathId(guestPath());
+      setDailyAnswers(readDaily());
+      setStorageError('');
+    }
     setUser(null);
     setExpired(false);
-    setCompleted(readProgress());
-    setPathId(guestPath());
-    setDailyAnswers(readDaily());
+    setInitializing(false);
     setConnectionError('');
-    setStorageError('');
   }
   async function importGuest() {
     const progress = await mutate<SavedProgress>('/progress/import', {
@@ -232,6 +266,7 @@ function useLearnerState() {
     answerDaily,
     choosePath,
     authenticate,
+    continueAsGuest,
     logout,
     importGuest,
     guestCount: user ? readProgress().length : completed.length,
