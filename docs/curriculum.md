@@ -50,6 +50,8 @@ Repeated concepts first introduce the idea, then develop circuit mechanics or an
 
 Every lesson has an explanation, an equation or program excerpt with definitions, a worked example, a practice prompt with a revealable solution, and a knowledge check. Successful completion awards 25 XP once. Search finds course names and topic tags; path filters and expandable courses keep the larger syllabus navigable. Earlier completions migrate to stable lesson IDs.
 
+Finishing every lesson in a course earns its named badge. The 27 badges also advance course-completion journey tiers, while XP milestones continue through the whole trail. Reviews do not award extra XP or badges, and existing saved completions count automatically. See [achievements and milestones](achievements.md) for the badge titles, tier requirements, and checkpoint values.
+
 ### Executable experiments
 
 - **Browser gate explorer:** exact pure-state H/X/Y/Z/S/T sequences, probabilities, and a Bloch vector. Compatible lessons preload their example sequence. Some gates are illustrated through decompositions, such as SX = HSH.

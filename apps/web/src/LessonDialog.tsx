@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronRight, FlaskConical, X } from 'lucide-react';
 import { courseById, lessonById, type Lab, type Lesson } from './curriculum';
+import { XP_PER_LESSON } from './progress';
 
 const labNames = {
   bell: 'Bell pair',
@@ -160,7 +161,7 @@ export function LessonDialog({
             {feedback && correct
               ? completed
                 ? 'Finish review'
-                : 'Complete lesson · +25 XP'
+                : `Complete lesson · +${XP_PER_LESSON} XP`
               : 'Check my answer'}
             <Check size={18} />
           </button>
