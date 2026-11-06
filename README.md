@@ -95,7 +95,7 @@ The API limits circuits to six qubits, 64 gates, and 8,192 shots. Simulations ar
 
 ## Team workflow
 
-This fork is **[AFOEK/qubit-quest](https://github.com/AFOEK/qubit-quest)**; the main team repository is **[minhajuddinm/qubit-quest](https://github.com/minhajuddinm/qubit-quest)**. They have separate branches and deployment connections. Check `git remote -v` before pulling or pushing so you update the intended repository. From a clean `main` checkout, use `git pull --ff-only origin main`; then rerun `npm ci` and the Python dependency-install command for your platform. Pulling source does not install new dependencies.
+The main team repository is **[minhajuddinm/qubit-quest](https://github.com/minhajuddinm/qubit-quest)**. They have separate branches and deployment connections. Check `git remote -v` before pulling or pushing so you update the intended repository. From a clean `main` checkout, use `git pull --ff-only origin main`; then rerun `npm ci` and the Python dependency-install command for your platform. Pulling source does not install new dependencies.
 
 Create a branch such as `feat/quest-interactions` and open a PR against this fork. Keep generated builds, Python environments, Unity caches, credentials, and large recordings out of Git. Run `npm run format` after editing web code or docs, then the checks above before merging.
 
