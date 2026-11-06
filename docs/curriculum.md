@@ -7,7 +7,7 @@ University of Waterloo IBM Qiskit Fall Fest 2026
 ## Recommended progression
 
 1. **Mathematics:** a required primer in complex numbers, linear algebra, tensor products, probability, eigenvalues, and calculus. Basic arithmetic is enough to start.
-2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Software and Compilation → Algorithm I → Algorithm II → Noises and Error Correction → Error Mitigation → Hardware I–IV. Hardware is a specialist branch after the software/noise prerequisites; learners can follow the recommended prerequisite links to choose another branch.
+2. **Quantum fundamentals:** Quantum Mechanics Theories → Qubits Theories → Gates I → Gates II → Software and Compilation → Algorithm I → Algorithm II → Noises and Error Correction. Error Mitigation and Hardware I–IV branch after their required noise/software foundations; neither branch is required for every application goal.
 3. **Applications:** Applied Optimization explains QUBO/Ising modeling before Algorithm III introduces QAOA and other applications. Classical–Quantum Boundaries and Chemistry follow Algorithm III. Machine Learning follows Algorithm II and noise/QEC; Cryptography branches from Algorithms I–II. These application branches do not require one another.
 
 New lessons unlock when their prerequisite courses are complete. Previously completed lessons remain available for review, including imported legacy progress. Seven goal-based trails choose the required prerequisite courses and offer optional branches; see [accounts and trails](accounts-and-trails.md). Cryptography I uses the state, entanglement, and Bell-test foundations; Cryptography II also builds on the Shor/Grover material. Chemistry builds on Algorithm III. Machine learning branches after Algorithm II and noise/QEC, with applied optimization and Algorithm III offered as optional preparation. Classical–Quantum Boundaries uses its variational-energy background, introduces diagrams and Schmidt tools first, then MPS/MPO and DMRG/TEBD, then TTN/MERA/PEPS. Hardware proceeds from microwave physics through pulse descriptions, characterization, and effective-Hamiltonian models.
@@ -68,13 +68,15 @@ OpenQASM is a language family; compiler/importer coverage and device execution s
 
 ## Suggested event sampler
 
-For an introductory workshop, use Meet your first qubit → Superposition and interference → X/Y/Z → H → Build and decode the four Bell states, then demonstrate one application such as QAOA or variational energy. Insert the math primer when participants need it. Use the QUBO/Ising lessons before asking learners to construct an optimization Hamiltonian. BB84 offers a communication-focused follow-up. Reserve the specialist oracle, mitigation, QEC, chemistry, and ML sequences for follow-up sessions and independent study.
+For a short event demo, complete the first mathematics knowledge check as a guest, then use the public Quantum lab or [judge notebook](../notebooks/judge_demo.ipynb) to demonstrate superposition, interference, Bell correlations, and one application. The labs have no course-completion prerequisites; new lessons in the learning trail do.
+
+For continued study, follow Mathematics → Quantum Mechanics → Qubits → Gates → Software and Compilation → Algorithms, then choose an application goal. The familiar Meet your first qubit → Superposition → Gates → Bell-state sequence spans several courses, so learners must complete each course's prerequisites before opening its new lessons. Applied Optimization is useful preparation for constructing QUBO/Ising models but remains an elective in the QML trail. Reserve the specialist oracle, mitigation, QEC, chemistry, and ML sequences for follow-up sessions and independent study.
 
 ## Full syllabus
 
 ### Mathematical foundations
 
-A bridge from school mathematics to the language of quantum computing. Start here if vectors, complex numbers, or probability feel unfamiliar.
+A bridge from school mathematics to the language of quantum computing. Build confidence with vectors, complex numbers, and probability before starting quantum theory.
 
 **Required first:** Basic arithmetic; no quantum background.
 

@@ -777,7 +777,7 @@ function App() {
           <footer>
             <span className="footer-brand">✳ qubitquest</span>
             <span>Made for curious minds. Built with Qiskit.</span>
-            <a href="https://github.com/minhajuddinm/qubit-quest" target="_blank" rel="noreferrer">
+            <a href="https://github.com/AFOEK/qubit-quest" target="_blank" rel="noreferrer">
               Project on GitHub
             </a>
           </footer>

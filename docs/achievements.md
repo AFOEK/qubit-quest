@@ -1,6 +1,6 @@
 # Achievements and learning milestones
 
-Each course awards its named badge when every lesson in that course is complete. Partial progress appears on the badge card and in the learning trail. The Achievements page supports search and earned/in-progress/not-started filters, and opens the next unfinished lesson or a completed course for review. Existing saved completions qualify automatically.
+Each course awards its named badge when every lesson in that course is complete. Partial progress appears on the badge card and in the learning trail. The Achievements page supports search and earned/in-progress/not-started filters, and opens the next unfinished lesson when its prerequisites are met, or a completed lesson for review. For a locked course, the action redirects to the learning trail and identifies the required prerequisite course. Existing saved completions qualify automatically. All achievement features are available to guests as well as account holders.
 
 ## Journey tiers
 
