@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { courses, lessons } from '../curriculum';
 import { createAnimationController } from './animation-controller';
-import { clickInteractions } from './mascot-messages';
+import { clickInteractions, incorrectMessages } from './mascot-messages';
 import { completionReaction, spriteAnimation, type Reaction } from './mascot-state';
 import {
   createDialogueSelector,
@@ -13,7 +13,10 @@ import {
 import { createLessonPersonality } from './lesson-personality';
 import { observeLessonSave } from './learning-events';
 
-afterEach(() => vi.useRealTimers());
+afterEach(() => {
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});
 describe('curriculum context and curated copy', () => {
   it('covers every actual course, with a profile for every lesson', () => {
     expect(Object.keys(courseDialogueTopics).sort()).toEqual(
@@ -111,7 +114,7 @@ describe('contextual learning events', () => {
     expect(f.personality.answer('complex-amplitudes', false)).toBe(false);
     expect(f.personality.answer('hadamard-gate', false)).toBe(true);
     expect(f.controller.getBaseEmotion()).toBe('sad');
-    expect(f.notify.mock.lastCall?.[0].message).toContain('Hadamard');
+    expect(incorrectMessages).toContain(f.notify.mock.lastCall?.[0].message);
     f.controller.dispose();
   });
   it('keeps sad emotion through repeated incorrect checks and contextual petting, then clears on correct', () => {
@@ -119,14 +122,14 @@ describe('contextual learning events', () => {
     const f = fixture();
     f.personality.enter('complex-amplitudes');
     f.personality.answer('complex-amplitudes', false);
-    expect(f.notify.mock.lastCall?.[0].message).toContain('Complex');
+    expect(incorrectMessages).toContain(f.notify.mock.lastCall?.[0].message);
     vi.advanceTimersByTime(31000);
     expect(f.controller.getBaseEmotion()).toBe('sad');
     f.personality.answer('complex-amplitudes', false);
     const retry = f.notify.mock.lastCall?.[0].message;
-    expect(retry).toContain('explanation');
+    expect(incorrectMessages).toContain(retry);
     f.personality.answer('complex-amplitudes', false);
-    expect(f.notify.mock.lastCall?.[0].message).not.toBe(retry);
+    expect(incorrectMessages).toContain(f.notify.mock.lastCall?.[0].message);
     const click = f.personality.click({ state: 'curious', priority: 1 });
     expect(click.message).toContain('Complex numbers');
     f.play(click);

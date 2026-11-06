@@ -1,12 +1,14 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Minus, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { CatSprite } from './CatSprite';
 import { MascotEffects } from './MascotEffects';
 import { useMascot } from './MascotProvider';
 import { createClickInteractionPicker } from './mascot-messages';
 import { welcomeSteps } from './qubi-welcome';
 import './mascot.css';
+
+const SINGLE_CLICK_DELAY = 500;
 export function QuantumMascot({
   hidden = false,
   inline = false,
@@ -18,6 +20,9 @@ export function QuantumMascot({
 }) {
   const {
     reaction,
+    dialogue,
+    dismissDialogue,
+    setWelcomeSpeechActive,
     interact,
     rest,
     visibility,
@@ -30,12 +35,18 @@ export function QuantumMascot({
   } = useMascot();
   const [playClickInteraction] = useState(() => createClickInteractionPicker());
   const control = useRef<HTMLButtonElement>(null);
+  const pendingClick = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  function cancelPendingClick() {
+    clearTimeout(pendingClick.current);
+    pendingClick.current = undefined;
+  }
   const focusRequested = useRef(false);
   const name = useRef<HTMLButtonElement>(null);
   const focusNameRequested = useRef(false);
   const bubbleId = useId();
   const visible =
     !hidden && !(layout === 'desktop' && compact) && !(layout === 'mobile' && !compact);
+  useEffect(() => cancelPendingClick, [visible, visibility]);
   const canIntroduce =
     visible && visibility === 'shown' && welcomeReady && (!inline || layout === 'mobile');
   useEffect(() => {
@@ -43,6 +54,10 @@ export function QuantumMascot({
       welcome.startAutomatically();
   }, [canIntroduce, welcome.autoPending, welcome.startAutomatically, reaction]);
   const introduction = canIntroduce && welcome.step !== null;
+  useEffect(() => {
+    setWelcomeSpeechActive(introduction);
+    return () => setWelcomeSpeechActive(false);
+  }, [introduction, setWelcomeSpeechActive]);
   useEffect(() => {
     if (welcome.step === null && focusNameRequested.current) {
       name.current?.focus({ preventScroll: true });
@@ -65,6 +80,7 @@ export function QuantumMascot({
   }, [visibility]);
   if (!visible) return null;
   function preference(value: 'shown' | 'hidden' | 'minimized') {
+    cancelPendingClick();
     focusRequested.current = true;
     changeVisibility(value);
   }
@@ -89,7 +105,10 @@ export function QuantumMascot({
   }
   return (
     <aside className={`bd-cat-dock ${inline ? 'inline' : ''}`} aria-label="Qubi companion">
-      <div className="bd-cat-message" id={bubbleId}>
+      <div
+        className={`bd-cat-message${!introduction && dialogue ? ' has-dialogue' : ''}`}
+        id={bubbleId}
+      >
         {introduction ? (
           <>
             <p role="status" aria-live="polite" aria-atomic="true">
@@ -108,33 +127,55 @@ export function QuantumMascot({
             </div>
           </>
         ) : (
-          reaction.message && (
-            <span role="status" aria-live="polite" aria-atomic="true">
-              {reaction.message}
-            </span>
+          dialogue && (
+            <>
+              <span role="status" aria-live="polite" aria-atomic="true">
+                {dialogue.text}
+              </span>
+              <button
+                className="bd-cat-dismiss"
+                aria-label="Dismiss Qubi message"
+                title="Dismiss message"
+                onClick={() => {
+                  dismissDialogue(dialogue.id);
+                  control.current?.focus({ preventScroll: true });
+                }}
+              >
+                <X size={14} />
+              </button>
+            </>
           )
         )}
       </div>
       <div className="bd-cat-stage">
-        <div className="bd-cat-controls">
-          <button aria-label="Minimize Qubi" onClick={() => preference('minimized')}>
-            <Minus size={16} />
-          </button>
-          <button
-            aria-label="Minimize Qubi to circular avatar"
-            title="Minimize Qubi"
-            onClick={() => preference('minimized')}
-          >
-            <X size={16} />
-          </button>
-        </div>
         <button
           ref={control}
           className={`bd-cat-character state-${reaction.state}`}
           aria-label={reaction.state === 'sleeping' ? 'Wake and pet Qubi' : 'Pet Qubi'}
-          onClick={() => playClickInteraction(interact)}
+          aria-description="Click to interact. Double-click to minimize. Right-click to close."
+          onMouseDown={(event) => {
+            if (event.detail > 1) cancelPendingClick();
+          }}
+          onClick={(event) => {
+            cancelPendingClick();
+            if (event.detail === 0) {
+              playClickInteraction(interact);
+              return;
+            }
+            if (event.detail === 1)
+              pendingClick.current = setTimeout(() => {
+                pendingClick.current = undefined;
+                playClickInteraction(interact);
+              }, SINGLE_CLICK_DELAY);
+          }}
+          onDoubleClick={() => preference('minimized')}
+          onContextMenu={(event) => {
+            event.preventDefault();
+            preference('minimized');
+          }}
           onKeyDown={(event) => {
             if (event.key === 'Escape') {
+              cancelPendingClick();
               event.stopPropagation();
               rest();
             }

@@ -1,5 +1,7 @@
 import map from '../../public/pets/bd-cat/animation-map.json';
 import { getLearningProgress } from '../achievements';
+import type { SpeechOptions } from './speech-controller';
+import { incorrectMessages } from './mascot-messages';
 export type MascotState =
   | 'idle'
   | 'happy'
@@ -18,6 +20,7 @@ export type Reaction = {
   priority: number;
   cycles?: number;
   baseEmotion?: BaseEmotion;
+  dialogue?: SpeechOptions;
 };
 export const animations = map.animations;
 export function spriteAnimation(state: MascotState) {
@@ -46,7 +49,7 @@ export function answerReaction(correct: boolean): Reaction {
     state: correct ? 'happy' : 'sad',
     message: correct
       ? 'You got it! Curiosity looks good on you.'
-      : 'Almost! Let’s try another approach.',
+      : incorrectMessages[Math.floor(Math.random() * incorrectMessages.length)],
     priority: 2,
     baseEmotion: correct ? 'idle' : 'sad',
   };

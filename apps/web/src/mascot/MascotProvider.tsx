@@ -18,11 +18,14 @@ import {
 import { createAnimationController } from './animation-controller';
 import { useQubiWelcome } from './qubi-welcome';
 import { createLessonPersonality } from './lesson-personality';
+import { createSpeechController, speechForReaction, type Speech } from './speech-controller';
 const Context = createContext<ReturnType<typeof useController> | null>(null);
 function useController() {
   const { user, initializing } = useLearner();
   const [reaction, setReaction] = useState(idleReaction);
   const current = useRef(idleReaction);
+  const [dialogue, setDialogue] = useState<Speech | null>(null);
+  const [speech] = useState(() => createSpeechController(setDialogue));
   const [readyFor, setReadyFor] = useState<string | null | undefined>(null);
   const [visibility, setVisibility] = useState(readVisibility);
   const visibilityRef = useRef(visibility);
@@ -45,15 +48,22 @@ function useController() {
   const react = useCallback(
     (next: Reaction) => {
       if (next.priority > 0) activeAt.current = Date.now();
-      if (next.priority >= 1) welcome.dismiss();
-      return !document.hidden && controller.play(next);
+      const accepted = !document.hidden && controller.play(next);
+      const message = speechForReaction(next);
+      if (accepted && message && visibilityRef.current === 'shown')
+        speech.show(message, { incorrectActive: controller.getBaseEmotion() === 'sad' });
+      return accepted;
     },
-    [controller, welcome.dismiss],
+    [controller, speech],
   );
+  const clearQuestion = useCallback(() => {
+    controller.clearQuestion();
+    speech.clearQuestion();
+  }, [controller, speech]);
   const [personality] = useState(() =>
     createLessonPersonality({
       play: react,
-      clearQuestion: () => controller.clearQuestion(),
+      clearQuestion,
       canSpeak: () => visibilityRef.current === 'shown' && !document.hidden,
     }),
   );
@@ -63,7 +73,11 @@ function useController() {
   );
   function changeVisibility(value: Visibility) {
     const normalized = value === 'shown' ? 'shown' : 'minimized';
-    if (normalized === 'minimized') welcome.dismiss();
+    visibilityRef.current = normalized;
+    if (normalized === 'minimized') {
+      welcome.dismiss();
+      speech.dismiss();
+    }
     setVisibility(normalized);
     try {
       localStorage.setItem(visibilityKey, normalized);
@@ -73,15 +87,16 @@ function useController() {
   }
   useEffect(() => {
     welcome.dismiss();
+    speech.dismiss();
     personality.reset();
     reset();
     setReadyFor(user?.id);
     return () => {
       personality.reset();
       controller.dispose();
+      speech.dispose();
     };
-  }, [user?.id, reset, controller, welcome.dismiss, personality]);
-  const clearQuestion = useCallback(() => controller.clearQuestion(), [controller]);
+  }, [user?.id, reset, controller, welcome.dismiss, personality, speech]);
   useEffect(() => {
     const layout = window.matchMedia('(max-width: 600px)');
     const updateLayout = () => setCompact(layout.matches);
@@ -103,6 +118,7 @@ function useController() {
       if (current.current.state === 'sleeping') reset();
     }
     function visible() {
+      speech.prune();
       controller.rest();
     }
     window.addEventListener('pointerdown', activity);
@@ -142,9 +158,12 @@ function useController() {
       window.removeEventListener('keydown', activity);
       document.removeEventListener('visibilitychange', visible);
     };
-  }, [react, reset, visibility, controller, welcome.isOpen]);
+  }, [react, reset, visibility, controller, welcome.isOpen, speech]);
   return {
     reaction,
+    dialogue,
+    dismissDialogue: speech.dismiss,
+    setWelcomeSpeechActive: speech.setWelcomeActive,
     react,
     interact,
     enterLesson: personality.enter,

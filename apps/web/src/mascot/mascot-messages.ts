@@ -1,5 +1,14 @@
 import type { MascotState, Reaction } from './mascot-state';
 
+export const incorrectMessages = [
+  'Oops! Let’s try again!',
+  'Don’t give up! You’ve got this!',
+  'Even quantum scientists make mistakes!',
+  'Almost! Let’s try another approach.',
+  'Take a breath. Learning takes practice!',
+  'One tricky question won’t stop your curiosity!',
+] as const;
+
 export const clickInteractions: readonly { state: MascotState; message: string }[] = [
   { state: 'happy', message: 'Wavefunction? I can wave!' },
   { state: 'idle', message: 'Blink and you’ll miss my next quantum thought.' },

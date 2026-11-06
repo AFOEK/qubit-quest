@@ -4,7 +4,11 @@ import { courses, lessons } from '../curriculum';
 import { CatSprite } from './CatSprite';
 import { createAnimationController } from './animation-controller';
 import { observeLessonSave } from './learning-events';
-import { clickInteractions, createClickInteractionPicker } from './mascot-messages';
+import {
+  clickInteractions,
+  createClickInteractionPicker,
+  incorrectMessages,
+} from './mascot-messages';
 import { readWelcome, rememberWelcome, welcomeKey, welcomeSteps } from './qubi-welcome';
 import {
   animations,
@@ -60,7 +64,7 @@ describe('learning event boundaries', () => {
   it('encourages both correct answers and retries without reward events', () => {
     expect(answerReaction(true).state).toBe('happy');
     expect(answerReaction(false).state).toBe('sad');
-    expect(answerReaction(false).message).toContain('another approach');
+    expect(incorrectMessages).toContain(answerReaction(false).message);
   });
   it.each(['guest', 'account'])('waits for the existing %s save to resolve', async () => {
     let resolve!: (ids: string[]) => void;
