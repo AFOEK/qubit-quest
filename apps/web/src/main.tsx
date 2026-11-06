@@ -36,7 +36,9 @@ import {
 } from './learning-paths';
 import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
 import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
+import { DashboardHero } from './DashboardHero';
 import './style.css';
+import './quantum.css';
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
 type Result = {
@@ -61,29 +63,29 @@ function Sphere({ x, y, z, large = false }: { x: number; y: number; z: number; l
     >
       <defs>
         <radialGradient id="orb">
-          <stop stopColor="#e7fff1" />
-          <stop offset="1" stopColor="#a1d3bd" stopOpacity=".32" />
+          <stop stopColor="#92e2ff" />
+          <stop offset="1" stopColor="#407abc" stopOpacity=".32" />
         </radialGradient>
         <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-          <path d="M0 0L6 3L0 6" fill="#205e4b" />
+          <path d="M0 0L6 3L0 6" fill="#8ce9ff" />
         </marker>
       </defs>
-      <circle cx="150" cy="147" r="101" fill="url(#orb)" stroke="#80b69f" />
+      <circle cx="150" cy="147" r="101" fill="url(#orb)" stroke="#5b83c5" />
       <ellipse
         cx="150"
         cy="147"
         rx="101"
         ry="29"
         fill="none"
-        stroke="#80b69f"
+        stroke="#5b83c5"
         strokeDasharray="4 5"
       />
-      <ellipse cx="150" cy="147" rx="37" ry="101" fill="none" stroke="#80b69f" />
-      <path d="M150 32V262M35 147H265M99 177L201 117" stroke="#8db6a5" strokeWidth="1" />
-      <path d={`M150 147L${px} ${py}`} stroke="#205e4b" strokeWidth="4" markerEnd="url(#arrow)" />
-      <circle cx={px} cy={py} r="8" fill="#275f4d" />
+      <ellipse cx="150" cy="147" rx="37" ry="101" fill="none" stroke="#5b83c5" />
+      <path d="M150 32V262M35 147H265M99 177L201 117" stroke="#456ca5" strokeWidth="1" />
+      <path d={`M150 147L${px} ${py}`} stroke="#8ce9ff" strokeWidth="4" markerEnd="url(#arrow)" />
+      <circle cx={px} cy={py} r="8" fill="#8de7ff" />
       <circle cx={px - 2} cy={py - 2} r="2" fill="white" />
-      <g fill="#3a6657" fontSize="14" fontFamily="sans-serif">
+      <g fill="#afc6ee" fontSize="14" fontFamily="sans-serif">
         <text x="138" y="22">
           |0⟩
         </text>
@@ -139,6 +141,9 @@ function App() {
   const state = sequence.reduce((s, g) => apply(s, g), initial()),
     d = describe(state),
     next = nextPathLesson(learner.pathId, completed);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [page]);
   const pathTitle =
     learningPaths.find((path) => path.id === learner.pathId)?.title ?? 'Full learning trail';
   function openAccount(mode: 'login' | 'register' = 'login') {
@@ -266,7 +271,10 @@ function App() {
     { id: 'immersive', label: 'Immersive lab', Icon: Glasses },
   ];
   return (
-    <div className="app">
+    <div className="app" data-page={page}>
+      <a className="skip-link" href="#main-content" inert={lesson !== null || vr || accountOpen}>
+        Skip to content
+      </a>
       <aside
         inert={lesson !== null || vr || accountOpen}
         className={mobile ? 'sidebar visible' : 'sidebar'}
@@ -277,7 +285,7 @@ function App() {
           </span>
           <span>
             Quantum<span className="brand-light"> Grove</span>
-            <small>A little curiosity. A quantum leap.</small>
+            <small>Follow the signal. Find your next state.</small>
           </span>
         </a>
         <nav aria-label="Main navigation">
@@ -335,6 +343,7 @@ function App() {
           >
             <Menu />
           </button>
+          <span className="mobile-wordmark">Quantum Grove</span>
           <span className="breadcrumb">
             Your quantum journey <ChevronRight size={14} />{' '}
             <b>{nav.find((item) => item.id === page)?.label}</b>
@@ -363,7 +372,7 @@ function App() {
             hidden={lesson !== null || vr || accountOpen || mobile || page === 'daily'}
           />
         </div>
-        <main>
+        <main id="main-content" tabIndex={-1}>
           {learner.initializing && (
             <div className="account-status account-choice" role="status">
               <span>Checking for a saved account. You can start learning as a guest.</span>
@@ -415,72 +424,28 @@ function App() {
           )}
           {page === 'learn' ? (
             <>
-              <div className="page-heading">
-                <div>
-                  <p className="hello">Hey, explorer ✺</p>
-                  <h1>Make quantum click.</h1>
-                  <p>
-                    From the math to quantum mechanics, then into real applications. No physics
-                    degree required.
-                  </p>
-                </div>
-                <span className="edition">
-                  Fall Fest ’26
-                  <br />
-                  <b>Learning by doing</b>
-                </span>
-              </div>
+              <DashboardHero
+                name={learner.user?.name}
+                title={next < 0 ? `${pathTitle} complete.` : lessons[next].title}
+                course={next < 0 ? pathTitle : lessons[next].unit}
+                time={next < 0 ? lessons[0].time : lessons[next].time}
+                completed={completed.length}
+                finished={next < 0}
+                totalCourses={rewards.totalCourses}
+                onStart={() => openLesson(next < 0 ? 0 : next)}
+                onLab={() => setPage('lab')}
+              />
               {!learner.user && !learner.initializing && (
                 <div className="account-save-banner">
-                  <Cloud size={25} />
-                  <div>
-                    <strong>No account needed. Start exploring.</strong>
-                    <p>
-                      Guest progress is saved in this browser. An optional account keeps your path,
-                      lessons, and daily quizzes across devices.
-                    </p>
-                  </div>
-                  <button className="primary" onClick={() => openAccount('register')}>
-                    Create account
-                  </button>
-                  <button className="text-button" onClick={() => openAccount()}>
-                    Sign in
+                  <Cloud size={20} />
+                  <p>
+                    Learning as a guest. <strong>Your progress stays on this device.</strong>
+                  </p>
+                  <button className="text-button" onClick={() => openAccount('register')}>
+                    Save across devices <ArrowRight size={15} />
                   </button>
                 </div>
               )}
-              <section className="hero">
-                <div className="hero-copy">
-                  <span className="pill">
-                    <span />
-                    Your next discovery
-                  </span>
-                  <h2>{next < 0 ? `${pathTitle} complete.` : lessons[next].title}</h2>
-                  <p>
-                    {next < 0
-                      ? 'You’ve finished the required lessons in this trail. Explore optional branches, review a lesson, or choose another goal.'
-                      : courseById.get(lessons[next].courseId)!.description}
-                  </p>
-                  <button className="primary" onClick={() => openLesson(next < 0 ? 0 : next)}>
-                    {next < 0
-                      ? 'Review a lesson'
-                      : completed.length
-                        ? 'Continue learning'
-                        : 'Start your journey'}
-                    <ArrowRight size={18} />
-                  </button>
-                  <div className="hero-meta">
-                    <span>◷ {next < 0 ? lessons[0].time : lessons[next].time} min</span>
-                    <span>{next < 0 ? '✧ Required trail complete' : `✧ +${XP_PER_LESSON} XP`}</span>
-                    <span>{next < 0 ? 'Review at your pace' : lessons[next].unit}</span>
-                  </div>
-                </div>
-                <div className="hero-art">
-                  <span className="floating-label">a world of possibilities</span>
-                  <Sphere {...describe(apply(initial(), 'H'))} large />
-                  <span className="ket-label">α|0⟩ + β|1⟩</span>
-                  <span className="art-spark">✧</span>
-                </div>
-              </section>
               <div className="trail-layout">
                 <LearningTrail
                   completed={completed}
@@ -501,8 +466,21 @@ function App() {
                     accountSaved={Boolean(learner.user)}
                     saving={learner.saving}
                   />
+                  <div className="daily-invite">
+                    <span className="daily-invite-icon">
+                      <Lightbulb size={25} />
+                    </span>
+                    <span className="daily-badge">Fresh every day</span>
+                    <h3>Your daily quantum check.</h3>
+                    <p>Three quick questions. Something new to think about.</p>
+                    <button onClick={() => setPage('daily')}>
+                      Try the daily quiz <ArrowRight size={17} />
+                    </button>
+                  </div>
                   <div className="lab-invite">
-                    <span className="mini-orbit">✳</span>
+                    <span className="mini-orbit">
+                      <FlaskConical size={26} />
+                    </span>
                     <h3>
                       What if you
                       <br />
