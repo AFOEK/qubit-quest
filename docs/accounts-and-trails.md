@@ -22,6 +22,10 @@ Account lesson completion sends the selected quiz answer. The API checks the ans
 
 All trails include their complete prerequisite chain. The shared foundation is mathematics → quantum mechanics → qubits → Gates I–II → Software and Compilation → Algorithms I–II. Catalog order places prerequisite courses first. Courses can be opened for inspection while locked; new lessons require all lessons of each prerequisite course. Completed lessons are always reviewable.
 
+The default **Crystal journey** view previews the seven paths. Clicking a crystal opens its course sequence; **Set as my learning goal** saves that goal. Previewing a different path alone does not change the saved goal. This view introduces new courses in sequence while retaining access to completed lessons for review.
+
+Switch to **Full course catalog** for the course-list controls. **Browse all 27 courses** shows the whole catalog without changing the saved goal; **My required trail** and **Show optional branches** restrict it to that goal. Expand **Find a course or topic** to reveal search and track filters. The catalog applies each course's explicit prerequisites.
+
 | Goal                         | Required specialization after its foundations   | Optional branches                                                   |
 | ---------------------------- | ----------------------------------------------- | ------------------------------------------------------------------- |
 | Quantum foundations          | Noise/QEC → Error Mitigation                    | Algorithm III                                                       |

@@ -202,7 +202,9 @@ export function QuantumJourney({
   const sequenceBlocked =
     displayCourseIndex > 0 &&
     required.slice(0, displayCourseIndex).some((id) => !courseFinished(id, completed));
-  const courseLocked = prerequisiteMissing.length > 0 || sequenceBlocked;
+  const courseLocked =
+    !courseFinished(activeCourse ?? '', completed) &&
+    (prerequisiteMissing.length > 0 || sequenceBlocked);
   const courseAchievement = achievements.find((a) => a.courseId === activeCourse);
 
   useEffect(() => {
@@ -387,7 +389,8 @@ export function QuantumJourney({
                       index > 0 &&
                       required.slice(0, index).some((prev) => !courseFinished(prev, completed));
                     const locked =
-                      blockedBySequence || missingPrerequisites(id, completed).length > 0;
+                      !done &&
+                      (blockedBySequence || missingPrerequisites(id, completed).length > 0);
                     const active = activeCourse === id;
                     return (
                       <div
@@ -461,8 +464,8 @@ export function QuantumJourney({
                       </div>
                       {courseLocked && (
                         <p className="qj-prereq">
-                          <LockKeyhole size={15} /> Complete earlier courses to unlock these
-                          lessons.
+                          <LockKeyhole size={15} /> Complete earlier courses to unlock new lessons.
+                          Completed lessons remain available for review.
                         </p>
                       )}
                       {courseAchievement?.earned && (
@@ -475,7 +478,9 @@ export function QuantumJourney({
                           const lessonIndex = indices.get(lesson.id);
                           const done = completed.includes(lesson.id);
                           const enabled =
-                            !courseLocked && lessonAvailable(lesson.id, completed) && !saving;
+                            (done || !courseLocked) &&
+                            lessonAvailable(lesson.id, completed) &&
+                            !saving;
                           return (
                             <button
                               key={lesson.id}

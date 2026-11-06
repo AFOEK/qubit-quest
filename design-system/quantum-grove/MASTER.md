@@ -8,7 +8,7 @@ User direction: quantum computing and computer science, with light traveling thr
 - Foreground: `#E9EFFF`; secondary text: `#A1B0CC`; border: `#283751`.
 - Signal cyan: `#63D8F5`; interference violet: `#A79BFF`; warning amber: `#FFD18B`.
 - Headings: Outfit, medium and semibold. Body: DM Sans, regular and medium. Monospace is reserved for mathematical state labels and circuit data.
-- The hero's circuit visualization is the signature element. Cyan and violet pulses show conceptual flow through gates; it is an illustration, not a hardware claim.
+- The current hero uses `CrystalSphere.tsx`, a Bloch-sphere visualization with cyan and violet state-space geometry. The separate `DashboardHero.tsx` circuit illustration is not mounted by the current app. Neither illustration is a claim of hardware execution.
 - Keep most surfaces flat. Reserve glow for a small signal, the current learning state, and the hero illustration.
 
 ## Interaction and hierarchy
