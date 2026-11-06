@@ -1,4 +1,4 @@
-import map from '../../public/pets/bd-cat/animation-map.json';
+import map from './animation-map.json';
 import { getLearningProgress } from '../achievements';
 import type { SpeechOptions } from './speech-controller';
 import { incorrectMessages } from './mascot-messages';

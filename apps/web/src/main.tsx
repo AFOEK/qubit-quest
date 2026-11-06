@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { apply, initial, describe, type GateName } from './quantum';
 import { lessons, courseById, type Lab } from './curriculum';
-import { LearningTrail } from './LearningTrail';
+import { QuantumJourney } from './QuantumJourney';
 import { LessonDialog } from './LessonDialog';
 import { XP_PER_LESSON } from './progress';
 import { LearnerProvider, useLearner } from './LearnerProvider';
@@ -36,13 +36,8 @@ import {
 } from './learning-paths';
 import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
 import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
-import { DashboardHero } from './DashboardHero';
 import './style.css';
-<<<<<<< HEAD
 import { CrystalSphere } from './CrystalSphere';
-=======
-import './quantum.css';
->>>>>>> 3e58cd1b8a0b938f7b2338107073ba14507fba09
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
 type Result = {
@@ -428,17 +423,6 @@ function App() {
           )}
           {page === 'learn' ? (
             <>
-              <DashboardHero
-                name={learner.user?.name}
-                title={next < 0 ? `${pathTitle} complete.` : lessons[next].title}
-                course={next < 0 ? pathTitle : lessons[next].unit}
-                time={next < 0 ? lessons[0].time : lessons[next].time}
-                completed={completed.length}
-                finished={next < 0}
-                totalCourses={rewards.totalCourses}
-                onStart={() => openLesson(next < 0 ? 0 : next)}
-                onLab={() => setPage('lab')}
-              />
               {!learner.user && !learner.initializing && (
                 <div className="account-save-banner">
                   <Cloud size={20} />
@@ -450,7 +434,6 @@ function App() {
                   </button>
                 </div>
               )}
-<<<<<<< HEAD
               <section className="hero">
                 <div className="hero-copy">
                   <span className="pill">
@@ -488,10 +471,8 @@ function App() {
                   <span className="art-spark">✧</span>
                 </div>
               </section>
-=======
->>>>>>> 3e58cd1b8a0b938f7b2338107073ba14507fba09
               <div className="trail-layout">
-                <LearningTrail
+                <QuantumJourney
                   completed={completed}
                   next={next}
                   onOpen={openLesson}
