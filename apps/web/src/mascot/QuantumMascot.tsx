@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Minus, X } from 'lucide-react';
 import { CatSprite } from './CatSprite';
 import { MascotEffects } from './MascotEffects';
 import { useMascot } from './MascotProvider';
 import { createClickInteractionPicker } from './mascot-messages';
+import { welcomeSteps } from './qubi-welcome';
 import './mascot.css';
 export function QuantumMascot({
   hidden = false,
@@ -15,18 +16,54 @@ export function QuantumMascot({
   inline?: boolean;
   layout?: 'desktop' | 'mobile';
 }) {
-  const { reaction, react, rest, visibility, changeVisibility, started, compact, playback } =
-    useMascot();
+  const {
+    reaction,
+    react,
+    rest,
+    visibility,
+    changeVisibility,
+    started,
+    compact,
+    playback,
+    welcome,
+    welcomeReady,
+  } = useMascot();
   const [playClickInteraction] = useState(() => createClickInteractionPicker());
   const control = useRef<HTMLButtonElement>(null);
   const focusRequested = useRef(false);
+  const name = useRef<HTMLButtonElement>(null);
+  const focusNameRequested = useRef(false);
+  const bubbleId = useId();
+  const visible =
+    !hidden && !(layout === 'desktop' && compact) && !(layout === 'mobile' && !compact);
+  const canIntroduce =
+    visible && visibility === 'shown' && welcomeReady && (!inline || layout === 'mobile');
+  useEffect(() => {
+    if (canIntroduce && welcome.autoPending && reaction.priority === 0)
+      welcome.startAutomatically();
+  }, [canIntroduce, welcome.autoPending, welcome.startAutomatically, reaction]);
+  const introduction = canIntroduce && welcome.step !== null;
+  useEffect(() => {
+    if (welcome.step === null && focusNameRequested.current) {
+      name.current?.focus({ preventScroll: true });
+      focusNameRequested.current = false;
+    }
+  }, [welcome.step]);
+  function finishIntroduction() {
+    focusNameRequested.current = true;
+    welcome.dismiss();
+  }
+  function nextIntroduction() {
+    if (welcome.step === welcomeSteps.length - 1) focusNameRequested.current = true;
+    welcome.next();
+  }
   useEffect(() => {
     if (focusRequested.current) {
       control.current?.focus();
       focusRequested.current = false;
     }
   }, [visibility]);
-  if (hidden || (layout === 'desktop' && compact) || (layout === 'mobile' && !compact)) return null;
+  if (!visible) return null;
   function preference(value: 'shown' | 'hidden' | 'minimized') {
     focusRequested.current = true;
     changeVisibility(value);
@@ -37,8 +74,8 @@ export function QuantumMascot({
         ref={control}
         className="bd-cat-avatar"
         onClick={() => preference('shown')}
-        aria-label="Restore Qubi"
-        title="Restore Qubi"
+        aria-label="Qubi — Your quantum companion"
+        title="Qubi — Your quantum companion"
       >
         <CatSprite state="idle" face />
       </button>
@@ -52,8 +89,31 @@ export function QuantumMascot({
   }
   return (
     <aside className={`bd-cat-dock ${inline ? 'inline' : ''}`} aria-label="Qubi companion">
-      <div className="bd-cat-message" role="status" aria-live="polite" aria-atomic="true">
-        {reaction.message}
+      <div className="bd-cat-message" id={bubbleId}>
+        {introduction ? (
+          <>
+            <p role="status" aria-live="polite" aria-atomic="true">
+              {welcomeSteps[welcome.step!].message}
+            </p>
+            <div className="bd-cat-welcome-actions">
+              <small>
+                {welcome.step! + 1} / {welcomeSteps.length}
+              </small>
+              <button onClick={finishIntroduction} aria-label="Dismiss Qubi introduction">
+                Skip
+              </button>
+              <button disabled={reaction.priority > 0} onClick={nextIntroduction}>
+                {welcome.step === welcomeSteps.length - 1 ? 'Got it' : 'Next'}
+              </button>
+            </div>
+          </>
+        ) : (
+          reaction.message && (
+            <span role="status" aria-live="polite" aria-atomic="true">
+              {reaction.message}
+            </span>
+          )
+        )}
       </div>
       <div className="bd-cat-stage">
         <div className="bd-cat-controls">
@@ -82,6 +142,18 @@ export function QuantumMascot({
         >
           <CatSprite state={reaction.state} playback={playback} />
           <MascotEffects key={started} state={reaction.state} />
+        </button>
+        <button
+          ref={name}
+          className="bd-cat-name"
+          aria-label="Meet Qubi"
+          title="Meet Qubi"
+          aria-expanded={introduction}
+          aria-controls={introduction ? bubbleId : undefined}
+          disabled={!canIntroduce || reaction.priority > 0}
+          onClick={() => welcome.begin()}
+        >
+          Qubi
         </button>
       </div>
     </aside>

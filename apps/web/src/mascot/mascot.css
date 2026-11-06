@@ -218,3 +218,53 @@
     display: block;
   }
 }
+
+/* Fit the identity into the existing divider gap without moving or resizing the sprite. */
+.bd-cat-name {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1px;
+  padding: 0;
+  font-family: Manrope, sans-serif;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 12px;
+  color: var(--green);
+}
+.bd-cat-name:disabled {
+  opacity: 1;
+}
+.bd-cat-name:not(:disabled):hover {
+  text-decoration: underline;
+}
+.bd-cat-message > p {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.bd-cat-welcome-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.bd-cat-welcome-actions small {
+  margin-right: auto;
+  white-space: nowrap;
+  font-size: 10px;
+  color: var(--muted);
+}
+.bd-cat-welcome-actions button {
+  padding: 5px 2px;
+  font-size: 11px;
+  color: var(--green);
+  border-radius: 4px;
+}
+.bd-cat-welcome-actions button:last-child {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  background: #f2f7eb;
+}

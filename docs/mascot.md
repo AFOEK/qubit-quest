@@ -31,3 +31,9 @@ Run `npm test`, `npm run build`, and `npm run format:check`. Mascot tests cover 
 Browser verification should cover desktop and narrow mobile layouts, keyboard controls/focus, reduced motion, petting, persisted hide/restore, real lesson retries and reviews, daily answer feedback, and achievement announcements. Account transport may be mocked for UI verification; this does not replace end-to-end verification against an authenticated backend.
 
 Reduced motion keeps the artwork static while finite reactions still complete after their mapped frame durations. No sprite assets, animation-map frame definitions, progress rules, or backend APIs are changed.
+
+## Meeting Qubi
+
+The expanded sprite has a small Qubi name label within the existing gap above the account divider. Selecting the label replays a nonmodal three-step introduction in the existing speech bubble. Next/Got it waits for each mapped wave/happy/playful sequence to finish; Skip is always available. The existing frame controller plays these reactions at priority 0.5, below clicks and learning feedback, without altering the base emotion.
+
+`qubi-welcome.ts` holds introduction copy, storage helpers, and shared provider-owned welcome state. `qq.qubi.welcome.v1` records `shown` on first display, then `completed` or `dismissed`. Recording first display prevents refreshing midway from prompting again. Storage failures fall back to shared state for the current visit. Minimized visitors are not expanded automatically. Automatic introductions wait for account initialization and an eligible visible mascot outside lesson/account/immersive overlays. Page changes retain the current introduction step rather than replaying its animation. Normal petting or learning feedback dismisses the introduction, and the name label remains the replay entry point.

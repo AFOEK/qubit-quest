@@ -16,11 +16,13 @@ import {
   type Visibility,
 } from './mascot-state';
 import { createAnimationController } from './animation-controller';
+import { useQubiWelcome } from './qubi-welcome';
 const Context = createContext<ReturnType<typeof useController> | null>(null);
 function useController() {
-  const { user } = useLearner();
+  const { user, initializing } = useLearner();
   const [reaction, setReaction] = useState(idleReaction);
   const current = useRef(idleReaction);
+  const [readyFor, setReadyFor] = useState<string | null | undefined>(null);
   const [visibility, setVisibility] = useState(readVisibility);
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 600px)').matches);
   const [started, setStarted] = useState(0);
@@ -32,6 +34,7 @@ function useController() {
       setStarted((value) => value + 1);
     }),
   );
+  const welcome = useQubiWelcome(controller, current);
   const reset = useCallback(() => {
     controller.reset();
     activeAt.current = Date.now();
@@ -39,12 +42,14 @@ function useController() {
   const react = useCallback(
     (next: Reaction) => {
       if (next.priority > 0) activeAt.current = Date.now();
+      if (next.priority >= 1) welcome.dismiss();
       return !document.hidden && controller.play(next);
     },
-    [controller],
+    [controller, welcome.dismiss],
   );
   function changeVisibility(value: Visibility) {
     const normalized = value === 'shown' ? 'shown' : 'minimized';
+    if (normalized === 'minimized') welcome.dismiss();
     setVisibility(normalized);
     try {
       localStorage.setItem(visibilityKey, normalized);
@@ -53,9 +58,11 @@ function useController() {
     }
   }
   useEffect(() => {
+    welcome.dismiss();
     reset();
+    setReadyFor(user?.id);
     return () => controller.dispose();
-  }, [user?.id, reset, controller]);
+  }, [user?.id, reset, controller, welcome.dismiss]);
   const clearQuestion = useCallback(() => controller.clearQuestion(), [controller]);
   useEffect(() => {
     const layout = window.matchMedia('(max-width: 600px)');
@@ -90,6 +97,7 @@ function useController() {
           if (
             !document.hidden &&
             visibility === 'shown' &&
+            !welcome.isOpen() &&
             current.current.state === 'idle' &&
             controller.getBaseEmotion() === 'idle'
           ) {
@@ -116,7 +124,7 @@ function useController() {
       window.removeEventListener('keydown', activity);
       document.removeEventListener('visibilitychange', visible);
     };
-  }, [react, reset, visibility, controller]);
+  }, [react, reset, visibility, controller, welcome.isOpen]);
   return {
     reaction,
     react,
@@ -128,6 +136,8 @@ function useController() {
     started,
     compact,
     playback: controller,
+    welcome,
+    welcomeReady: !initializing && readyFor === user?.id,
   };
 }
 export function MascotProvider({ children }: { children: ReactNode }) {

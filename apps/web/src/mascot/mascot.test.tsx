@@ -5,6 +5,7 @@ import { CatSprite } from './CatSprite';
 import { createAnimationController } from './animation-controller';
 import { observeLessonSave } from './learning-events';
 import { clickInteractions, createClickInteractionPicker } from './mascot-messages';
+import { readWelcome, rememberWelcome, welcomeKey, welcomeSteps } from './qubi-welcome';
 import {
   animations,
   answerReaction,
@@ -323,4 +324,75 @@ describe('paired shuffled click interactions', () => {
       }
     },
   );
+});
+
+describe('Qubi introduction', () => {
+  it('treats a new visitor or existing learner without a welcome preference as unseen', () => {
+    const getItem = vi.fn(() => null);
+    vi.stubGlobal('localStorage', { getItem });
+    expect(readWelcome()).toBe(false);
+    expect(getItem).toHaveBeenCalledWith(welcomeKey);
+  });
+  it.each(['shown', 'completed', 'dismissed'] as const)(
+    'remembers %s independently of progress and visibility preferences',
+    (status) => {
+      const storage = new Map<string, string>();
+      const setItem = vi.fn((key: string, value: string) => storage.set(key, value));
+      vi.stubGlobal('localStorage', {
+        getItem: (key: string) => storage.get(key) ?? null,
+        setItem,
+      });
+      rememberWelcome(status);
+      expect(readWelcome()).toBe(true);
+      expect(setItem).toHaveBeenCalledExactlyOnceWith('qq.qubi.welcome.v1', status);
+    },
+  );
+  it('handles blocked storage without throwing', () => {
+    vi.stubGlobal('localStorage', {
+      getItem: () => {
+        throw Error('blocked');
+      },
+      setItem: () => {
+        throw Error('blocked');
+      },
+    });
+    expect(readWelcome()).toBe(false);
+    expect(() => rememberWelcome('dismissed')).not.toThrow();
+  });
+  it('pairs the exact introduction copy with available wave/happy/playful frames', () => {
+    expect(welcomeSteps.map((step) => step.message)).toEqual([
+      "Psst... Hey there! I'm Qubi, your quantum companion!",
+      "I'll celebrate your victories and cheer you on when quantum stuff gets tricky!",
+      'Give me a click anytime! I have a few quantum tricks up my paws.',
+    ]);
+    expect(welcomeSteps.map((step) => spriteAnimation(step.state))).toEqual([
+      animations.wave,
+      animations.wave,
+      animations.playful,
+    ]);
+  });
+  it.each(welcomeSteps)(
+    'finishes introduction pose $state once and preserves a sad base',
+    (step) => {
+      vi.useFakeTimers();
+      const notify = vi.fn();
+      const controller = createAnimationController(notify);
+      controller.play(answerReaction(false));
+      controller.play({ ...step, priority: 0.5 });
+      const animation = spriteAnimation(step.state);
+      vi.advanceTimersByTime(animation.frames.length * animation.frameDurationMs);
+      expect(notify.mock.lastCall?.[0].state).toBe('sad');
+      controller.dispose();
+    },
+  );
+  it('allows validated feedback to preempt a welcome animation without stale callbacks', () => {
+    vi.useFakeTimers();
+    const notify = vi.fn();
+    const controller = createAnimationController(notify);
+    controller.play({ ...welcomeSteps[0], priority: 0.5 });
+    controller.play(answerReaction(false));
+    vi.advanceTimersByTime(1000);
+    expect(notify.mock.lastCall?.[0].state).toBe('sad');
+    controller.dispose();
+  });
 });
