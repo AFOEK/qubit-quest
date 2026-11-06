@@ -96,9 +96,12 @@ button {
   display: flex;
   gap: 10px;
   align-items: center;
-  font-size: 23px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: -1px;
+}
+.brand > span:last-child {
+  white-space: nowrap;
 }
 .brand-icon {
   background: #e4f1dc;
@@ -1004,7 +1007,7 @@ pre {
     font-size: 11px;
   }
   .brand {
-    font-size: 21px;
+    font-size: 18px;
   }
   .side-note {
     margin-bottom: 30px;
@@ -1029,7 +1032,7 @@ pre {
     width: calc(100% - 195px);
   }
   .brand {
-    font-size: 19px;
+    font-size: 17px;
     gap: 6px;
   }
   .brand-icon {

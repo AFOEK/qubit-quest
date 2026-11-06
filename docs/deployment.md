@@ -1,6 +1,6 @@
 # Deploy to Vercel
 
-Import **`AFOEK/qubit-quest`** into Vercel with `main` as the production branch and the repository root as the project root. Keep the Vite preset. The tracked `vercel.json` defines `npm ci`, `npm run build`, and the `dist` output. Choose Node.js 22.x (22.12 or later) or 24.x. A Vercel project connected to another fork will not receive pushes made only to this repository.
+Import **`minhajuddinm/qubit-quest`** into Vercel with `main` as the production branch and the repository root as the project root. Keep the Vite preset. The tracked `vercel.json` defines `npm ci`, `npm run build`, and the `dist` output. Choose Node.js 22.x (22.12 or later) or 24.x. A Vercel project connected to another fork will not receive pushes made only to this repository.
 
 The frontend and Python API share the production domain. `/api/*` routes to `api/index.py`, which exports the existing FastAPI service. The root `.python-version` selects Python 3.13, and Vercel installs the runtime-only root `requirements.txt`. The full local development lock remains in `services/api/requirements.lock.txt`. Unity caches, frontend assets, notebook files, and development dependencies are excluded from the Python function bundle. Keep `shared/learning-manifest.json` and `shared/quiz-bank.json` in the function bundle: the API reads them at startup.
 

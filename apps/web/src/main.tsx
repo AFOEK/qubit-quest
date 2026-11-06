@@ -266,7 +266,7 @@ function App() {
             <Atom size={28} />
           </span>
           <span>
-            qubit<span className="brand-light">quest</span>
+            Quantum<span className="brand-light"> Grove</span>
             <small>A little curiosity. A quantum leap.</small>
           </span>
         </a>
@@ -775,9 +775,9 @@ function App() {
             </>
           )}
           <footer>
-            <span className="footer-brand">✳ qubitquest</span>
+            <span className="footer-brand">✳ Quantum Grove</span>
             <span>Made for curious minds. Built with Qiskit.</span>
-            <a href="https://github.com/AFOEK/qubit-quest" target="_blank" rel="noreferrer">
+            <a href="https://github.com/minhajuddinm/qubit-quest" target="_blank" rel="noreferrer">
               Project on GitHub
             </a>
           </footer>
