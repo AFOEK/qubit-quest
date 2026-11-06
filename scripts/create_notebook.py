@@ -1,10 +1,12 @@
 """Regenerate the judge walkthrough without notebook tooling dependencies."""
+import hashlib
 import json
 from pathlib import Path
 
 
 def cell(kind, text):
-    data = {"cell_type": kind, "metadata": {}, "source": text.splitlines(keepends=True)}
+    cell_id = hashlib.sha256(f"{kind}\n{text}".encode("utf-8")).hexdigest()[:12]
+    data = {"id": cell_id, "cell_type": kind, "metadata": {}, "source": text.splitlines(keepends=True)}
     if kind == "code":
         data.update(execution_count=None, outputs=[])
     return data
