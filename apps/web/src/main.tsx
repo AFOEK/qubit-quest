@@ -24,6 +24,9 @@ import { XP_PER_LESSON } from './progress';
 import { LearnerProvider, useLearner } from './LearnerProvider';
 import { AccountPanel } from './AccountPanel';
 import { DailyQuizView } from './DailyQuizView';
+import { QuantumMascot } from './mascot/QuantumMascot';
+import { MascotProvider, useMascot } from './mascot/MascotProvider';
+import { observeLessonSave } from './mascot/learning-events';
 import {
   learningPaths,
   lessonAvailable,
@@ -99,6 +102,7 @@ function Sphere({ x, y, z, large = false }: { x: number; y: number; z: number; l
 }
 function App() {
   const learner = useLearner();
+  const mascot = useMascot();
   const { completed, storageError } = learner;
   const requestVersion = useRef(0);
   const [page, setPage] = useState('learn'),
@@ -172,6 +176,7 @@ function App() {
       return;
     }
     setLearningMessage('');
+    mascot.reset();
     setLesson(i);
   }
   async function complete(answer: number) {
@@ -183,7 +188,12 @@ function App() {
     setLessonSaving(true);
     setLessonError('');
     try {
-      const updated = await learner.completeLesson(lessons[lesson].id, answer);
+      const updated = await observeLessonSave(
+        () => learner.completeLesson(lessons[lesson].id, answer),
+        completed,
+        lessons[lesson].id,
+        mascot.react,
+      );
       const reward = getRewardNotice(rewards, getLearningProgress(updated));
       if (reward) setNotice(reward);
       setLesson(null);
@@ -293,14 +303,8 @@ function App() {
             </button>
           ))}
         </nav>
-        <div className="side-note">
-          <span className="note-star">✳</span>
-          <strong>
-            Small steps.
-            <br />
-            Strange new worlds.
-          </strong>
-          <p>You don’t need a physics degree. Just a curious mind.</p>
+        <div className="bd-cat-sidebar">
+          <QuantumMascot layout="desktop" hidden={lesson !== null || vr || accountOpen} />
         </div>
         <button
           className="side-bottom learner-profile"
@@ -353,6 +357,12 @@ function App() {
             </button>
           </div>
         </header>
+        <div className="bd-cat-mobile">
+          <QuantumMascot
+            layout="mobile"
+            hidden={lesson !== null || vr || accountOpen || mobile || page === 'daily'}
+          />
+        </div>
         <main>
           {learner.initializing && (
             <div className="account-status account-choice" role="status">
@@ -516,7 +526,10 @@ function App() {
               </div>
             </>
           ) : page === 'daily' ? (
-            <DailyQuizView onSignIn={() => openAccount()} />
+            <DailyQuizView
+              onSignIn={() => openAccount()}
+              mascotHidden={lesson !== null || vr || accountOpen || mobile}
+            />
           ) : page === 'achievements' ? (
             <AchievementsPage
               progress={rewards}
@@ -796,7 +809,10 @@ function App() {
           courseId={lessons[lesson].courseId}
           completed={completed.includes(lessons[lesson].id)}
           onClose={() => {
-            if (!lessonSaving) setLesson(null);
+            if (!lessonSaving) {
+              mascot.reset();
+              setLesson(null);
+            }
           }}
           onComplete={(answer) => void complete(answer)}
           saving={lessonSaving || learner.initializing}
@@ -825,7 +841,9 @@ function App() {
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <LearnerProvider>
-      <App />
+      <MascotProvider>
+        <App />
+      </MascotProvider>
     </LearnerProvider>
   </React.StrictMode>,
 );
