@@ -6,7 +6,7 @@ namespace QubitQuest.Editor
 {
     public static class CreateLabScene
     {
-        [MenuItem("Qubit Quest/Create lab scene")]
+        [MenuItem("Quantum Grove/Create lab scene")]
         public static void Create()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

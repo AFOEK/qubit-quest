@@ -1,4 +1,4 @@
-# ✳ Qubit Quest
+# ✳ Quantum Grove
 
 **Make quantum click.** A quantum learning playground for the University of Waterloo IBM Qiskit Fall Fest 2026.
 
@@ -8,10 +8,10 @@ Our bridge is education: learners move from familiar bits and small experiments 
 
 Use Node.js **22.x (22.12 or later) or 24.x**, and Python **3.12 or 3.13**. The locked NumPy and SciPy versions require Python 3.12 or newer; the deployment configuration selects Python 3.13. Local development needs no IBM account, cloud credits, API keys, or separate database installation.
 
-Clone this fork and install the frontend dependencies:
+Clone the main team repository and install the frontend dependencies:
 
 ```sh
-git clone https://github.com/AFOEK/qubit-quest.git
+git clone https://github.com/minhajuddinm/qubit-quest.git
 cd qubit-quest
 npm ci
 ```
@@ -93,7 +93,7 @@ The API limits circuits to six qubits, 64 gates, and 8,192 shots. Simulations ar
 
 ## Team workflow
 
-This fork is **[AFOEK/qubit-quest](https://github.com/AFOEK/qubit-quest)**. Check `git remote -v` before pulling or pushing so you update the intended repository. From a clean `main` checkout, use `git pull --ff-only origin main`; then rerun `npm ci` and the Python dependency-install command for your platform. Pulling source does not install new dependencies.
+The main team repository is **[minhajuddinm/qubit-quest](https://github.com/minhajuddinm/qubit-quest)**. Check `git remote -v` before pulling or pushing so you update the intended repository. From a clean `main` checkout, use `git pull --ff-only origin main`; then rerun `npm ci` and the Python dependency-install command for your platform. Pulling source does not install new dependencies.
 
 Create a branch such as `feat/quest-interactions` and open a PR against this fork. Keep generated builds, Python environments, Unity caches, credentials, and large recordings out of Git. Run `npm run format` after editing web code or docs, then the checks above before merging.
 
@@ -102,6 +102,6 @@ Local accounts automatically create `data/learning.sqlite3` (excluded from Git).
 ## Troubleshooting
 
 - **API import or missing-package error after updating:** reinstall `services/api/requirements.lock.txt` using the same virtual-environment interpreter that starts Uvicorn.
-- **Windows `UnicodeDecodeError` while loading shared JSON:** update to the current `AFOEK/qubit-quest:main`; both data files are explicitly read as UTF-8. Recreating a working environment is unnecessary for that fix.
+- **Windows `UnicodeDecodeError` while loading shared JSON:** update to the current `minhajuddinm/qubit-quest:main`; both data files are explicitly read as UTF-8. Recreating a working environment is unnecessary for that fix.
 - **Lessons work but Qiskit requests fail:** check `/api/health` and keep the API terminal running. Guest lessons and daily quizzes can run without the API.
 - **Account requests fail:** local SQLite needs a writable data directory; Vercel needs PostgreSQL `DATABASE_URL`. For HTTP localhost, leave `COOKIE_SECURE=false` (the local default). For HTTPS production, use `true`.

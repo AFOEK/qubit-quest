@@ -13,7 +13,7 @@ def cell(kind, text):
 
 
 cells = [
-    cell("markdown", "# Qubit Quest: from intuition to Qiskit\nAn explainable Fall Fest demo. Run after installing `services/api/requirements.lock.txt`. These are ideal local simulations, not QPU runs."),
+    cell("markdown", "# Quantum Grove: from intuition to Qiskit\nAn explainable Fall Fest demo. Run after installing `services/api/requirements.lock.txt`. These are ideal local simulations, not QPU runs."),
     cell("code", "from qiskit import QuantumCircuit\nfrom qiskit.quantum_info import Statevector, partial_trace, SparsePauliOp\nfrom qiskit.circuit.library import QFTGate\nfrom qiskit.primitives import StatevectorSampler\nimport numpy as np"),
     cell("markdown", "## Superposition and interference\nPredict H|0⟩, then H²|0⟩. Equal measurement probabilities do not imply a classical mixture."),
     cell("code", "qc = QuantumCircuit(1)\nqc.h(0)\nprint('After H:', Statevector(qc).probabilities_dict())\nqc.h(0)\nprint('After HH:', Statevector(qc).probabilities_dict())\nassert np.isclose(Statevector(qc).probabilities()[0], 1)"),

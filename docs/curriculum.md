@@ -1,4 +1,4 @@
-# Qubit Quest curriculum guide
+# Quantum Grove curriculum guide
 
 University of Waterloo IBM Qiskit Fall Fest 2026
 

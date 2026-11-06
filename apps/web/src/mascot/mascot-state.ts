@@ -1,0 +1,97 @@
+import map from '../../public/pets/bd-cat/animation-map.json';
+import { getLearningProgress } from '../achievements';
+import type { SpeechOptions } from './speech-controller';
+import { incorrectMessages } from './mascot-messages';
+export type MascotState =
+  | 'idle'
+  | 'happy'
+  | 'sad'
+  | 'excited'
+  | 'curious'
+  | 'lookAround'
+  | 'walking'
+  | 'sleeping'
+  | 'playful'
+  | 'celebrating';
+export type BaseEmotion = 'idle' | 'sad';
+export type Reaction = {
+  state: MascotState;
+  message?: string;
+  priority: number;
+  cycles?: number;
+  baseEmotion?: BaseEmotion;
+  dialogue?: SpeechOptions;
+};
+export const animations = map.animations;
+export function spriteAnimation(state: MascotState) {
+  return animations[
+    state === 'happy'
+      ? 'wave'
+      : state === 'celebrating'
+        ? 'excited'
+        : state === 'walking'
+          ? 'walkLeft'
+          : state === 'sleeping'
+            ? 'sad'
+            : state
+  ];
+}
+export function frameAt(state: MascotState, elapsed: number, reduced = false) {
+  const animation = spriteAnimation(state);
+  const index =
+    state === 'sleeping' ? 3 : reduced ? 0 : Math.floor(elapsed / animation.frameDurationMs);
+  return animation.frames[
+    animation.loop ? index % animation.frames.length : Math.min(index, animation.frames.length - 1)
+  ];
+}
+export function answerReaction(correct: boolean): Reaction {
+  return {
+    state: correct ? 'happy' : 'sad',
+    message: correct
+      ? 'You got it! Curiosity looks good on you.'
+      : incorrectMessages[Math.floor(Math.random() * incorrectMessages.length)],
+    priority: 2,
+    baseEmotion: correct ? 'idle' : 'sad',
+  };
+}
+export function completionReaction(
+  beforeIds: string[],
+  afterIds: string[],
+  lessonId: string,
+): Reaction | null {
+  if (beforeIds.includes(lessonId) || !afterIds.includes(lessonId)) return null;
+  const before = getLearningProgress(beforeIds),
+    after = getLearningProgress(afterIds);
+  const earned = after.achievements.filter(
+    (item) => item.earned && !before.achievements.some((old) => old.id === item.id && old.earned),
+  );
+  const milestone = after.milestones.some(
+    (item) => item.reached && !before.milestones.some((old) => old.id === item.id && old.reached),
+  );
+  return earned.length || before.tier.id !== after.tier.id || milestone
+    ? {
+        state: 'celebrating',
+        message: earned.length
+          ? `Achievement unlocked: ${earned.map((item) => item.title).join(' · ')}!`
+          : `Quantum milestone! ${after.xp} XP discovered.`,
+        priority: 4,
+        cycles: 7,
+      }
+    : {
+        state: 'excited',
+        message: 'Lesson complete! One quantum leap forward.',
+        priority: 3,
+        cycles: 5,
+      };
+}
+export const idleReaction: Reaction = { state: 'idle', priority: 0 };
+export type Visibility = 'shown' | 'minimized' | 'hidden';
+export const visibilityKey = 'qq.bd-cat.visibility.v1';
+export function readVisibility(): Visibility {
+  try {
+    const value = localStorage.getItem(visibilityKey);
+    return value === 'hidden' || value === 'minimized' ? 'minimized' : 'shown';
+  } catch {
+    return 'shown';
+  }
+}

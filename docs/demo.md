@@ -2,7 +2,7 @@
 
 Before presenting, follow the [setup instructions](../README.md#run-locally), keep both the API and Vite terminals running, and check `/api/health`. For a deployed demo, verify the same routes on its HTTPS origin. A guest demo needs no account or database setup. Account synchronization on Vercel requires PostgreSQL configuration.
 
-1. Explain the bridge: Qubit Quest connects a prediction, a simulation, and a spatial representation. Open the learning trail and choose the QML goal to show the required foundations and optional optimization branch.
+1. Explain the bridge: Quantum Grove connects a prediction, a simulation, and a spatial representation. Open the learning trail and choose the QML goal to show the required foundations and optional optimization branch.
 2. Complete the first mathematics quiz. Show the 25 XP reward and refresh to demonstrate browser-saved guest progress. New lessons in later courses require prerequisite completion; the public labs remain open.
 3. In Quantum lab, reset, apply H, then H. Explain why the final Z-basis measurement is certain. Reset, apply H then S, and explain the equal probabilities with a changed relative phase. Run with Qiskit to compare the exact state with sampled counts.
 4. Run Bell and discuss correlated counts and a mixed individual qubit. Choose one further example: Grover's phase oracle/diffusion, the QFT's complex amplitudes, or QAOA's manual cost-angle sweep. The variational energy experiment compares a trial state with a toy spin ground energy; it is not an H₂ calculation.

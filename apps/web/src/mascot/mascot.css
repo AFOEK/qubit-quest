@@ -1,0 +1,287 @@
+.bd-cat-dock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-height: 156px;
+  padding: 8px 24px;
+  margin-left: auto;
+  max-width: 440px;
+  position: relative;
+  isolation: isolate;
+}
+.bd-cat-stage {
+  flex: 0 0 112px;
+  position: relative;
+}
+.bd-cat-character {
+  display: block;
+  position: relative;
+  width: 112px;
+  padding: 0;
+  border-radius: 20px;
+  touch-action: manipulation;
+  transform-origin: center bottom;
+}
+.bd-cat-sprite {
+  display: block;
+  width: 100%;
+  aspect-ratio: 192 / 208;
+  overflow: hidden;
+}
+.bd-cat-message {
+  font-size: 12px;
+  color: #55436b;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.bd-cat-message:not(:empty) {
+  background: #fbfaff;
+  border: 1px solid #ddd6e9;
+  padding: 12px;
+  border-radius: 12px;
+}
+.bd-cat-avatar {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 21;
+  width: min(52px, calc(100vw - 16px));
+  height: min(52px, calc(100vh - 16px));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d9d2e7;
+  border-radius: 50%;
+  background: #fbfaff;
+  touch-action: manipulation;
+}
+.bd-cat-avatar .bd-cat-sprite {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+}
+.bd-cat-dock.inline {
+  margin: 12px 0;
+  padding: 4px;
+  max-width: none;
+}
+.state-idle,
+.state-sad,
+.state-sleeping {
+  animation: bd-breathe 5s ease-in-out infinite;
+}
+.state-happy {
+  animation: bd-hop 0.65s ease-in-out 2;
+}
+.state-excited,
+.state-celebrating {
+  animation: bd-hop 0.65s ease-in-out 5;
+}
+.state-celebrating {
+  filter: drop-shadow(0 0 8px #8ddae6);
+}
+.state-walking {
+  animation: bd-walk 2s ease-in-out;
+}
+.state-playful {
+  animation: bd-phase 1.4s ease-in-out 2;
+}
+.bd-cat-sleep,
+.bd-cat-purr {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #8270ac;
+  font-size: 12px;
+}
+.bd-cat-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bd-cat-particles i {
+  position: absolute;
+  top: 0;
+  font-style: normal;
+  color: #9871dd;
+  animation: bd-confetti 1.2s ease-out 3;
+}
+.bd-cat-particles i:nth-child(2n) {
+  color: #5ab8c9;
+}
+.celebrating i {
+  text-shadow: 0 0 5px #90f2ff;
+  font-size: 22px;
+}
+@keyframes bd-breathe {
+  50% {
+    transform: scale(1.015);
+  }
+}
+@keyframes bd-hop {
+  50% {
+    transform: translateY(-12px) rotate(-3deg);
+  }
+}
+@keyframes bd-walk {
+  50% {
+    transform: translateX(-12px);
+  }
+}
+@keyframes bd-phase {
+  50% {
+    filter: drop-shadow(-7px 0 0 #9dc9eb66) drop-shadow(7px 0 0 #c0a4e444);
+  }
+}
+@keyframes bd-confetti {
+  from {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(95px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .bd-cat-dock {
+    padding: 8px 20px max(8px, env(safe-area-inset-bottom));
+    min-height: 140px;
+    width: 100%;
+  }
+  .bd-cat-stage {
+    flex-basis: 84px;
+  }
+  .bd-cat-character {
+    width: 84px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bd-cat-dock *,
+  .bd-cat-dock *::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* A reserved sidebar dock stays present without covering learning controls. */
+.bd-cat-sidebar {
+  margin-top: auto;
+  padding-top: 24px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+/* The mascot owns the free flex space; the account divider follows its 16px margin. */
+.sidebar .bd-cat-sidebar + .side-bottom {
+  margin-top: 0;
+}
+.bd-cat-sidebar .bd-cat-dock {
+  flex-direction: column;
+  padding: 0;
+  width: 100%;
+  gap: 8px;
+  min-height: 0;
+}
+.bd-cat-sidebar .bd-cat-stage {
+  flex-basis: auto;
+}
+.bd-cat-sidebar .bd-cat-message {
+  width: 100%;
+}
+.bd-cat-mobile {
+  display: none;
+}
+@media (max-width: 600px) {
+  .bd-cat-sidebar {
+    display: none;
+  }
+  .bd-cat-mobile {
+    display: block;
+  }
+}
+
+/* Fit the identity into the existing divider gap without moving or resizing the sprite. */
+.bd-cat-name {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1px;
+  padding: 0;
+  font-family: Manrope, sans-serif;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 12px;
+  color: var(--green);
+}
+.bd-cat-name:disabled {
+  opacity: 1;
+}
+.bd-cat-name:not(:disabled):hover {
+  text-decoration: underline;
+}
+.bd-cat-message > p {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.bd-cat-welcome-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.bd-cat-welcome-actions small {
+  margin-right: auto;
+  white-space: nowrap;
+  font-size: 10px;
+  color: var(--muted);
+}
+.bd-cat-welcome-actions button {
+  padding: 5px 2px;
+  font-size: 11px;
+  color: var(--green);
+  border-radius: 4px;
+}
+.bd-cat-welcome-actions button:last-child {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  background: #f2f7eb;
+}
+
+/* Dialogue stays in normal flow, independently of sprite playback. */
+.bd-cat-message {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+.bd-cat-message.has-dialogue {
+  cursor: pointer;
+}
+.bd-cat-message[role='button']:focus-visible {
+  outline: 3px solid #507ac4;
+  outline-offset: 4px;
+}
+.bd-cat-message:not(:empty)::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: #fbfaff;
+  border-top: 1px solid #ddd6e9;
+  border-right: 1px solid #ddd6e9;
+  transform: translateY(-50%) rotate(45deg);
+  pointer-events: none;
+}
+.bd-cat-sidebar .bd-cat-message:not(:empty)::after {
+  top: auto;
+  bottom: -5px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%) rotate(135deg);
+}

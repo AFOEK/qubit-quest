@@ -1,0 +1,7 @@
+{
+  "id": "bd-cat",
+  "displayName": "BD Cat",
+  "description": "A compact gray-and-white round-faced cat desktop pet with golden eyes and a small pink nose, based on the provided reference photo.",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "animal"
+}
