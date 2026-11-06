@@ -34,6 +34,7 @@ import {
 import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
 import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
 import './style.css';
+import { CrystalSphere } from './CrystalSphere';
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
 type Result = {
@@ -363,7 +364,7 @@ function App() {
             </div>
           )}
           {learner.connectionError && (
-            <div className="account-status account-choice" role="status">
+            <div className="account-status account-choice account-connection-warning" role="status">
               <span>{learner.connectionError}</span>
               {learner.user && (
                 <button
@@ -466,7 +467,11 @@ function App() {
                 </div>
                 <div className="hero-art">
                   <span className="floating-label">a world of possibilities</span>
-                  <Sphere {...describe(apply(initial(), 'H'))} large />
+                  <CrystalSphere
+                    {...describe(apply(initial(), 'H'))}
+                    className="hero-crystal"
+                    showHint={false}
+                  />
                   <span className="ket-label">α|0⟩ + β|1⟩</span>
                   <span className="art-spark">✧</span>
                 </div>
@@ -565,7 +570,7 @@ function App() {
                   </h2>
                   {tab === 'gates' ? (
                     <>
-                      <Sphere {...d} large />
+                      <CrystalSphere x={d.x} y={d.y} z={d.z} />
                       <div className="probabilities">
                         {[
                           ['0', d.p0],

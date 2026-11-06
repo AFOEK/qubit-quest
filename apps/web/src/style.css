@@ -1,19 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap');
 :root {
   font-family: 'DM Sans', sans-serif;
-  color: #273c34;
-  background: #fbfcf9;
+  color: #e7fcff;
+  background: #06131f;
   font-synthesis: none;
   font-size: 14px;
-  --green: #285b48;
-  --muted: #748079;
-  --line: #e5e9e1;
+
+  /* Existing variables retained for compatibility */
+  --green: #00dfff;
+  --muted: #91b5c3;
+  --line: rgba(140, 247, 255, 0.18);
+
+  /* QuantumVerse design system */
+  --qv-background: #06131f;
+  --qv-surface: #0e2939;
+  --qv-primary: #00dfff;
+  --qv-accent: #8cf7ff;
+  --qv-text: #e7fcff;
+  --qv-glass: rgba(14, 41, 57, 0.76);
+  --qv-border: rgba(140, 247, 255, 0.28);
+  --qv-glow: 0 0 24px rgba(0, 223, 255, 0.15);
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+  background: #06131f;
+  color: #e7fcff;
 }
 button,
 a,
@@ -87,8 +101,14 @@ button {
   position: fixed;
   height: 100vh;
   padding: 36px 24px 20px;
-  border-right: 1px solid var(--line);
-  background: #fff;
+  border-right: 1px solid var(--qv-border);
+  background: linear-gradient(
+    160deg,
+    #0e2939 0%,
+    #071a29 55%,
+    #06131f 100%
+  );
+  box-shadow: 8px 0 40px rgba(0, 223, 255, 0.04);
   display: flex;
   flex-direction: column;
 }
@@ -136,9 +156,22 @@ nav {
   color: #7a837a;
 }
 .nav.active {
-  background: #eaf2e4;
-  color: #35623b;
+  background: rgba(0, 223, 255, 0.13);
+  color: #8cf7ff;
   font-weight: 700;
+  border: 1px solid rgba(140, 247, 255, 0.3);
+  box-shadow: inset 0 0 16px rgba(0, 223, 255, 0.08);
+}
+.nav {
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.nav:hover:not(.active) {
+  background: rgba(0, 223, 255, 0.07);
+  color: #b9faff;
 }
 .tiny {
   font-size: 9px;
@@ -2872,4 +2905,670 @@ pre {
     flex-direction: column;
     gap: 3px;
   }
+}
+
+/* ========================================================================
+   QUANTUMVERSE • CRYSTAL CYAN UI SYSTEM
+   Presentation-only overrides. No app behavior, circuit math, or VR logic.
+   Keep this section at the end of style.css to allow an easy rollback.
+   ======================================================================== */
+:root {
+  color-scheme: dark;
+  --green: #52e1f4;
+  --muted: #9ab6c8;
+  --line: rgba(125,225,245,.17);
+  --qv-background: #06131f;
+  --qv-surface: #102a3b;
+  --qv-primary: #00dfff;
+  --qv-accent: #a4f7ff;
+  --qv-text: #e9fcff;
+  --qv-glass: rgba(14,44,62,.91);
+  --qv-border: rgba(121,232,250,.26);
+  --qv-glow: 0 0 27px rgba(0,223,255,.10);
+  --qv-panel: linear-gradient(145deg,rgba(17,52,73,.97),rgba(9,32,49,.97));
+  --qv-panel-light: linear-gradient(145deg,rgba(25,71,91,.97),rgba(13,46,65,.97));
+  --qv-ink-soft: #a4c5d4;
+}
+html {scroll-behavior:smooth;}
+body, .app, .workspace {
+  color:var(--qv-text);
+  background-color:var(--qv-background);
+}
+body {
+  background-image:radial-gradient(ellipse 65% 48% at 83% -15%,rgba(0,184,230,.12),transparent 75%);
+  background-attachment:fixed;
+}
+::selection {background:rgba(31,205,235,.35);color:#fff;}
+:is(button,input,select,textarea) {font-family:inherit;}
+:is(input,textarea,select) {accent-color:#51e0f4;}
+:is(input,textarea)::placeholder {color:#7699ab;opacity:1;}
+:is(button,a,input,select,textarea,summary):focus-visible {
+  outline:2px solid #9df7ff;outline-offset:3px;
+}
+:is(p,.muted,small) {color:var(--qv-ink-soft);}
+:is(h1,h2,h3,h4,strong) {color:#e9fcff;}
+:is(svg) {color:inherit;}
+a {transition:color .2s ease;}
+a:hover {color:#b8faff;}
+
+/* Shell, identity and fixed left navigation */
+.sidebar {
+  background:linear-gradient(158deg,#0b2d41 0%,#071c2c 48%,#071522 100%);
+  border-right:1px solid var(--qv-border);
+  box-shadow:7px 0 35px rgba(0,8,15,.23);
+}
+.brand {color:#efffff;}
+.brand-icon {
+  background:linear-gradient(145deg,#154d64,#0d344c);
+  border:1px solid #59cddd;
+  box-shadow:inset 0 0 15px rgba(49,229,246,.12),0 0 16px rgba(30,208,244,.08);
+  color:#b7fbff;
+}
+.brand small,.side-bottom small {color:#8fb4c5;}
+.nav {color:#a6c3d1;border:1px solid transparent;border-radius:10px;}
+.nav svg {color:#8ebdcd;}
+.nav.active {
+  color:#e0feff;
+  background:linear-gradient(105deg,rgba(28,196,226,.25),rgba(0,124,164,.12));
+  border-color:rgba(119,234,255,.40);
+  box-shadow:inset 0 0 20px rgba(54,218,244,.08),0 4px 20px rgba(0,13,24,.16);
+}
+.nav.active svg,.nav:hover svg {color:#8af5ff;}
+.nav:hover:not(.active) {background:rgba(21,130,162,.17);color:#ddfaff;}
+.nav-count,.tiny {
+  color:#a5effb;background:rgba(30,139,166,.17);
+  border:1px solid rgba(103,215,238,.28);
+}
+.side-note,.lab-invite {
+  background:linear-gradient(155deg,rgba(21,66,83,.95),rgba(10,35,53,.95));
+  border:1px solid var(--qv-border);border-radius:16px;
+}
+.side-note strong,.lab-invite h3 {color:#e7fcff;}
+.side-note p,.lab-invite p {color:#adceda;}
+.note-star,.mini-orbit {color:#79ebf6;}
+.side-bottom {border-color:var(--line);color:#d9f4fa;}
+.avatar,.account-avatar {
+  background:linear-gradient(140deg,#16607a,#0d344d);color:#e8feff;
+  border-color:rgba(132,240,255,.45);
+}
+header {
+  background:rgba(11,32,48,.96);
+  border-color:var(--qv-border);
+  box-shadow:0 8px 28px rgba(1,9,22,.15);
+}
+.breadcrumb,.breadcrumb b,.stats small {color:#a8c6d4;}
+.stats > span,.stats > span:nth-child(2){color:#8aeffc;}
+main {color:#e9fcff;}
+.hello,.edition,.edition b,.section-title > span,.catalog-status,
+.trail-intro,.unit-heading p,.hero-meta,.floating-label,.ket-label {color:#a3c1d0;}
+.page-heading h1 {color:#f0feff;text-shadow:0 0 27px rgba(51,222,255,.10);}
+
+/* Large feature area, all course and information cards */
+.hero,.immersive-hero,.achievement-hero {
+  background:radial-gradient(circle at 82% 40%,rgba(22,158,197,.17),transparent 42%),
+             linear-gradient(125deg,#143a51,#0b2538 70%,#091b2a);
+  border:1px solid rgba(124,232,246,.34);
+  box-shadow:0 15px 42px rgba(1,13,26,.18),inset 0 1px 0 rgba(203,253,255,.09);
+  border-radius:20px;
+}
+.hero h2,.immersive-hero h2 {color:#e9fdff;}
+.hero p,.immersive-hero p,.hero-meta {color:#b1d5e1;}
+.hero-art .sphere,.immersive-hero .sphere {filter:drop-shadow(0 0 16px rgba(25,222,255,.24));}
+.pill,.topic-tags > span,.start-tag,.tier-pill {
+  color:#b7f5ff;background:rgba(30,147,181,.20);
+  border:1px solid rgba(114,226,242,.28);
+}
+.pill > span {background:#7af4ff;box-shadow:0 0 7px rgba(120,244,255,.6);}
+.primary,
+.course-filters button[aria-pressed='true'],
+.auth-tabs button[aria-pressed='true'] {
+  background:linear-gradient(130deg,#087f9b,#106077);
+  border:1px solid rgba(136,244,255,.58);
+  color:#f0ffff;
+  box-shadow:0 6px 18px rgba(0,20,33,.18),inset 0 1px 0 rgba(232,255,255,.16);
+}
+.primary:hover {background:linear-gradient(130deg,#0a9db7,#117792);box-shadow:0 0 22px rgba(20,220,245,.20);}
+.primary:active {transform:translateY(1px);}
+.primary,.course-card,.achievement-card,.nav,.lesson-row,.course-toggle,
+button,.panel,.goal,.lab-invite {transition:background-color .2s ease,border-color .2s ease,
+  box-shadow .24s ease,color .2s ease,transform .22s ease;}
+
+/* Dark-glass surface families: no white or green background patches */
+:is(.panel,.goal,.lesson-list,.course-card,.achievement-card,.tier-step,
+       .milestones-section,.daily-quiz-panel,.lesson-practice,.account-modal,
+       .lesson-modal,.reward-toast,.course-badge-preview) {
+  background:var(--qv-panel);
+  border:1px solid var(--qv-border);
+  box-shadow:0 12px 30px rgba(0,10,20,.12),inset 0 1px 0 rgba(203,249,255,.035);
+  color:#e9fcff;
+}
+.course-card,.achievement-card,.panel,.goal,.daily-quiz-panel {border-radius:16px;}
+.course-card.expanded,.achievement-card.earned {border-color:rgba(127,239,251,.56);}
+.course-toggle:hover,.lesson-row:hover,.lesson-row.current,
+.tabs .selected,.path-view-controls > button[aria-pressed='true'] {
+  background:rgba(19,122,152,.20);
+}
+.course-card:focus-within {border-color:rgba(135,236,250,.52);}
+.course-card .lesson-list {background:transparent;box-shadow:none;border-left:0;border-right:0;border-bottom:0;}
+.lesson-row {border-color:rgba(131,225,244,.13);color:#dceef7;}
+.lesson-row:hover {background:rgba(36,165,193,.16);}
+.lesson-name strong,.course-title,.course-heading .course-title {color:#e5faff;}
+.lesson-name small,.lesson-topics,.course-heading small,.course-track,
+.course-prerequisites,.course-prerequisites strong,.lesson-position {color:#9dbfcd;}
+.course-prerequisites button,.text-button,.lab-invite button,.vr-invite button,
+.badge-action {color:#8feefd;}
+.course-outcomes,.tip,.empty-courses,.daily-explanation,.lesson-modal .math-card {
+  background:rgba(25,93,114,.18);
+  border:1px solid rgba(122,225,245,.18);
+  border-radius:12px;
+  color:#d5eff7;
+}
+.course-outcomes h4,.course-outcomes ul,.tip p,.lesson-modal .math-card p {color:#bad7e3;}
+.course-outcomes h4 {color:#bdf7ff;}
+.course-description,.course-prerequisites,.course-lock-note {color:#b4d0df;}
+.unit-number,.path-overview > div > span,.tier-step-icon,.milestone-marker,
+.account-symbol,.reward-toast-icon,.lesson-icon,.badge-stamp,
+.mint,.blue,.peach,.lavender,.u1,.u2,.u3 {
+  background:linear-gradient(145deg,rgba(41,155,181,.27),rgba(11,78,109,.25));
+  color:#9df8ff;border:1px solid rgba(133,235,255,.21);
+}
+.goal-track,.course-progress,.badge-progress,.journey-progress,
+.probabilities > div > div {background:rgba(111,203,228,.17);}
+.goal-track > span,.course-progress > span,.badge-progress > span,
+.journey-progress span,.probabilities i {
+  background:linear-gradient(90deg,#13adc6,#8ef7ff);
+  box-shadow:0 0 12px rgba(29,218,246,.16);
+}
+.goal-caption strong,.goal-caption span,.goal > small {color:#a7c6d4;}
+.vr-invite {border:1px dashed rgba(135,231,250,.35);background:rgba(6,27,44,.42);}
+.vr-invite h3 {color:#e4fdff;}
+.vr-invite > svg,.vr-invite > span,.vr-invite button {color:#8fdce9;}
+
+/* Inputs, toolbar, catalog and navigation filters */
+:is(.course-search,.field select,.path-choice select,.auth-field input,
+       .path-view-controls input,.course-filters button,.path-view-controls > button,
+       .tabs button,.auth-tabs button,.daily-question-nav button,
+       .gate-buttons button,.circuit button,.answers button,
+       .vr-controls button,.lesson-toolbar,.lesson-toolbar .close) {
+  color:#dffbff;
+  background:rgba(12,48,68,.95);
+  border:1px solid rgba(132,227,246,.30);
+  border-radius:10px;
+}
+:is(.course-search,.field select,.path-choice select,.auth-field input):focus-within {
+  border-color:#8df4ff;box-shadow:0 0 0 3px rgba(0,217,248,.09);
+}
+.course-search input,.path-view-controls input {color:#e6faff;background:transparent;}
+:is(.course-filters button,.path-view-controls > button,.tabs button,
+       .daily-question-nav button,.gate-buttons button,.circuit button,
+       .answers button):hover:not(:disabled) {
+  background:rgba(22,130,162,.36);border-color:rgba(125,238,251,.53);
+  color:#f0ffff;
+}
+.course-filters button[aria-pressed='true'],
+.auth-tabs button[aria-pressed='true'],
+.path-view-controls > button[aria-pressed='true'],
+.daily-question-nav button[aria-pressed='true'] {
+  background:linear-gradient(130deg,rgba(14,153,180,.49),rgba(13,86,115,.65));
+  border-color:#72dcf2;color:#e9fdff;
+}
+.course-search input::placeholder,.auth-field input::placeholder {color:#81a6b7;}
+.course-prerequisites button:hover,.text-button:hover {color:#c4fbff;}
+
+/* Learning path, progress and goals */
+.path-choice,.account-save-banner,.learning-message,.account-saved,
+.guest-import,.daily-complete,.achievement-hero {
+  background:var(--qv-panel-light);
+  border:1px solid var(--qv-border);
+  border-radius:14px;
+  color:#dff9ff;
+}
+.path-choice p,.account-save-banner p,.learning-message p,
+.account-saved p,.guest-import p {color:#accfda;}
+.path-choice label,.path-summary strong,.path-choice strong {color:#dffaff;}
+.path-summary,.path-overview {border-color:var(--line);}
+.path-overview strong,.goal-stages strong {color:#d9f8fe;}
+.stage-complete > span {background:#246f83 !important;color:#e1feff;}
+.course-lock-note {background:rgba(90,110,122,.12);border-color:rgba(140,213,232,.17);}
+.prerequisite-locked .course-toggle {background:rgba(20,46,62,.72);}
+.milestones-section details,.milestone-list li {
+  border-color:var(--line);background:rgba(12,45,65,.67);color:#d9f5fe;
+}
+.milestone-list li.reached {background:rgba(25,94,113,.32);}
+.achievement-card.earned,.course-badge-preview.earned {background:var(--qv-panel-light);}
+.badge-state.earned,.earned .badge-stamp,.earned .milestone-marker {color:#89f3ff;}
+.badge-progress-caption,.badge-requirement,.badge-course {color:#abc8d6;}
+.tier-step-status,.milestone-state,.course-lock-note {color:#abc8d6;}
+
+/* Lessons, math, quizzes and correct/incorrect feedback */
+.modal-backdrop,.account-modal::backdrop {background:rgba(0,8,18,.80);backdrop-filter:blur(9px);}
+.lesson-modal,.account-modal {background:linear-gradient(140deg,#12344a,#081e31);border:1px solid #3b9db5;}
+.lesson-modal .math-card {background:rgba(26,109,140,.22);}
+.math-card pre,pre {
+  color:#c0f6ff;background:rgba(2,20,34,.65);border:1px solid rgba(121,212,239,.15);
+  border-radius:10px;
+}
+.math-card pre {background:transparent;border:0;}
+.lesson-practice,.account-modal form,.account-guest-note {color:#d4ebf5;}
+.lesson-toolbar {background:rgba(9,29,47,.96);}
+.lesson-row:disabled,.answers button:disabled {opacity:.62;}
+.daily-stats,.daily-footnote,.daily-stats strong {color:#b7d6e0;}
+.daily-question-nav button[aria-pressed='true'] {color:#f3ffff;}
+.daily-correct,.success {background:rgba(28,117,96,.31) !important;border:1px solid rgba(123,235,184,.50) !important;color:#bdf9de !important;}
+.daily-selected-wrong,.error {background:rgba(132,62,71,.24) !important;border:1px solid rgba(255,157,157,.43) !important;color:#ffd2d2 !important;}
+.daily-explanation strong,.daily-complete h2 {color:#e5ffff;}
+
+/* Account states and non-blocking warnings */
+.storage-warning,.account-expired {background:rgba(145,110,28,.19);color:#ffdc9d;border:1px solid rgba(236,188,92,.27);}
+.account-save-banner,.learning-message {color:#d6f3fb;}
+.account-save-banner strong {color:#e6feff;}
+.auth-tabs button {background:rgba(10,47,70,.8);}
+.auth-field small,.account-guest-note {color:#a6c4d0;}
+.account-symbol,.account-avatar {color:#bcf9ff;}
+
+/* The non-XR Quantum Lab, probabilities and Immersive Lab controls */
+.lab-grid .panel {background:var(--qv-panel);}
+.algorithm-art,.algorithm-art p {color:#a7eaf5;}
+.vr-overlay {background:#06131f;}
+.vr-controls {background:rgba(10,38,55,.94);border:1px solid #3b9fb5;color:#dceffd;box-shadow:0 16px 40px rgba(0,0,0,.35);}
+.vr-controls p {color:#add5e3;}
+.vr-controls button:hover {background:rgba(24,126,153,.50);}
+
+/* Small refinements and motion safety */
+footer,footer .footer-brand {color:#87adbe;border-color:var(--line);}
+footer a {color:#91dbe7;}
+.section-title h2,.course-heading h3,.milestones-section h2 {color:#e9fcff;}
+:is(.unit,.course-card,.goal,.achievement-card,.panel) {scroll-margin-top:28px;}
+@media (hover:hover) {
+  .course-card:hover,.achievement-card:hover {border-color:rgba(128,229,248,.43);box-shadow:0 14px 40px rgba(0,7,17,.20);}
+  .primary:hover {transform:translateY(-1px);}
+}
+@media (max-width:600px) {
+  header {background:#09283a;}
+  .sidebar.visible {background:#081d2c;box-shadow:16px 0 40px rgba(0,0,0,.42);}
+  .hero {border-radius:16px;}
+  .course-card,.panel,.goal {border-radius:13px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  html {scroll-behavior:auto;}
+  *,*::before,*::after {transition:none !important;animation:none !important;}
+}
+
+/* ==============================================================
+   QuantumVerse / Accent refinement — replaces legacy olive accents
+   Text hierarchy: ice-white heading, glacier-blue body, silver-blue
+   secondary, teal icon, bright aqua actions, clear status states.
+   Deliberately scoped to site components (not quantum illustrations).
+   ============================================================== */
+:root {
+  --qv-heading-ice: #e9fcff;
+  --qv-body-ice: #c5e3ed;
+  --qv-secondary-ice: #9ebfce;
+  --qv-tertiary-ice: #87aabb;
+  --qv-link-ice: #83e4f6;
+  --qv-icon-ice: #70c3d3;
+  --qv-highlight-ice: #b2f8ff;
+}
+/* Base text and intentionally quieter labels */
+p { color: var(--qv-body-ice); }
+.muted { color: var(--qv-tertiary-ice) !important; }
+.section-title > span, .trail-intro, .catalog-status,
+.unit-heading p, .achievement-stats span, .path-summary,
+.course-prerequisites, .lesson-topics, .course-track,
+.goal-caption span, .goal > small, .goal-caption strong,
+.goal-stages, .tier-step small, .tier-step-status,
+.badge-state:not(.earned), .badge-requirement, .badge-course,
+.daily-stats, .daily-footnote, .hero-meta, .hello,
+.path-choice p, .course-description, .side-note p {
+  color: var(--qv-secondary-ice);
+}
+/* Sections and headers should never inherit legacy green ink */
+.course-heading h3, .course-card h3, .achievement-card h3,
+.goal h3, .tier-step strong, .course-outcomes h4,
+.path-choice label, .path-summary strong, .badge-state.earned,
+.achievement-card.earned h3, .goal-stages strong {
+  color: var(--qv-heading-ice);
+}
+/* Strong links and navigation controls; visual distinction from body copy */
+:is(.text-button, .badge-action, .course-prerequisites button,
+    .lab-invite button, .vr-invite button, .goal button,
+    .achievement-card button, .account-save-banner button) {
+  color: var(--qv-link-ice);
+}
+:is(.text-button, .badge-action, .course-prerequisites button,
+    .lab-invite button, .vr-invite button, .goal button,
+    .achievement-card button):hover:not(:disabled) { color: #d4fcff; }
+/* Decorative motifs and line icons are softer than clickable links */
+.goal svg, .note-star, .mini-orbit, .art-spark,
+.vr-invite > svg, .path-overview svg, .ket-label,
+.path-choice > svg, .side-note > svg, .badge-stamp,
+.achievement-card-top > svg {
+  color: var(--qv-icon-ice);
+}
+/* Rewards/milestones should not look faded olive on navy cards */
+.goal-caption strong, .milestone-state, .tier-step-status,
+.achievement-stats span, .badge-progress-caption,
+.badge-requirement, .badge-course { color: #a8cbd8; }
+.tier-step.reached .tier-step-status,
+.milestone-list li.reached, .badge-state.earned,
+.earned .badge-stamp { color: var(--qv-highlight-ice); }
+/* Course selection and navigation: neutral ice numerals, not moss green */
+.path-overview > div > span, .unit-number, .lesson-icon,
+.milestone-marker, .tier-step-icon {
+  color: #c4faff;
+  background: linear-gradient(140deg,rgba(31,145,172,.29),rgba(13,78,104,.28));
+  border-color: rgba(112,213,233,.30);
+}
+.path-overview strong, .unit-heading h3 { color: #dff8fd; }
+/* Form and filter microcopy follows the same cooler palette */
+.course-search > svg, .course-search input::placeholder,
+.auth-field input::placeholder { color: var(--qv-tertiary-ice); }
+.path-view-controls label, .path-choice small,
+.course-filters label, .goal > p, .side-bottom small { color: var(--qv-secondary-ice); }
+/* Context-sensitive feedback retains meaning: aqua completion, amber
+   caution, and pink errors; do not bleach statuses into uniform cyan. */
+.stage-complete > span { color: #ddfcff !important; background: #1c7388 !important; }
+.daily-correct, .success { color: #c8f9e6 !important; }
+.daily-selected-wrong, .error { color: #ffd4d8 !important; }
+.storage-warning, .account-expired { color: #ffdfa7; }
+
+/* === QuantumVerse polish pass: remove remaining olive/green text accents === */
+/* Keep semantic variety, but shift old moss/olive copy into cooler ice, teal,
+   silver, amber, and platinum tones that fit the dark crystal-cyan UI. */
+
+/* Tier palette refresh: preserve distinction between tiers without green cast */
+.tier-explorer {
+  --tier-soft: rgba(68, 190, 222, 0.14);
+  --tier-line: rgba(120, 232, 250, 0.34);
+  --tier-ink: #8ef4ff;
+}
+.tier-bronze {
+  --tier-soft: rgba(244, 190, 134, 0.14);
+  --tier-line: rgba(244, 190, 134, 0.34);
+  --tier-ink: #f4cda1;
+}
+.tier-silver {
+  --tier-soft: rgba(201, 220, 235, 0.14);
+  --tier-line: rgba(201, 220, 235, 0.34);
+  --tier-ink: #dbeaf5;
+}
+.tier-gold {
+  --tier-soft: rgba(255, 224, 137, 0.14);
+  --tier-line: rgba(255, 224, 137, 0.34);
+  --tier-ink: #ffe59a;
+}
+.tier-platinum {
+  --tier-soft: rgba(161, 247, 255, 0.14);
+  --tier-line: rgba(161, 247, 255, 0.34);
+  --tier-ink: #b8f7ff;
+}
+
+/* Learning spark side card */
+.learning-spark .goal-caption strong { color: #eafcff !important; }
+.learning-spark .goal-caption span,
+.learning-spark .spark-achievements,
+.learning-spark .spark-achievements > span:last-child,
+.learning-spark .spark-next,
+.learning-spark > small {
+  color: #b7d4df !important;
+}
+.learning-spark .spark-badge,
+.learning-spark .spark-badge > span { color: #abcad6 !important; }
+.learning-spark .spark-badge strong,
+.learning-spark .spark-view {
+  color: #8eeeff !important;
+}
+.learning-spark .spark-badge svg,
+.learning-spark .section-title > svg {
+  color: #7fd0e0 !important;
+}
+
+/* Learning trail cards and labels */
+.course-track,
+.course-route-label,
+.course-route-label svg,
+.course-prerequisites strong,
+.course-prerequisites span,
+.course-prerequisites button,
+.course-lock-note,
+.course-lock-note svg {
+  color: #a9cbd8 !important;
+}
+.course-lock-note {
+  background: rgba(75, 105, 124, 0.12) !important;
+  border: 1px solid rgba(125, 198, 221, 0.18) !important;
+}
+.course-badge-preview,
+.course-badge-preview span,
+.course-badge-preview small {
+  color: #a9cbd8 !important;
+}
+.course-badge-preview strong {
+  color: #dffbff !important;
+}
+.course-badge-preview > svg,
+.course-badge-preview.earned > svg,
+.earned .course-badge-preview > svg {
+  color: #8feeff !important;
+}
+
+/* Lesson detail and worked examples */
+.lesson-practice summary,
+.lesson-practice details summary,
+.lesson-lab-link,
+.lesson-lab-link svg {
+  color: #8cecff !important;
+}
+.lesson-practice details p,
+.lesson-practice > p,
+.lesson-practice {
+  color: #d0e7f0;
+}
+.quiz-eyebrow,
+.reward-eyebrow {
+  color: #9ec2cf !important;
+}
+
+/* Achievements / journey hero */
+.achievement-hero .journey-medal {
+  background: rgba(234, 248, 255, 0.9) !important;
+}
+.achievement-hero .journey-copy p {
+  color: #c1dce7 !important;
+}
+.achievement-hero .journey-copy > small,
+.achievement-hero .reward-eyebrow {
+  color: color-mix(in srgb, var(--tier-ink) 72%, #cbe4ef 28%) !important;
+}
+.achievement-hero .journey-copy h2,
+.achievement-hero .journey-medal {
+  color: var(--tier-ink) !important;
+}
+.achievement-stats > div > span { color: #a7c7d4 !important; }
+
+/* Tier roadmap + milestones */
+.tier-step small,
+.tier-step-status,
+.milestones-section summary small,
+.milestone-list small,
+.milestone-state {
+  color: #a8c9d6 !important;
+}
+.milestone-list li.next-milestone {
+  border-color: rgba(144, 234, 246, 0.48) !important;
+}
+
+/* Badge grid cards */
+.achievement-card .badge-state,
+.achievement-card .badge-course,
+.achievement-card .badge-requirement,
+.achievement-card .badge-progress-caption,
+.achievement-card .badge-progress-caption span,
+.achievement-card .badge-progress-caption strong {
+  color: #a9cbd8 !important;
+}
+.achievement-card .badge-state.earned,
+.achievement-card.earned .badge-state,
+.achievement-card .badge-stamp,
+.achievement-card .badge-stamp svg {
+  color: #9befff !important;
+}
+.achievement-card .badge-action,
+.achievement-card .badge-action svg {
+  color: #8eeeff !important;
+}
+.achievement-card h3 {
+  color: #ebfdff !important;
+}
+
+/* Utility / summary panels that still inherited olive text */
+.path-overview strong,
+.path-summary strong,
+.path-choice strong,
+.goal-stages strong {
+  color: #e3fbff !important;
+}
+.path-overview,
+.path-choice p,
+.path-summary,
+.goal > p,
+.goal > small {
+  color: #b1cfdb !important;
+}
+
+/* === QuantumVerse final touch: dark medal + distinct blue warning === */
+/* Medal shares the journey card's glass palette instead of a pale solid fill. */
+.achievement-hero .journey-medal {
+  background: linear-gradient(145deg, #19465b 0%, #0d2e42 100%) !important;
+  color: #9ceff9 !important;
+  filter: drop-shadow(0 0 10px rgba(72, 197, 222, .10));
+}
+.achievement-hero .journey-medal svg { color: #9ceff9 !important; }
+
+/* A system alert, deliberately distinct from the site's aqua interactive panels. */
+.storage-warning {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(105deg, #172e58 0%, #12253e 100%) !important;
+  color: #dbe7ff !important;
+  border: 1px solid #6489dc !important;
+  border-left: 4px solid #91adff !important;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(177, 198, 255, .06);
+}
+.storage-warning::before {
+  content: '!';
+  display: grid;
+  place-items: center;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 14px;
+  color: #f4f6ff;
+  background: #4569bd;
+  border: 1px solid #9eb8ff;
+}
+
+
+/* Connection failure banner only — distinguish backend warning from site UI.
+   The message comes from LearnerProvider's connectionError state. */
+.account-status.account-choice.account-connection-warning {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  background: linear-gradient(110deg, #182e59 0%, #12294c 58%, #10243f 100%) !important;
+  color: #e1eaff !important;
+  border: 1px solid #688ee2 !important;
+  border-left: 5px solid #a6baff !important;
+  border-radius: 12px;
+  box-shadow: inset 0 1px rgba(191, 207, 255, 0.08), 0 4px 20px rgba(15, 38, 87, 0.19);
+}
+.account-status.account-choice.account-connection-warning::before {
+  content: '!';
+  display: grid;
+  place-items: center;
+  flex: 0 0 25px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #a9c0ff;
+  border-radius: 50%;
+  background: rgba(99, 131, 220, 0.36);
+  color: #f3f6ff;
+  font-size: 15px;
+  font-weight: 800;
+}
+.account-status.account-choice.account-connection-warning > span {
+  color: #e1eaff !important;
+}
+.account-status.account-choice.account-connection-warning .text-button {
+  color: #b9ccff !important;
+}
+
+/* === Quantum Lab: interactive crystal Bloch sphere (desktop) === */
+.qv-crystal-stage {
+  width: min(100%, 390px);
+  margin: 8px auto 16px;
+  display: grid;
+  justify-items: center;
+  position: relative;
+  isolation: isolate;
+}
+.qv-crystal-stage::before {
+  content: '';
+  position: absolute;
+  inset: 18% 10% 16%;
+  background: radial-gradient(circle, rgba(12, 176, 221, .13), transparent 66%);
+  filter: blur(24px);
+  pointer-events: none;
+  z-index: -1;
+}
+.qv-crystal-svg {
+  display: block;
+  width: 100%;
+  max-width: 365px;
+  height: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  filter: drop-shadow(0 0 16px rgba(5, 215, 255, .16));
+}
+.qv-crystal-svg:active { cursor: grabbing; }
+.qv-crystal-hint {
+  margin-top: -3px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .035em;
+  color: #a4cadb;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  pointer-events: none;
+}
+.qv-crystal-hint > span:not(.qv-crystal-dot) { color: #4c8aa0; }
+.qv-crystal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7beeff;
+  box-shadow: 0 0 8px rgba(64,225,255,.65);
+}
+
+.hero-art .hero-crystal {
+  width: min(100%, 360px);
+  margin: 0 auto;
+}
+.hero-art .hero-crystal::before {
+  inset: 14% 8% 14%;
+  background: radial-gradient(circle, rgba(20, 198, 239, .18), transparent 68%);
+}
+.hero-art .hero-crystal .qv-crystal-svg {
+  max-width: 330px;
+}
+.hero-art .hero-crystal .qv-crystal-hint {
+  display: none;
 }
