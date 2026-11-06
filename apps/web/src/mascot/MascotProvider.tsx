@@ -22,9 +22,6 @@ function useController() {
   const [reaction, setReaction] = useState(idleReaction);
   const current = useRef(idleReaction);
   const [visibility, setVisibility] = useState(readVisibility);
-  const [reduced, setReduced] = useState(
-    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  );
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 600px)').matches);
   const [started, setStarted] = useState(0);
   const activeAt = useRef(Date.now());
@@ -47,10 +44,10 @@ function useController() {
     [controller],
   );
   function changeVisibility(value: Visibility) {
-    reset();
-    setVisibility(value);
+    const normalized = value === 'shown' ? 'shown' : 'minimized';
+    setVisibility(normalized);
     try {
-      localStorage.setItem(visibilityKey, value);
+      localStorage.setItem(visibilityKey, normalized);
     } catch {
       /* Session controls still work. */
     }
@@ -59,25 +56,29 @@ function useController() {
     reset();
     return () => controller.dispose();
   }, [user?.id, reset, controller]);
+  const clearQuestion = useCallback(() => controller.clearQuestion(), [controller]);
   useEffect(() => {
     const layout = window.matchMedia('(max-width: 600px)');
     const updateLayout = () => setCompact(layout.matches);
     layout.addEventListener('change', updateLayout);
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReduced(query.matches);
+    const update = () => {
+      controller.setReduced(query.matches);
+    };
+    update();
     query.addEventListener('change', update);
     return () => {
       query.removeEventListener('change', update);
       layout.removeEventListener('change', updateLayout);
     };
-  }, []);
+  }, [controller]);
   useEffect(() => {
     function activity() {
       activeAt.current = Date.now();
       if (current.current.state === 'sleeping') reset();
     }
     function visible() {
-      reset();
+      controller.rest();
     }
     window.addEventListener('pointerdown', activity);
     window.addEventListener('keydown', activity);
@@ -86,16 +87,20 @@ function useController() {
     function schedule() {
       idleTimer = setTimeout(
         () => {
-          if (!document.hidden && visibility === 'shown' && current.current.priority === 0) {
+          if (
+            !document.hidden &&
+            visibility === 'shown' &&
+            current.current.state === 'idle' &&
+            controller.getBaseEmotion() === 'idle'
+          ) {
             react(
               Date.now() - activeAt.current > 120000
-                ? { state: 'sleeping', priority: 0, duration: 0 }
+                ? { state: 'sleeping', priority: 0 }
                 : {
                     state: (['curious', 'walking', 'playful'] as const)[
                       Math.floor(Math.random() * 3)
                     ],
                     priority: 0,
-                    duration: 2000,
                   },
             );
           }
@@ -111,8 +116,19 @@ function useController() {
       window.removeEventListener('keydown', activity);
       document.removeEventListener('visibilitychange', visible);
     };
-  }, [react, reset, visibility]);
-  return { reaction, react, reset, visibility, changeVisibility, reduced, started, compact };
+  }, [react, reset, visibility, controller]);
+  return {
+    reaction,
+    react,
+    reset,
+    clearQuestion,
+    rest: controller.rest,
+    visibility,
+    changeVisibility,
+    started,
+    compact,
+    playback: controller,
+  };
 }
 export function MascotProvider({ children }: { children: ReactNode }) {
   const controller = useController();

@@ -6,23 +6,19 @@ import { useMascot } from './mascot/MascotProvider';
 import { QuantumMascot } from './mascot/QuantumMascot';
 import { answerReaction } from './mascot/mascot-state';
 
-export function DailyQuizView({ onSignIn }: { onSignIn: () => void }) {
+export function DailyQuizView({
+  onSignIn,
+  mascotHidden = false,
+}: {
+  onSignIn: () => void;
+  mascotHidden?: boolean;
+}) {
   const learner = useLearner();
   const mascot = useMascot();
   const [pendingReaction, setPendingReaction] = useState<{
     day: string;
     questionId: string;
   } | null>(null);
-  useEffect(() => {
-    if (!pendingReaction) return;
-    const accepted = learner.dailyAnswers.find(
-      (item) => item.day === pendingReaction.day && item.questionId === pendingReaction.questionId,
-    );
-    if (accepted) {
-      mascot.react(answerReaction(accepted.correct));
-      setPendingReaction(null);
-    }
-  }, [learner.dailyAnswers, pendingReaction, mascot.react]);
   const [day, setDay] = useState(quizDay),
     [index, setIndex] = useState(0),
     [choice, setChoice] = useState<number | null>(null),
@@ -42,6 +38,24 @@ export function DailyQuizView({ onSignIn }: { onSignIn: () => void }) {
   }, [day]);
   const questions = dailyQuestions(day),
     question = questions[index];
+  useEffect(() => {
+    mascot.clearQuestion();
+    return mascot.clearQuestion;
+  }, [day, question.id, mascot.clearQuestion]);
+  useEffect(() => {
+    if (!pendingReaction) return;
+    if (pendingReaction.day !== day || pendingReaction.questionId !== question.id) {
+      setPendingReaction(null);
+      return;
+    }
+    const accepted = learner.dailyAnswers.find(
+      (item) => item.day === pendingReaction.day && item.questionId === pendingReaction.questionId,
+    );
+    if (accepted) {
+      mascot.react(answerReaction(accepted.correct));
+      setPendingReaction(null);
+    }
+  }, [learner.dailyAnswers, pendingReaction, mascot.react, day, question.id]);
   const answers = learner.dailyAnswers.filter((answer) => answer.day === day);
   const previous = answers.find((answer) => answer.questionId === question.id);
   const { streak, completedDays } = quizStats(learner.dailyAnswers, day);
@@ -188,7 +202,7 @@ export function DailyQuizView({ onSignIn }: { onSignIn: () => void }) {
           </p>
         )}
         <div className="bd-cat-mobile">
-          <QuantumMascot inline layout="mobile" />
+          <QuantumMascot inline layout="mobile" hidden={mascotHidden} />
         </div>
         <p className="daily-footnote">
           New questions at midnight in Toronto. Daily quizzes build your streak; course XP and

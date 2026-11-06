@@ -526,7 +526,10 @@ function App() {
               </div>
             </>
           ) : page === 'daily' ? (
-            <DailyQuizView onSignIn={() => openAccount()} />
+            <DailyQuizView
+              onSignIn={() => openAccount()}
+              mascotHidden={lesson !== null || vr || accountOpen || mobile}
+            />
           ) : page === 'achievements' ? (
             <AchievementsPage
               progress={rewards}

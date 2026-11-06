@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Minus, X } from 'lucide-react';
 import { CatSprite } from './CatSprite';
 import { MascotEffects } from './MascotEffects';
@@ -14,7 +15,7 @@ export function QuantumMascot({
   inline?: boolean;
   layout?: 'desktop' | 'mobile';
 }) {
-  const { reaction, react, reset, visibility, changeVisibility, reduced, started, compact } =
+  const { reaction, react, rest, visibility, changeVisibility, started, compact, playback } =
     useMascot();
   const clicks = useRef(0);
   const control = useRef<HTMLButtonElement>(null);
@@ -30,55 +31,64 @@ export function QuantumMascot({
     focusRequested.current = true;
     changeVisibility(value);
   }
-  if (visibility !== 'shown')
+  if (visibility !== 'shown') {
+    const avatar = (
+      <button
+        ref={control}
+        className="bd-cat-avatar"
+        onClick={() => preference('shown')}
+        aria-label="Restore Qubi"
+        title="Restore Qubi"
+      >
+        <CatSprite state="idle" face />
+      </button>
+    );
+    // Escape the fixed sidebar's stacking context; lesson avatars stay in their focus trap.
     return (
       <div className={`bd-cat-dock ${inline ? 'inline' : ''}`}>
-        <button
-          ref={control}
-          className="bd-cat-restore"
-          onClick={() => preference('shown')}
-          aria-label="Restore BD Cat"
-        >
-          {visibility === 'hidden' ? 'Show BD Cat' : 'BD Cat · Restore'}
-        </button>
+        {inline ? avatar : createPortal(avatar, document.body)}
       </div>
     );
+  }
   return (
-    <aside className={`bd-cat-dock ${inline ? 'inline' : ''}`} aria-label="BD Cat companion">
+    <aside className={`bd-cat-dock ${inline ? 'inline' : ''}`} aria-label="Qubi companion">
       <div className="bd-cat-message" role="status" aria-live="polite" aria-atomic="true">
         {reaction.message}
       </div>
       <div className="bd-cat-stage">
         <div className="bd-cat-controls">
-          <button aria-label="Minimize BD Cat" onClick={() => preference('minimized')}>
+          <button aria-label="Minimize Qubi" onClick={() => preference('minimized')}>
             <Minus size={16} />
           </button>
-          <button aria-label="Hide BD Cat" onClick={() => preference('hidden')}>
+          <button
+            aria-label="Minimize Qubi to circular avatar"
+            title="Minimize Qubi"
+            onClick={() => preference('minimized')}
+          >
             <X size={16} />
           </button>
         </div>
         <button
           ref={control}
           className={`bd-cat-character state-${reaction.state}`}
-          aria-label={reaction.state === 'sleeping' ? 'Wake and pet BD Cat' : 'Pet BD Cat'}
+          aria-label={reaction.state === 'sleeping' ? 'Wake and pet Qubi' : 'Pet Qubi'}
           onClick={() => {
             const index = clicks.current++;
             react({
-              state: index % 4 === 3 ? 'happy' : 'playful',
+              state: 'playful',
               message: petMessages[index % petMessages.length],
               priority: 1,
-              duration: 2800,
             });
           }}
           onKeyDown={(event) => {
             if (event.key === 'Escape') {
               event.stopPropagation();
-              reset();
+              rest();
             }
           }}
         >
-          <CatSprite state={reaction.state} reduced={reduced} started={started} />
-          <MascotEffects state={reaction.state} />
+          <CatSprite state={reaction.state} playback={playback} />
+          <MascotEffects key={started} state={reaction.state} />
         </button>
       </div>
     </aside>

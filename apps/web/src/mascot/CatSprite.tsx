@@ -1,34 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import map from '../../public/pets/bd-cat/animation-map.json';
-import { frameAt, spriteAnimation, type MascotState } from './mascot-state';
+import { frameAt, type MascotState } from './mascot-state';
+import type { SpriteSource } from './animation-controller';
+const noSubscribe = () => () => {};
+/** Rendering observes the shared frame clock; remounting cannot restart a reaction. */
 export function CatSprite({
   state,
-  reduced,
-  started,
+  playback,
+  face = false,
 }: {
   state: MascotState;
-  reduced: boolean;
-  started: number;
+  playback?: SpriteSource;
+  face?: boolean;
 }) {
-  const [elapsed, setElapsed] = useState(0);
-  useEffect(() => {
-    setElapsed(0);
-    if (reduced || state === 'sleeping') return;
-    const start = performance.now();
-    const animation = spriteAnimation(state);
-    const timer = setInterval(() => {
-      const time = performance.now() - start;
-      setElapsed(time);
-      if (!animation.loop && time >= animation.frames.length * animation.frameDurationMs)
-        clearInterval(timer);
-    }, animation.frameDurationMs);
-    return () => clearInterval(timer);
-  }, [state, reduced, started]);
-  const frame = frameAt(state, elapsed, reduced);
+  const staticFrame = frameAt(state, 0);
+  const frame = useSyncExternalStore(
+    playback?.subscribe ?? noSubscribe,
+    playback?.getFrame ?? (() => staticFrame),
+    () => staticFrame,
+  );
   return (
     <svg
       className="bd-cat-sprite"
-      viewBox={`0 0 ${frame.width} ${frame.height}`}
+      viewBox={face ? '32 4 128 128' : `0 0 ${frame.width} ${frame.height}`}
       aria-hidden="true"
     >
       <svg

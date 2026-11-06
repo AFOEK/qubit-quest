@@ -10,7 +10,14 @@ export type MascotState =
   | 'sleeping'
   | 'playful'
   | 'celebrating';
-export type Reaction = { state: MascotState; message?: string; priority: number; duration: number };
+export type BaseEmotion = 'idle' | 'sad';
+export type Reaction = {
+  state: MascotState;
+  message?: string;
+  priority: number;
+  cycles?: number;
+  baseEmotion?: BaseEmotion;
+};
 export const animations = map.animations;
 export function spriteAnimation(state: MascotState) {
   return animations[
@@ -40,7 +47,7 @@ export function answerReaction(correct: boolean): Reaction {
       ? 'You got it! Curiosity looks good on you.'
       : 'Almost! Let’s try another approach.',
     priority: 2,
-    duration: 3200,
+    baseEmotion: correct ? 'idle' : 'sad',
   };
 }
 export function completionReaction(
@@ -64,25 +71,22 @@ export function completionReaction(
           ? `Achievement unlocked: ${earned.map((item) => item.title).join(' · ')}!`
           : `Quantum milestone! ${after.xp} XP discovered.`,
         priority: 4,
-        duration: 5500,
+        cycles: 7,
       }
     : {
         state: 'excited',
         message: 'Lesson complete! One quantum leap forward.',
         priority: 3,
-        duration: 4000,
+        cycles: 5,
       };
 }
-export function acceptsReaction(current: Reaction, next: Reaction) {
-  return next.priority >= current.priority;
-}
-export const idleReaction: Reaction = { state: 'idle', priority: 0, duration: 0 };
+export const idleReaction: Reaction = { state: 'idle', priority: 0 };
 export type Visibility = 'shown' | 'minimized' | 'hidden';
 export const visibilityKey = 'qq.bd-cat.visibility.v1';
 export function readVisibility(): Visibility {
   try {
     const value = localStorage.getItem(visibilityKey);
-    return value === 'hidden' || value === 'minimized' ? value : 'shown';
+    return value === 'hidden' || value === 'minimized' ? 'minimized' : 'shown';
   } catch {
     return 'shown';
   }

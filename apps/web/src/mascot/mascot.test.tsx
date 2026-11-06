@@ -19,7 +19,7 @@ afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
 });
-describe('BD Cat sprite geometry', () => {
+describe('Qubi sprite geometry', () => {
   it('keeps every mapped frame within the original sheet', () => {
     for (const animation of Object.values(animations))
       for (const frame of animation.frames) {
@@ -47,7 +47,7 @@ describe('BD Cat sprite geometry', () => {
     'celebrating',
   ] as MascotState[])('renders a clipped, proportionate %s frame with reduced motion', (state) => {
     expect(frameAt(state, 0, true)).toEqual(frameAt(state, 9999, true));
-    const html = renderToStaticMarkup(<CatSprite state={state} reduced started={0} />);
+    const html = renderToStaticMarkup(<CatSprite state={state} />);
     expect(html).toContain('viewBox="0 0 192 208"');
     expect(html).toContain('overflow="hidden"');
     expect(html).toContain('/pets/bd-cat/spritesheet.webp');
@@ -95,43 +95,140 @@ describe('learning event boundaries', () => {
     expect(reaction?.message).toContain('Back to Basic');
   });
 });
-describe('reaction scheduling and visibility', () => {
-  it('lets achievements interrupt feedback and prevents petting or idle from replacing them', () => {
+describe('sequence completion and persistent emotion', () => {
+  it('plays every playful frame once, then returns to idle at the sequence boundary', () => {
+    vi.useFakeTimers();
+    const notify = vi.fn();
+    const controller = createAnimationController(notify);
+    controller.play({ state: 'playful', priority: 1 });
+    const animation = animations.playful;
+    for (let i = 0; i < animation.frames.length; i++) {
+      expect(controller.getFrame()).toEqual(animation.frames[i]);
+      expect(notify.mock.lastCall?.[0].state).toBe('playful');
+      vi.advanceTimersByTime(animation.frameDurationMs);
+    }
+    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
+    expect(controller.getFrame()).toEqual(animations.idle.frames[0]);
+    controller.dispose();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+  it('ignores rapid clicks without truncating or restarting the sequence', () => {
+    vi.useFakeTimers();
+    const notify = vi.fn();
+    const controller = createAnimationController(notify);
+    controller.play({ state: 'playful', priority: 1 });
+    vi.advanceTimersByTime(300);
+    for (let i = 0; i < 30; i++)
+      expect(controller.play({ state: 'playful', priority: 1 })).toBe(false);
+    expect(controller.getFrame()).toEqual(animations.playful.frames[2]);
+    expect(vi.getTimerCount()).toBe(1);
+    vi.advanceTimersByTime(600);
+    expect(notify.mock.lastCall?.[0].state).toBe('idle');
+    expect(controller.play({ state: 'playful', priority: 1 })).toBe(true);
+    controller.dispose();
+  });
+  it('keeps sadness for 30 seconds, across repeat wrong checks and temporary petting', () => {
     vi.useFakeTimers();
     const notify = vi.fn();
     const controller = createAnimationController(notify);
     controller.play(answerReaction(false));
-    controller.play({ state: 'celebrating', priority: 4, duration: 5500 });
-    expect(controller.play({ state: 'playful', priority: 1, duration: 2800 })).toBe(false);
-    vi.advanceTimersByTime(3200);
-    expect(notify.mock.lastCall?.[0].state).toBe('celebrating');
-    vi.advanceTimersByTime(2300);
-    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
-    expect(vi.getTimerCount()).toBe(0);
+    vi.advanceTimersByTime(31000);
+    expect(controller.getBaseEmotion()).toBe('sad');
+    expect(notify.mock.lastCall?.[0].state).toBe('sad');
+    expect(controller.play({ state: 'curious', priority: 0 })).toBe(false);
+    controller.play(answerReaction(false));
+    controller.play({ state: 'playful', priority: 1 });
+    vi.advanceTimersByTime(900);
+    expect(notify.mock.lastCall?.[0].state).toBe('sad');
+    controller.rest();
+    expect(controller.getBaseEmotion()).toBe('sad');
+    controller.dispose();
   });
-  it('rapid equal-priority reactions retain only the newest deadline', () => {
+  it('clears sadness on correct feedback and returns to idle after the full wave', () => {
     vi.useFakeTimers();
     const notify = vi.fn();
     const controller = createAnimationController(notify);
-    for (let i = 0; i < 30; i++)
-      controller.play({ state: 'playful', priority: 1, duration: 2800, message: String(i) });
-    expect(vi.getTimerCount()).toBe(1);
-    expect(notify.mock.lastCall?.[0].message).toBe('29');
-    controller.reset();
-    expect(vi.getTimerCount()).toBe(0);
-    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
+    controller.play(answerReaction(false));
     controller.play(answerReaction(true));
+    expect(controller.getBaseEmotion()).toBe('idle');
+    vi.advanceTimersByTime(719);
+    expect(notify.mock.lastCall?.[0].state).toBe('happy');
+    vi.advanceTimersByTime(1);
+    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
+    controller.dispose();
+  });
+  it('question changes clear sadness without cancelling an important completion celebration', () => {
+    vi.useFakeTimers();
+    const notify = vi.fn();
+    const controller = createAnimationController(notify);
+    controller.play(answerReaction(false));
+    controller.clearQuestion();
+    expect(controller.getBaseEmotion()).toBe('idle');
+    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
+    controller.play({ state: 'excited', priority: 3, cycles: 5 });
+    controller.clearQuestion();
+    vi.advanceTimersByTime(3999);
+    expect(notify.mock.lastCall?.[0].state).toBe('excited');
+    vi.advanceTimersByTime(1);
+    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
+    controller.dispose();
+  });
+  it('stale frames cannot end a higher-priority celebration', () => {
+    vi.useFakeTimers();
+    const notify = vi.fn();
+    const controller = createAnimationController(notify);
+    controller.play({ state: 'playful', priority: 1 });
+    vi.advanceTimersByTime(300);
+    controller.play({ state: 'celebrating', priority: 4, cycles: 7 });
+    expect(controller.play(answerReaction(false))).toBe(false);
+    expect(controller.play({ state: 'playful', priority: 1 })).toBe(false);
+    vi.advanceTimersByTime(900);
+    expect(notify.mock.lastCall?.[0].state).toBe('celebrating');
+    vi.advanceTimersByTime(4700);
+    expect(notify.mock.lastCall?.[0].state).toBe('sad');
+    controller.dispose();
+  });
+  it('reduced motion is static but finite reactions still complete from their frame count', () => {
+    vi.useFakeTimers();
+    const notify = vi.fn();
+    const controller = createAnimationController(notify);
+    controller.setReduced(true);
+    controller.play({ state: 'playful', priority: 1 });
+    vi.advanceTimersByTime(750);
+    expect(controller.getFrame()).toEqual(animations.playful.frames[0]);
+    vi.advanceTimersByTime(150);
+    expect(notify.mock.lastCall?.[0]).toEqual(idleReaction);
+    expect(vi.getTimerCount()).toBe(0);
+    controller.dispose();
+  });
+  it('unsubscribes frame observers and disposes the only playback timer', () => {
+    vi.useFakeTimers();
+    const listener = vi.fn();
+    const controller = createAnimationController(vi.fn());
+    const unsubscribe = controller.subscribe(listener);
+    controller.play({ state: 'playful', priority: 1 });
+    expect(listener).toHaveBeenCalled();
+    unsubscribe();
+    listener.mockClear();
+    vi.advanceTimersByTime(150);
+    expect(listener).not.toHaveBeenCalled();
     controller.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
+  it('crops the real idle sprite into an accessible-control-sized face view', () => {
+    const html = renderToStaticMarkup(<CatSprite state="idle" face />);
+    expect(html).toContain('viewBox="32 4 128 128"');
+    expect(html).toContain('/pets/bd-cat/spritesheet.webp');
+  });
+});
+describe('visibility preferences', () => {
   it.each(['hidden', 'minimized'])(
-    'reads %s preferences independently from learning storage',
+    'normalizes legacy %s preferences to the circular avatar',
     (value) => {
       const getItem = vi.fn(() => value);
       vi.stubGlobal('localStorage', { getItem });
-      expect(readVisibility()).toBe(value);
+      expect(readVisibility()).toBe('minimized');
       expect(getItem).toHaveBeenCalledWith(visibilityKey);
-      expect(getItem).toHaveBeenCalledTimes(1);
     },
   );
   it('tolerates unavailable or malformed browser storage', () => {

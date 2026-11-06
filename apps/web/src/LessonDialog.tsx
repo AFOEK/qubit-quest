@@ -47,6 +47,11 @@ export function LessonDialog({
   const correct = answer === lesson.correct;
 
   useEffect(() => {
+    mascot.clearQuestion();
+    return mascot.clearQuestion;
+  }, [lesson.id, mascot.clearQuestion]);
+
+  useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     const overflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
