@@ -334,7 +334,7 @@ function App() {
         </button>
       </aside>
       <div className="workspace" inert={lesson !== null || vr || accountOpen}>
-        <header>
+        <header className="qv-floating-header">
           <button
             className="mobile-menu icon-button"
             aria-label="Toggle navigation"
@@ -342,11 +342,11 @@ function App() {
           >
             <Menu />
           </button>
-          <span className="mobile-wordmark">Quantum Grove</span>
-          <span className="breadcrumb">
-            Your quantum journey <ChevronRight size={14} />{' '}
-            <b>{nav.find((item) => item.id === page)?.label}</b>
-          </span>
+          <span className="mobile-wordmark qv-header-hidden">Quantum Grove</span>
+          <span className="breadcrumb qv-header-hidden">
+  Your quantum journey <ChevronRight size={14} />{' '}
+  <b>{nav.find((item) => item.id === page)?.label}</b>
+</span>
           <div className="stats">
             <span title="Completed lessons">
               <Flame size={19} /> {completed.length} <small>lessons</small>
@@ -483,7 +483,7 @@ function App() {
                   focusCourse={focusCourse}
                   onFocused={() => setFocusCourse(null)}
                 />
-                <aside className="right-rail">
+                <aside className="right-rail right-rail--spark-only">
                   <LearningSpark
                     progress={rewards}
                     onView={viewAchievements}
@@ -491,40 +491,6 @@ function App() {
                     accountSaved={Boolean(learner.user)}
                     saving={learner.saving}
                   />
-                  <div className="daily-invite">
-                    <span className="daily-invite-icon">
-                      <Lightbulb size={25} />
-                    </span>
-                    <span className="daily-badge">Fresh every day</span>
-                    <h3>Your daily quantum check.</h3>
-                    <p>Three quick questions. Something new to think about.</p>
-                    <button onClick={() => setPage('daily')}>
-                      Try the daily quiz <ArrowRight size={17} />
-                    </button>
-                  </div>
-                  <div className="lab-invite">
-                    <span className="mini-orbit">
-                      <FlaskConical size={26} />
-                    </span>
-                    <h3>
-                      What if you
-                      <br />
-                      could see a qubit?
-                    </h3>
-                    <p>Flip a gate. Watch the state change. Let your intuition take over.</p>
-                    <button onClick={() => setPage('lab')}>
-                      Open quantum lab <ArrowRight size={16} />
-                    </button>
-                  </div>
-                  <div className="vr-invite">
-                    <Glasses size={29} />
-                    <h3>A new perspective</h3>
-                    <p>Step inside the Bloch sphere with immersive VR.</p>
-                    <button onClick={() => setPage('immersive')}>
-                      Explore the VR lab <ArrowRight size={16} />
-                    </button>
-                    <span>Built for curiosity · Quest 3</span>
-                  </div>
                 </aside>
               </div>
             </>
@@ -756,38 +722,40 @@ function App() {
               <div className="page-heading">
                 <div>
                   <p className="hello">Change your point of view</p>
-                  <h1>Quantum, all around you.</h1>
-                  <p>Explore the same qubit state in an immersive 3D lab.</p>
+                  
+<div className="qv-immersive-landing">
+  <p className="qv-immersive-eyebrow">
+    EXPERIENCE QUANTUM
+  </p>
+
+  <h1>Quantum is meant to be explored.</h1>
+
+  <div className="qv-immersive-sphere">
+    <Sphere {...d} large />
+  </div>
+
+  <p className="qv-immersive-tagline">
+    Beyond equations. Beyond screens. Into reality.
+  </p>
+
+  <button
+    className="primary qv-immersive-enter"
+    onClick={() => {
+      const url = 'https://quantumvers.netlify.app/';
+      const launch =
+        'https://www.oculus.com/open_url/?url=' +
+        encodeURIComponent(url);
+
+      window.open(launch, '_blank', 'noopener,noreferrer');
+    }}
+  >
+    Launch on Meta Quest
+    <ArrowRight size={19} />
+  </button>
+</div>
+
                 </div>
               </div>
-              <section className="immersive-hero">
-                <div>
-                  <Glasses size={48} />
-                  <h2>Step into the Bloch sphere.</h2>
-                  <p>
-                    Inspect a qubit in 3D. Apply H, X, and S to see how its state changes. A
-                    supported headset can enter WebXR; the Unity starter is included for native
-                    Quest 3 development.
-                  </p>
-                  <button className="primary" onClick={() => setVr(true)}>
-                    Open immersive lab <ArrowRight size={18} />
-                  </button>
-                  <p className="muted">Headset mode needs WebXR and HTTPS or localhost.</p>
-                </div>
-                <Sphere {...d} large />
-              </section>
-              <section className="panel vr-info">
-                <h3>A visual model, grounded in the math.</h3>
-                <p>
-                  Superposition describes amplitudes of possible outcomes. Measurement yields one
-                  outcome. The sphere is a state-space visualization, not a picture of a qubit being
-                  in two physical places.
-                </p>
-                <p>
-                  Native Unity setup and the shared simulation contract live in the repository’s{' '}
-                  <code>apps/unity</code> and <code>docs</code> folders.
-                </p>
-              </section>
             </>
           )}
           <footer>
