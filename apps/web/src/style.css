@@ -4099,3 +4099,53 @@ p {
 .hero-art .hero-crystal .qv-crystal-hint {
   display: none;
 }
+
+
+/* QV right rail: center the learning spark and keep it visible while scrolling. */
+.trail-layout > .right-rail--spark-only {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding-top: clamp(20px, calc(50vh - 225px), 200px);
+}
+.trail-layout > .right-rail--spark-only > .learning-spark {
+  width: 100%;
+  position: sticky;
+  top: clamp(20px, calc(50vh - 225px), 200px);
+  align-self: center;
+}
+@media (max-width: 900px) {
+  .trail-layout > .right-rail--spark-only {
+    padding-top: 0;
+  }
+  .trail-layout > .right-rail--spark-only > .learning-spark {
+    position: static;
+  }
+}
+/* Transparent header with floating counters */
+.workspace > header.qv-floating-header {
+  position: relative !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 18px 32px 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.qv-header-hidden {
+  display: none !important;
+}
+
+.qv-floating-header .stats {
+  margin-left: auto;
+  background: transparent !important;
+  border: none !important;
+}
