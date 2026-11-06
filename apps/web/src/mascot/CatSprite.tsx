@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import map from '../../public/pets/bd-cat/animation-map.json';
+import map from './animation-map.json';
 import { frameAt, type MascotState } from './mascot-state';
 import type { SpriteSource } from './animation-controller';
 const noSubscribe = () => () => {};

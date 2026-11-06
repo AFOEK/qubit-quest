@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { apply, initial, describe, type GateName } from './quantum';
 import { lessons, courseById, type Lab } from './curriculum';
-import { LearningTrail } from './LearningTrail';
+import { QuantumJourney } from './QuantumJourney';
 import { LessonDialog } from './LessonDialog';
 import { XP_PER_LESSON } from './progress';
 import { LearnerProvider, useLearner } from './LearnerProvider';
@@ -36,9 +36,8 @@ import {
 } from './learning-paths';
 import { getLearningProgress, getRewardNotice, type RewardNotice } from './achievements';
 import { AchievementsPage, LearningSpark, RewardToast } from './AchievementViews';
-import { DashboardHero } from './DashboardHero';
 import './style.css';
-import './quantum.css';
+import { CrystalSphere } from './CrystalSphere';
 const Immersive = lazy(() => import('./vr'));
 const gates: GateName[] = ['H', 'X', 'Y', 'Z', 'S', 'T'];
 type Result = {
@@ -382,7 +381,7 @@ function App() {
             </div>
           )}
           {learner.connectionError && (
-            <div className="account-status account-choice" role="status">
+            <div className="account-status account-choice account-connection-warning" role="status">
               <span>{learner.connectionError}</span>
               {learner.user && (
                 <button
@@ -424,17 +423,6 @@ function App() {
           )}
           {page === 'learn' ? (
             <>
-              <DashboardHero
-                name={learner.user?.name}
-                title={next < 0 ? `${pathTitle} complete.` : lessons[next].title}
-                course={next < 0 ? pathTitle : lessons[next].unit}
-                time={next < 0 ? lessons[0].time : lessons[next].time}
-                completed={completed.length}
-                finished={next < 0}
-                totalCourses={rewards.totalCourses}
-                onStart={() => openLesson(next < 0 ? 0 : next)}
-                onLab={() => setPage('lab')}
-              />
               {!learner.user && !learner.initializing && (
                 <div className="account-save-banner">
                   <Cloud size={20} />
@@ -446,8 +434,45 @@ function App() {
                   </button>
                 </div>
               )}
+              <section className="hero">
+                <div className="hero-copy">
+                  <span className="pill">
+                    <span />
+                    Your next discovery
+                  </span>
+                  <h2>{next < 0 ? `${pathTitle} complete.` : lessons[next].title}</h2>
+                  <p>
+                    {next < 0
+                      ? 'You’ve finished the required lessons in this trail. Explore optional branches, review a lesson, or choose another goal.'
+                      : courseById.get(lessons[next].courseId)!.description}
+                  </p>
+                  <button className="primary" onClick={() => openLesson(next < 0 ? 0 : next)}>
+                    {next < 0
+                      ? 'Review a lesson'
+                      : completed.length
+                        ? 'Continue learning'
+                        : 'Start your journey'}
+                    <ArrowRight size={18} />
+                  </button>
+                  <div className="hero-meta">
+                    <span>◷ {next < 0 ? lessons[0].time : lessons[next].time} min</span>
+                    <span>{next < 0 ? '✧ Required trail complete' : `✧ +${XP_PER_LESSON} XP`}</span>
+                    <span>{next < 0 ? 'Review at your pace' : lessons[next].unit}</span>
+                  </div>
+                </div>
+                <div className="hero-art">
+                  <span className="floating-label">a world of possibilities</span>
+                  <CrystalSphere
+                    {...describe(apply(initial(), 'H'))}
+                    className="hero-crystal"
+                    showHint={false}
+                  />
+                  <span className="ket-label">α|0⟩ + β|1⟩</span>
+                  <span className="art-spark">✧</span>
+                </div>
+              </section>
               <div className="trail-layout">
-                <LearningTrail
+                <QuantumJourney
                   completed={completed}
                   next={next}
                   onOpen={openLesson}
@@ -556,7 +581,7 @@ function App() {
                   </h2>
                   {tab === 'gates' ? (
                     <>
-                      <Sphere {...d} large />
+                      <CrystalSphere x={d.x} y={d.y} z={d.z} />
                       <div className="probabilities">
                         {[
                           ['0', d.p0],
