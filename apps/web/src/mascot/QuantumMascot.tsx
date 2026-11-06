@@ -18,7 +18,7 @@ export function QuantumMascot({
 }) {
   const {
     reaction,
-    react,
+    interact,
     rest,
     visibility,
     changeVisibility,
@@ -132,7 +132,7 @@ export function QuantumMascot({
           ref={control}
           className={`bd-cat-character state-${reaction.state}`}
           aria-label={reaction.state === 'sleeping' ? 'Wake and pet Qubi' : 'Pet Qubi'}
-          onClick={() => playClickInteraction(react)}
+          onClick={() => playClickInteraction(interact)}
           onKeyDown={(event) => {
             if (event.key === 'Escape') {
               event.stopPropagation();

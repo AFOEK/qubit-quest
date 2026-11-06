@@ -17,6 +17,7 @@ import {
 } from './mascot-state';
 import { createAnimationController } from './animation-controller';
 import { useQubiWelcome } from './qubi-welcome';
+import { createLessonPersonality } from './lesson-personality';
 const Context = createContext<ReturnType<typeof useController> | null>(null);
 function useController() {
   const { user, initializing } = useLearner();
@@ -24,6 +25,8 @@ function useController() {
   const current = useRef(idleReaction);
   const [readyFor, setReadyFor] = useState<string | null | undefined>(null);
   const [visibility, setVisibility] = useState(readVisibility);
+  const visibilityRef = useRef(visibility);
+  visibilityRef.current = visibility;
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 600px)').matches);
   const [started, setStarted] = useState(0);
   const activeAt = useRef(Date.now());
@@ -47,6 +50,17 @@ function useController() {
     },
     [controller, welcome.dismiss],
   );
+  const [personality] = useState(() =>
+    createLessonPersonality({
+      play: react,
+      clearQuestion: () => controller.clearQuestion(),
+      canSpeak: () => visibilityRef.current === 'shown' && !document.hidden,
+    }),
+  );
+  const interact = useCallback(
+    (next: Reaction) => react(personality.click(next)),
+    [personality, react],
+  );
   function changeVisibility(value: Visibility) {
     const normalized = value === 'shown' ? 'shown' : 'minimized';
     if (normalized === 'minimized') welcome.dismiss();
@@ -59,10 +73,14 @@ function useController() {
   }
   useEffect(() => {
     welcome.dismiss();
+    personality.reset();
     reset();
     setReadyFor(user?.id);
-    return () => controller.dispose();
-  }, [user?.id, reset, controller, welcome.dismiss]);
+    return () => {
+      personality.reset();
+      controller.dispose();
+    };
+  }, [user?.id, reset, controller, welcome.dismiss, personality]);
   const clearQuestion = useCallback(() => controller.clearQuestion(), [controller]);
   useEffect(() => {
     const layout = window.matchMedia('(max-width: 600px)');
@@ -128,6 +146,9 @@ function useController() {
   return {
     reaction,
     react,
+    interact,
+    enterLesson: personality.enter,
+    answerLesson: personality.answer,
     reset,
     clearQuestion,
     rest: controller.rest,

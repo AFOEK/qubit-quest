@@ -4,7 +4,6 @@ import { courseById, lessonById, type Lab, type Lesson } from './curriculum';
 import { XP_PER_LESSON } from './progress';
 import { QuantumMascot } from './mascot/QuantumMascot';
 import { useMascot } from './mascot/MascotProvider';
-import { answerReaction } from './mascot/mascot-state';
 
 const labNames = {
   bell: 'Bell pair',
@@ -46,10 +45,7 @@ export function LessonDialog({
   const position = course.lessons.findIndex((item) => item.id === lesson.id) + 1;
   const correct = answer === lesson.correct;
 
-  useEffect(() => {
-    mascot.clearQuestion();
-    return mascot.clearQuestion;
-  }, [lesson.id, mascot.clearQuestion]);
+  useEffect(() => mascot.enterLesson(lesson.id), [lesson.id, mascot.enterLesson]);
 
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -173,7 +169,7 @@ export function LessonDialog({
               if (feedback && correct) onComplete(answer!);
               else {
                 setFeedback(true);
-                mascot.react(answerReaction(correct));
+                mascot.answerLesson(lesson.id, correct);
               }
             }}
           >
