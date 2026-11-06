@@ -1,0 +1,204 @@
+.bd-cat-dock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  min-height: 156px;
+  padding: 8px 24px;
+  margin-left: auto;
+  max-width: 440px;
+  position: relative;
+  isolation: isolate;
+}
+.bd-cat-stage {
+  flex: 0 0 112px;
+  position: relative;
+}
+.bd-cat-character {
+  display: block;
+  position: relative;
+  width: 112px;
+  padding: 0;
+  border-radius: 20px;
+  touch-action: manipulation;
+  transform-origin: center bottom;
+}
+.bd-cat-sprite {
+  display: block;
+  width: 100%;
+  aspect-ratio: 192 / 208;
+  overflow: hidden;
+}
+.bd-cat-message {
+  font-size: 12px;
+  color: #55436b;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.bd-cat-message:not(:empty) {
+  background: #fbfaff;
+  border: 1px solid #ddd6e9;
+  padding: 12px;
+  border-radius: 12px;
+}
+.bd-cat-controls {
+  display: flex;
+  justify-content: flex-end;
+}
+.bd-cat-controls button {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  min-height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fbfcf9;
+}
+.bd-cat-restore {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fbfaff;
+  font-size: 12px;
+}
+.bd-cat-dock.inline {
+  margin: 12px 0;
+  padding: 4px;
+  max-width: none;
+}
+.state-idle,
+.state-sleeping {
+  animation: bd-breathe 5s ease-in-out infinite;
+}
+.state-happy {
+  animation: bd-hop 0.65s ease-in-out 2;
+}
+.state-excited,
+.state-celebrating {
+  animation: bd-hop 0.65s ease-in-out 5;
+}
+.state-celebrating {
+  filter: drop-shadow(0 0 8px #8ddae6);
+}
+.state-walking {
+  animation: bd-walk 2s ease-in-out;
+}
+.state-playful {
+  animation: bd-phase 1.4s ease-in-out 2;
+}
+.bd-cat-sleep,
+.bd-cat-purr {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #8270ac;
+  font-size: 12px;
+}
+.bd-cat-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bd-cat-particles i {
+  position: absolute;
+  top: 0;
+  font-style: normal;
+  color: #9871dd;
+  animation: bd-confetti 1.2s ease-out 3;
+}
+.bd-cat-particles i:nth-child(2n) {
+  color: #5ab8c9;
+}
+.celebrating i {
+  text-shadow: 0 0 5px #90f2ff;
+  font-size: 22px;
+}
+@keyframes bd-breathe {
+  50% {
+    transform: scale(1.015);
+  }
+}
+@keyframes bd-hop {
+  50% {
+    transform: translateY(-12px) rotate(-3deg);
+  }
+}
+@keyframes bd-walk {
+  50% {
+    transform: translateX(-12px);
+  }
+}
+@keyframes bd-phase {
+  50% {
+    filter: drop-shadow(-7px 0 0 #9dc9eb66) drop-shadow(7px 0 0 #c0a4e444);
+  }
+}
+@keyframes bd-confetti {
+  from {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(95px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .bd-cat-dock {
+    padding: 8px 20px max(8px, env(safe-area-inset-bottom));
+    min-height: 140px;
+    width: 100%;
+  }
+  .bd-cat-stage {
+    flex-basis: 84px;
+  }
+  .bd-cat-character {
+    width: 84px;
+  }
+  .bd-cat-controls button {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bd-cat-dock *,
+  .bd-cat-dock *::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* A reserved sidebar dock stays present without covering learning controls. */
+.bd-cat-sidebar {
+  margin-top: auto;
+  padding-top: 24px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+.bd-cat-sidebar .bd-cat-dock {
+  flex-direction: column-reverse;
+  padding: 0;
+  width: 100%;
+  gap: 4px;
+  min-height: 180px;
+}
+.bd-cat-sidebar .bd-cat-stage {
+  flex-basis: auto;
+}
+.bd-cat-sidebar .bd-cat-message {
+  width: 100%;
+}
+.bd-cat-mobile {
+  display: none;
+}
+@media (max-width: 600px) {
+  .bd-cat-sidebar {
+    display: none;
+  }
+  .bd-cat-mobile {
+    display: block;
+  }
+}

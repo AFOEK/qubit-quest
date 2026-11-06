@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronRight, FlaskConical, X } from 'lucide-react';
 import { courseById, lessonById, type Lab, type Lesson } from './curriculum';
 import { XP_PER_LESSON } from './progress';
+import { QuantumMascot } from './mascot/QuantumMascot';
+import { useMascot } from './mascot/MascotProvider';
+import { answerReaction } from './mascot/mascot-state';
 
 const labNames = {
   bell: 'Bell pair',
@@ -32,6 +35,7 @@ export function LessonDialog({
   saving?: boolean;
   saveError?: string;
 }) {
+  const mascot = useMascot();
   const [answer, setAnswer] = useState<number | null>(null);
   const [feedback, setFeedback] = useState(false);
   const dialog = useRef<HTMLElement>(null);
@@ -160,7 +164,13 @@ export function LessonDialog({
           <button
             className="primary"
             disabled={answer === null || saving}
-            onClick={() => (feedback && correct ? onComplete(answer!) : setFeedback(true))}
+            onClick={() => {
+              if (feedback && correct) onComplete(answer!);
+              else {
+                setFeedback(true);
+                mascot.react(answerReaction(correct));
+              }
+            }}
           >
             {saving
               ? 'Saving lesson…'
@@ -176,6 +186,7 @@ export function LessonDialog({
               {saveError}
             </p>
           )}
+          <QuantumMascot inline />
           <small>Revisiting a completed lesson does not award extra XP.</small>
         </section>
         {lesson.followUp && (
