@@ -4100,7 +4100,6 @@ p {
   display: none;
 }
 
-
 /* QV right rail: center the learning spark and keep it visible while scrolling. */
 .trail-layout > .right-rail--spark-only {
   display: flex;

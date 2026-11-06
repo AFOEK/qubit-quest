@@ -1,6 +1,6 @@
 # Next team milestones
 
-- Validate Unity scene compilation, XR Origin, selection bindings, Android build, and Quest 3 networking on hardware.
+- Optional native Unity follow-up: validate scene compilation, XR Origin, selection bindings, Android builds, and device networking for that separate delivery path. The WebXR headset experience is already implemented and confirmed working.
 - Build molecular chemistry with an explicit molecular geometry, active space, fermion-to-qubit mapping, units, reference energies, and a tested VQE optimizer.
 - Add an actual parameter optimizer and larger graph inputs to QAOA; visualize the graph and classical baseline.
 - Add executable molecular labs for the Chemistry I–III pathway, then quantum-kernel and trainable-model labs for Machine Learning I–III. Keep model choices, units, train/test splits, resource costs, and classical baselines visible.

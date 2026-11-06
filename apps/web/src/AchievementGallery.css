@@ -7,110 +7,531 @@
 .qv-achievements .achievement-hero {
   margin-bottom: 30px;
 }
-.qv-gallery-heading { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:20px; }
-.qv-gallery-heading h2 { font-size:21px; margin:0 0 5px; color:#e9fcff; }
-.qv-gallery-heading p { margin:0; color:#a6c7d5; font-size:13px; }
-.qv-gallery-heading > svg { color:#7bd9e7; }
+.qv-gallery-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.qv-gallery-heading h2 {
+  font-size: 21px;
+  margin: 0 0 5px;
+  color: #e9fcff;
+}
+.qv-gallery-heading p {
+  margin: 0;
+  color: #a6c7d5;
+  font-size: 13px;
+}
+.qv-gallery-heading > svg {
+  color: #7bd9e7;
+}
 
 /* Four distinct geometric, rank-like emblems, without rank boxes. */
-.qv-rank-gallery { margin:24px 0 38px; }
-.qv-rank-row { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; align-items:start; }
-.qv-rank { text-align:center; color:var(--qva-muted); min-width:0; --rank-main:#89d8eb; --rank-glow:rgba(94,218,241,.26); }
-.qv-rank-bronze { --rank-main:#e6aa82; --rank-glow:rgba(230,170,130,.26); }
-.qv-rank-silver { --rank-main:#d6edfc; --rank-glow:rgba(168,217,252,.26); }
-.qv-rank-gold { --rank-main:#f5d28d; --rank-glow:rgba(255,196,90,.30); }
-.qv-rank-platinum { --rank-main:#a1eeff; --rank-glow:rgba(142,244,255,.34); }
-.qv-rank-emblem { margin:0 auto 6px; width:139px; height:151px; position:relative; display:grid; place-items:center; color:var(--rank-main); filter:drop-shadow(0 0 14px var(--rank-glow)); }
-.qv-rank-emblem > svg:not(.qv-rank-frame) { position:relative; z-index:1; filter:drop-shadow(0 0 7px var(--rank-glow)); }
-.qv-rank-frame { position:absolute; inset:3px; width:calc(100% - 6px); height:calc(100% - 6px); overflow:visible; }
-.qv-rank-halo { fill:rgba(13,45,63,.56); stroke:var(--rank-main); stroke-width:2.8; stroke-linejoin:round; }
-.qv-rank-inner { fill:none; stroke:var(--rank-main); stroke-width:1.4; stroke-opacity:.65; }
-.qv-rank-detail { fill:none; stroke:var(--rank-main); stroke-width:2.4; stroke-linecap:round; }
-.qv-rank-check { position:absolute; z-index:3; bottom:13px; right:15px; display:grid; place-items:center; width:25px; height:25px; color:#072638; background:#a2f4ff; border-radius:50%; border:2px solid #0b354c; }
-.qv-rank.is-reached .qv-rank-emblem { filter:drop-shadow(0 0 22px var(--rank-glow)); }
-.qv-rank h3 { margin:5px 0 7px; color:var(--rank-main); font-size:20px; letter-spacing:-.02em; }
-.qv-rank p { margin:0 auto; max-width:205px; font-size:12px; line-height:1.5; color:#b0d0dd; }
-.qv-rank.is-reached p { color:#b7f3e6; }
+.qv-rank-gallery {
+  margin: 24px 0 38px;
+}
+.qv-rank-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  align-items: start;
+}
+.qv-rank {
+  text-align: center;
+  color: var(--qva-muted);
+  min-width: 0;
+  --rank-main: #89d8eb;
+  --rank-glow: rgba(94, 218, 241, 0.26);
+}
+.qv-rank-bronze {
+  --rank-main: #e6aa82;
+  --rank-glow: rgba(230, 170, 130, 0.26);
+}
+.qv-rank-silver {
+  --rank-main: #d6edfc;
+  --rank-glow: rgba(168, 217, 252, 0.26);
+}
+.qv-rank-gold {
+  --rank-main: #f5d28d;
+  --rank-glow: rgba(255, 196, 90, 0.3);
+}
+.qv-rank-platinum {
+  --rank-main: #a1eeff;
+  --rank-glow: rgba(142, 244, 255, 0.34);
+}
+.qv-rank-emblem {
+  margin: 0 auto 6px;
+  width: 139px;
+  height: 151px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--rank-main);
+  filter: drop-shadow(0 0 14px var(--rank-glow));
+}
+.qv-rank-emblem > svg:not(.qv-rank-frame) {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 7px var(--rank-glow));
+}
+.qv-rank-frame {
+  position: absolute;
+  inset: 3px;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  overflow: visible;
+}
+.qv-rank-halo {
+  fill: rgba(13, 45, 63, 0.56);
+  stroke: var(--rank-main);
+  stroke-width: 2.8;
+  stroke-linejoin: round;
+}
+.qv-rank-inner {
+  fill: none;
+  stroke: var(--rank-main);
+  stroke-width: 1.4;
+  stroke-opacity: 0.65;
+}
+.qv-rank-detail {
+  fill: none;
+  stroke: var(--rank-main);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.qv-rank-check {
+  position: absolute;
+  z-index: 3;
+  bottom: 13px;
+  right: 15px;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  color: #072638;
+  background: #a2f4ff;
+  border-radius: 50%;
+  border: 2px solid #0b354c;
+}
+.qv-rank.is-reached .qv-rank-emblem {
+  filter: drop-shadow(0 0 22px var(--rank-glow));
+}
+.qv-rank h3 {
+  margin: 5px 0 7px;
+  color: var(--rank-main);
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.qv-rank p {
+  margin: 0 auto;
+  max-width: 205px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #b0d0dd;
+}
+.qv-rank.is-reached p {
+  color: #b7f3e6;
+}
 
 /* One single XP surface; no separate cards or outlines around milestones. */
 .qv-xp-panel {
-  margin:22px 0 40px; padding:28px 32px 32px;
-  background:linear-gradient(115deg,rgba(20,67,87,.85),rgba(8,35,53,.91));
-  border:1px solid rgba(128,228,245,.29); border-radius:22px;
-  box-shadow:inset 0 1px rgba(224,254,255,.06);
+  margin: 22px 0 40px;
+  padding: 28px 32px 32px;
+  background: linear-gradient(115deg, rgba(20, 67, 87, 0.85), rgba(8, 35, 53, 0.91));
+  border: 1px solid rgba(128, 228, 245, 0.29);
+  border-radius: 22px;
+  box-shadow: inset 0 1px rgba(224, 254, 255, 0.06);
 }
-.qv-xp-grid { list-style:none; display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); gap:12px 6px; margin:22px auto 0; padding:0; max-width:1160px; }
-.qv-xp-grid li { grid-column:span 2; min-width:0; padding:18px 4px 16px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:9px; border:0; background:transparent !important; box-shadow:none !important; border-radius:0; }
-.qv-xp-grid li:nth-child(6) { grid-column:2 / span 2; }
-.qv-xp-grid li:nth-child(7) { grid-column:4 / span 2; }
-.qv-xp-grid li:nth-child(8) { grid-column:6 / span 2; }
-.qv-xp-grid li:nth-child(9) { grid-column:8 / span 2; }
-.qv-xp-symbol { display:grid; place-items:center; width:77px; height:77px; border-radius:50%; border:1px solid rgba(140,225,243,.33); background:radial-gradient(circle at 35% 30%,rgba(86,194,220,.19),rgba(13,57,79,.13)); color:#85c9d9; transition:transform .25s ease,background .25s ease; }
-.qv-xp-grid li.is-reached .qv-xp-symbol { color:#b1fff5; border-color:#9dece3; background:radial-gradient(circle at 30% 24%,rgba(156,244,240,.25),rgba(15,85,100,.15)); }
-.qv-xp-grid li.is-next .qv-xp-symbol { color:#a0f1ff; border-color:#80e7ff; box-shadow:0 0 21px rgba(38,221,255,.12); }
-.qv-xp-grid li:hover .qv-xp-symbol { transform:translateY(-3px); }
-.qv-xp-grid strong { font-size:17px; color:#e6faff; }
-.qv-xp-grid small { font-size:12px; color:#a9cbd8; }
-.qv-xp-status { font-size:11px; font-weight:600; color:#80b8ca; }
-.qv-xp-grid .is-reached .qv-xp-status { color:#a4efdd; }
-.qv-xp-grid .is-next .qv-xp-status { color:#8aeafb; }
+.qv-xp-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 12px 6px;
+  margin: 22px auto 0;
+  padding: 0;
+  max-width: 1160px;
+}
+.qv-xp-grid li {
+  grid-column: span 2;
+  min-width: 0;
+  padding: 18px 4px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 9px;
+  border: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
+}
+.qv-xp-grid li:nth-child(6) {
+  grid-column: 2 / span 2;
+}
+.qv-xp-grid li:nth-child(7) {
+  grid-column: 4 / span 2;
+}
+.qv-xp-grid li:nth-child(8) {
+  grid-column: 6 / span 2;
+}
+.qv-xp-grid li:nth-child(9) {
+  grid-column: 8 / span 2;
+}
+.qv-xp-symbol {
+  display: grid;
+  place-items: center;
+  width: 77px;
+  height: 77px;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 225, 243, 0.33);
+  background: radial-gradient(circle at 35% 30%, rgba(86, 194, 220, 0.19), rgba(13, 57, 79, 0.13));
+  color: #85c9d9;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+.qv-xp-grid li.is-reached .qv-xp-symbol {
+  color: #b1fff5;
+  border-color: #9dece3;
+  background: radial-gradient(
+    circle at 30% 24%,
+    rgba(156, 244, 240, 0.25),
+    rgba(15, 85, 100, 0.15)
+  );
+}
+.qv-xp-grid li.is-next .qv-xp-symbol {
+  color: #a0f1ff;
+  border-color: #80e7ff;
+  box-shadow: 0 0 21px rgba(38, 221, 255, 0.12);
+}
+.qv-xp-grid li:hover .qv-xp-symbol {
+  transform: translateY(-3px);
+}
+.qv-xp-grid strong {
+  font-size: 17px;
+  color: #e6faff;
+}
+.qv-xp-grid small {
+  font-size: 12px;
+  color: #a9cbd8;
+}
+.qv-xp-status {
+  font-size: 11px;
+  font-weight: 600;
+  color: #80b8ca;
+}
+.qv-xp-grid .is-reached .qv-xp-status {
+  color: #a4efdd;
+}
+.qv-xp-grid .is-next .qv-xp-status {
+  color: #8aeafb;
+}
 
 /* Four wide, borderless course insignias per row. */
-.qv-achievements .qv-badge-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:33px 16px; margin-top:28px; }
-.qv-badge-item { position:relative; text-align:center; min-width:0; isolation:isolate; }
-.qv-badge-item:hover,.qv-badge-item:focus-within { z-index:10; }
-.qv-badge-tile { width:100%; min-height:183px; padding:10px 9px; border:1px solid transparent; border-radius:16px; background:transparent; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:8px; color:#e7fcff; box-shadow:none; transition:transform .22s ease,background .22s ease,border-color .22s ease; }
-.qv-badge-tile:hover,.qv-badge-tile:focus-visible { transform:translateY(-4px); background:rgba(23,94,122,.15); border-color:rgba(122,229,249,.18); outline:none; }
-.qv-badge-emblem { width:107px; height:112px; position:relative; display:grid; place-items:center; isolation:isolate; color:#8ad4e8; }
-.qv-badge-emblem::before { content:''; position:absolute; inset:3px; clip-path:polygon(50% 0,92% 25%,92% 75%,50% 100%,8% 75%,8% 25%); background:linear-gradient(155deg,rgba(79,171,202,.30),rgba(16,56,80,.59)); }
-.qv-badge-emblem::after { content:''; position:absolute; inset:12px; clip-path:polygon(50% 0,92% 25%,92% 75%,50% 100%,8% 75%,8% 25%); border:1px solid #a4eefa; background:linear-gradient(145deg,rgba(10,44,65,.69),rgba(16,82,108,.35)); z-index:0; }
-.qv-badge-emblem-inner { display:grid; place-items:center; position:relative; z-index:1; }
-.qv-badge-emblem-inner > svg { width:46px; height:46px; stroke-width:1.7px; }
-.qv-badge-item.is-earned .qv-badge-emblem { color:#a9fff9; filter:drop-shadow(0 0 12px rgba(73,226,249,.30)); }
-.qv-badge-earned { display:grid; place-items:center; position:absolute; right:0; bottom:7px; z-index:3; width:25px; height:25px; border-radius:50%; background:#91edee; color:#082e42; border:2px solid #0b2b40; }
-.qv-badge-tile strong { font-size:14px; max-width:240px; overflow-wrap:anywhere; line-height:1.45; color:#e8fbff; }
-.qv-badge-tile small { color:#9ebfce; font-size:11px; }
-.qv-badge-item.is-earned .qv-badge-tile small { color:#a5efe2; }
-.qv-badge-tooltip { pointer-events:none; position:absolute; left:50%; bottom:calc(100% - 5px); width:min(280px,96vw); max-width:280px; padding:14px 17px; display:flex; flex-direction:column; gap:6px; transform:translate(-50%,8px); background:#123b52; border:1px solid #64c3d8; border-radius:13px; color:#badbe5; box-shadow:0 16px 36px rgba(0,9,20,.55); opacity:0; visibility:hidden; transition:opacity .18s ease,transform .18s ease,visibility .18s; font-size:12px; text-align:left; z-index:15; }
-.qv-badge-tooltip strong { color:#eafbff; font-size:14px; }
-.qv-badge-item:is(:hover,:focus-within) .qv-badge-tooltip { opacity:1; visibility:visible; transform:translate(-50%,0); }
+.qv-achievements .qv-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 33px 16px;
+  margin-top: 28px;
+}
+.qv-badge-item {
+  position: relative;
+  text-align: center;
+  min-width: 0;
+  isolation: isolate;
+}
+.qv-badge-item:hover,
+.qv-badge-item:focus-within {
+  z-index: 10;
+}
+.qv-badge-tile {
+  width: 100%;
+  min-height: 183px;
+  padding: 10px 9px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  color: #e7fcff;
+  box-shadow: none;
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease;
+}
+.qv-badge-tile:hover,
+.qv-badge-tile:focus-visible {
+  transform: translateY(-4px);
+  background: rgba(23, 94, 122, 0.15);
+  border-color: rgba(122, 229, 249, 0.18);
+  outline: none;
+}
+.qv-badge-emblem {
+  width: 107px;
+  height: 112px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  color: #8ad4e8;
+}
+.qv-badge-emblem::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  clip-path: polygon(50% 0, 92% 25%, 92% 75%, 50% 100%, 8% 75%, 8% 25%);
+  background: linear-gradient(155deg, rgba(79, 171, 202, 0.3), rgba(16, 56, 80, 0.59));
+}
+.qv-badge-emblem::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  clip-path: polygon(50% 0, 92% 25%, 92% 75%, 50% 100%, 8% 75%, 8% 25%);
+  border: 1px solid #a4eefa;
+  background: linear-gradient(145deg, rgba(10, 44, 65, 0.69), rgba(16, 82, 108, 0.35));
+  z-index: 0;
+}
+.qv-badge-emblem-inner {
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+}
+.qv-badge-emblem-inner > svg {
+  width: 46px;
+  height: 46px;
+  stroke-width: 1.7px;
+}
+.qv-badge-item.is-earned .qv-badge-emblem {
+  color: #a9fff9;
+  filter: drop-shadow(0 0 12px rgba(73, 226, 249, 0.3));
+}
+.qv-badge-earned {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 7px;
+  z-index: 3;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #91edee;
+  color: #082e42;
+  border: 2px solid #0b2b40;
+}
+.qv-badge-tile strong {
+  font-size: 14px;
+  max-width: 240px;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+  color: #e8fbff;
+}
+.qv-badge-tile small {
+  color: #9ebfce;
+  font-size: 11px;
+}
+.qv-badge-item.is-earned .qv-badge-tile small {
+  color: #a5efe2;
+}
+.qv-badge-tooltip {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 5px);
+  width: min(280px, 96vw);
+  max-width: 280px;
+  padding: 14px 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transform: translate(-50%, 8px);
+  background: #123b52;
+  border: 1px solid #64c3d8;
+  border-radius: 13px;
+  color: #badbe5;
+  box-shadow: 0 16px 36px rgba(0, 9, 20, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s;
+  font-size: 12px;
+  text-align: left;
+  z-index: 15;
+}
+.qv-badge-tooltip strong {
+  color: #eafbff;
+  font-size: 14px;
+}
+.qv-badge-item:is(:hover, :focus-within) .qv-badge-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
 
 /* Confirmation before navigating into a badge's course. */
-.qv-confirm-scrim { position:fixed; inset:0; background:rgba(1,10,20,.74); z-index:300; display:grid; place-items:center; padding:18px; backdrop-filter:blur(7px); }
-.qv-confirm-dialog { position:relative; width:min(440px,100%); padding:32px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; border-radius:22px; background:linear-gradient(140deg,#123e54,#081d2d); border:1px solid rgba(133,239,250,.49); box-shadow:0 25px 80px rgba(0,8,19,.60); }
-.qv-confirm-close { position:absolute; top:13px; right:13px; padding:8px; color:#b9d9e2; border-radius:8px; }
-.qv-confirm-close:hover { background:rgba(124,225,240,.14); color:#fff; }
-.qv-confirm-emblem { width:85px; height:90px; display:grid; place-items:center; color:#9af0ff; background:rgba(71,176,204,.19); border:1px solid rgba(122,230,250,.38); clip-path:polygon(50% 0,94% 25%,94% 75%,50% 100%,6% 75%,6% 25%); }
-.qv-confirm-emblem svg { width:42px; height:42px; }
-.qv-confirm-eyebrow { color:#a4d6e4; font-size:12px; letter-spacing:.09em; text-transform:uppercase; }
-.qv-confirm-dialog h2 { margin:0; font-size:25px; color:#efffff; }
-.qv-confirm-dialog p { color:#bdd7e2; line-height:1.65; margin:0 0 13px; }
-.qv-confirm-actions { display:flex; gap:12px; width:100%; justify-content:center; flex-wrap:wrap; }
-.qv-confirm-actions button { border-radius:9px; padding:12px 19px; font-weight:700; }
-.qv-confirm-cancel { border:1px solid rgba(173,235,244,.26); color:#b8d8e3; }
-.qv-confirm-start { display:flex; gap:9px; align-items:center; background:linear-gradient(130deg,#087e9e,#11627b); border:1px solid rgba(132,238,255,.60); color:#efffff; }
-.qv-confirm-start:hover { background:#0e91af; }
+.qv-confirm-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(1, 10, 20, 0.74);
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  backdrop-filter: blur(7px);
+}
+.qv-confirm-dialog {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  border-radius: 22px;
+  background: linear-gradient(140deg, #123e54, #081d2d);
+  border: 1px solid rgba(133, 239, 250, 0.49);
+  box-shadow: 0 25px 80px rgba(0, 8, 19, 0.6);
+}
+.qv-confirm-close {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  padding: 8px;
+  color: #b9d9e2;
+  border-radius: 8px;
+}
+.qv-confirm-close:hover {
+  background: rgba(124, 225, 240, 0.14);
+  color: #fff;
+}
+.qv-confirm-emblem {
+  width: 85px;
+  height: 90px;
+  display: grid;
+  place-items: center;
+  color: #9af0ff;
+  background: rgba(71, 176, 204, 0.19);
+  border: 1px solid rgba(122, 230, 250, 0.38);
+  clip-path: polygon(50% 0, 94% 25%, 94% 75%, 50% 100%, 6% 75%, 6% 25%);
+}
+.qv-confirm-emblem svg {
+  width: 42px;
+  height: 42px;
+}
+.qv-confirm-eyebrow {
+  color: #a4d6e4;
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.qv-confirm-dialog h2 {
+  margin: 0;
+  font-size: 25px;
+  color: #efffff;
+}
+.qv-confirm-dialog p {
+  color: #bdd7e2;
+  line-height: 1.65;
+  margin: 0 0 13px;
+}
+.qv-confirm-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.qv-confirm-actions button {
+  border-radius: 9px;
+  padding: 12px 19px;
+  font-weight: 700;
+}
+.qv-confirm-cancel {
+  border: 1px solid rgba(173, 235, 244, 0.26);
+  color: #b8d8e3;
+}
+.qv-confirm-start {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  background: linear-gradient(130deg, #087e9e, #11627b);
+  border: 1px solid rgba(132, 238, 255, 0.6);
+  color: #efffff;
+}
+.qv-confirm-start:hover {
+  background: #0e91af;
+}
 
-@media(max-width:850px) {
-  .qv-rank-row { grid-template-columns:repeat(2,minmax(0,1fr)); row-gap:28px; }
-  .qv-achievements .qv-badge-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-  .qv-xp-panel { padding:24px 16px; }
-  .qv-xp-symbol { width:62px; height:62px; }
-  .qv-xp-grid strong { font-size:14px; }
+@media (max-width: 850px) {
+  .qv-rank-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
+  }
+  .qv-achievements .qv-badge-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .qv-xp-panel {
+    padding: 24px 16px;
+  }
+  .qv-xp-symbol {
+    width: 62px;
+    height: 62px;
+  }
+  .qv-xp-grid strong {
+    font-size: 14px;
+  }
 }
-@media(max-width:550px) {
-  .qv-rank-emblem { width:118px; height:128px; }
-  .qv-achievements .qv-badge-grid { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:5px; row-gap:18px; }
-  .qv-xp-grid { grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:7px; }
-  .qv-xp-grid li,.qv-xp-grid li:nth-child(n+6) { grid-column:auto; }
-  .qv-xp-symbol { width:58px; height:58px; }
-  .qv-xp-grid li { padding:9px 1px; }
-  .qv-xp-grid strong { font-size:12px; }
-  .qv-xp-grid small { font-size:10px; }
-  .qv-confirm-dialog { padding:26px 18px; }
+@media (max-width: 550px) {
+  .qv-rank-emblem {
+    width: 118px;
+    height: 128px;
+  }
+  .qv-achievements .qv-badge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 5px;
+    row-gap: 18px;
+  }
+  .qv-xp-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 7px;
+  }
+  .qv-xp-grid li,
+  .qv-xp-grid li:nth-child(n + 6) {
+    grid-column: auto;
+  }
+  .qv-xp-symbol {
+    width: 58px;
+    height: 58px;
+  }
+  .qv-xp-grid li {
+    padding: 9px 1px;
+  }
+  .qv-xp-grid strong {
+    font-size: 12px;
+  }
+  .qv-xp-grid small {
+    font-size: 10px;
+  }
+  .qv-confirm-dialog {
+    padding: 26px 18px;
+  }
 }
-@media(prefers-reduced-motion:reduce) {
-  .qv-achievements .qv-badge-tile,.qv-badge-tooltip,.qv-xp-symbol { transition:none; }
+@media (prefers-reduced-motion: reduce) {
+  .qv-achievements .qv-badge-tile,
+  .qv-badge-tooltip,
+  .qv-xp-symbol {
+    transition: none;
+  }
 }
 /* QuantumVerse Badge Gallery - frameless large insignia
    Add after existing AchievementGallery.css rules.
@@ -134,18 +555,18 @@
 }
 .qv-achievements .qv-badge-emblem::before {
   inset: 3px;
-  background: linear-gradient(145deg, rgba(68,169,204,.30), rgba(11,53,80,.56));
+  background: linear-gradient(145deg, rgba(68, 169, 204, 0.3), rgba(11, 53, 80, 0.56));
 }
 .qv-achievements .qv-badge-emblem::after {
   inset: 12px;
-  background: linear-gradient(135deg, rgba(8,39,59,.50), rgba(23,101,128,.24));
+  background: linear-gradient(135deg, rgba(8, 39, 59, 0.5), rgba(23, 101, 128, 0.24));
 }
 .qv-achievements .qv-badge-emblem-inner {
   font-size: 52px;
   line-height: 1;
   font-weight: 650;
   color: inherit;
-  text-shadow: 0 0 12px rgba(95,219,246,.25);
+  text-shadow: 0 0 12px rgba(95, 219, 246, 0.25);
 }
 .qv-achievements .qv-badge-emblem-inner > svg {
   width: 60px;
@@ -176,7 +597,9 @@
     height: 125px;
     font-size: 43px;
   }
-  .qv-achievements .qv-badge-emblem-inner { font-size: 43px; }
+  .qv-achievements .qv-badge-emblem-inner {
+    font-size: 43px;
+  }
   .qv-achievements .qv-badge-emblem-inner > svg {
     width: 52px;
     height: 52px;

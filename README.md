@@ -8,10 +8,10 @@ Our bridge is education: learners move from familiar bits and small experiments 
 
 Use Node.js **22.x (22.12 or later) or 24.x**, and Python **3.12 or 3.13**. The locked NumPy and SciPy versions require Python 3.12 or newer; the deployment configuration selects Python 3.13. Local development needs no IBM account, cloud credits, API keys, or separate database installation.
 
-Clone the main team repository and install the frontend dependencies:
+This checkout is the **AFOEK fork** of the Quantum Grove team project. To use the changes published here, clone this fork and install the frontend dependencies:
 
 ```sh
-git clone https://github.com/minhajuddinm/qubit-quest.git
+git clone https://github.com/AFOEK/qubit-quest.git
 cd qubit-quest
 npm ci
 ```
@@ -51,15 +51,16 @@ SQLite storage is created at `data/learning.sqlite3` on the first account databa
 ## What works
 
 - Twenty-seven courses and 119 lessons: a math primer, quantum mechanics, qubits, Gates I–II, Software and Compilation, Algorithm I–III, noise/error correction, error mitigation, Hardware I–IV, applied optimization, Classical–Quantum Boundaries I–III, Cryptography I–II, Chemistry I–III, and Machine Learning I–III. Algorithm II develops Grover search, amplitude amplification, quantum walks, and QAE alongside Fourier and phase-estimation methods. Each lesson includes explained mathematics or program syntax, a worked example, practice with a revealable answer, and a quiz. See the [curriculum guide](docs/curriculum.md) for the full syllabus and recommended paths.
-- Choose one of seven goal-based trails, follow required courses in dependency order, and explore optional branches. Search and browse the full catalog at any time. New lessons unlock after prerequisite courses are complete; previously completed lessons remain reviewable.
+- Choose one of seven goal-based trails in the crystal journey. Preview a path, then select **Set as my learning goal** to save it. **Full course catalog** exposes the course list, goal selector, optional branches, and topic search. New lessons unlock after prerequisites are complete; previously completed lessons remain reviewable.
 - Earn 27 named course-completion badges and progress through Bronze, Silver, Gold, and Platinum journey tiers. The achievements page includes earned/in-progress filters, badge search, and links to continue or review each course. XP milestones advance beyond the original 50 XP goal through the full 2,975 XP trail. Existing saved completions count automatically; reviews never grant duplicate rewards. See [achievements and milestones](docs/achievements.md).
 - Register and sign in with an email and password. Lessons, selected trail, and daily quiz history save to your account across devices. SQLite is used locally; deployment uses PostgreSQL. Guest lesson completions can be imported explicitly; guest daily quiz history stays in the browser. See [accounts and trails](docs/accounts-and-trails.md).
 - Sign-in is optional throughout the app. Use **Continue as guest** from the account dialog, an expired session, or a slow/unavailable account check. Lessons, prerequisites, achievements, and daily quizzes work with browser-local guest progress.
 - Three daily quantum fun-fact questions with explanations, a first-answer score, and a participation streak. Questions reset at midnight in Toronto. Daily participation stays separate from course XP and badges.
+- Qubi, an animated cat companion, reacts to checked answers and accepted completions. It offers a welcome tour, contextual lesson dialogue, reduced-motion behavior, and a persistent minimized view. It uses local text and sprite assets, with no audio or external chat service. See the [mascot guide](docs/mascot.md).
 - Single-qubit H/X/Y/Z/S/T gate explorer with complex-valued statevector calculations, a Bloch visualization, and Qiskit verification with sampled counts.
 - Qiskit two-qubit Bell, Grover search, QFT, single-edge QAOA, and a parameterized toy spin energy experiment.
-- Interactive Three.js lab, desktop orbit controls, WebXR entry on compatible browsers, and controller-trigger gate cycling. Headset entry needs a secure context such as HTTPS; localhost is a development exception. **Physical headset operation remains unverified.**
-- Unity scripts and scene generator for a native Quest 3 implementation. **Native Unity compilation and headset operation remain unverified.** See [Unity setup](apps/unity/README.md).
+- **WebXR headset operation is implemented and confirmed working by the project maintainer.** **Immersive lab → Open local 3D lab** opens the built-in Three.js lab with desktop orbit controls and H/X/S gates. WebXR entry on compatible browsers needs a secure context such as HTTPS; localhost is a development exception. **Launch on Meta Quest** separately opens an Oculus handoff to the configured hosted Quantumverse site; that site is not built by this repository and does not automatically share learning progress.
+- Optional Unity scripts and a scene generator are available for a separate native Quest 3 build. The working WebXR experience runs in the browser and does not require a Unity build or APK. See [Unity setup](apps/unity/README.md) for the native alternative.
 
 The curriculum distinguishes live lab experiments from guided calculations and model-design exercises. Molecular chemistry, noisy channels/QEC, mitigation, cryptography, optimization modeling, and machine-learning workflows are taught through worked exercises; the simulation API still offers the original bounded ideal circuits and toy spin model. Full molecular solvers, optimizers, mitigation experiments, protocol implementations, photonic sampling, and ML training remain implementation milestones.
 
@@ -73,6 +74,7 @@ apps/unity/        Native Unity source and setup instructions
 services/api/      FastAPI, accounts, database, Qiskit circuits, API tests
 shared/            Generated learning manifest and daily question bank
 notebooks/         Explainable judge demo
+Qubit_Quest_Fall_Fest_2026_Embedded_Demo.ipynb  Live-site embed and Qiskit examples
 docs/              Architecture, demo, and roadmap
 .github/workflows/ Web checks and API tests against SQLite and PostgreSQL
 ```
@@ -87,13 +89,13 @@ npm run format:check
 
 Run API tests with `.venv/bin/python -m pytest services/api -q` on macOS/Linux, or `.\.venv\Scripts\python.exe -m pytest services/api -q` in Windows PowerShell. Local tests use temporary SQLite databases. CI also runs account tests against PostgreSQL; [the account guide](docs/accounts-and-trails.md#verification) explains the optional local PostgreSQL test setting.
 
-After changing course IDs, quiz answers, prerequisites, or goal definitions, run `npm run learning:sync`. The build checks that the API's generated manifest matches the curriculum. The [demo guide](docs/demo.md) covers the notebook and a short presentation flow.
+After changing course IDs, quiz answers, prerequisites, or goal definitions, run `npm run learning:sync`. The build checks that the API's generated manifest matches the curriculum. The [demo guide](docs/demo.md) covers both notebooks and a short presentation flow. The [feature-status guide](docs/feature-status.md) distinguishes implemented features from guided course content and future execution tools.
 
 The API limits circuits to six qubits, 64 gates, and 8,192 shots. Simulations are local and ideal. Qiskit bitstrings put qubit 0 at the right. `StatevectorSampler` results are samples; exact probabilities and amplitudes are also returned. See [architecture](docs/architecture.md) and [judge demo](docs/demo.md).
 
 ## Team workflow
 
-The main team repository is **[minhajuddinm/qubit-quest](https://github.com/minhajuddinm/qubit-quest)**. Check `git remote -v` before pulling or pushing so you update the intended repository. From a clean `main` checkout, use `git pull --ff-only origin main`; then rerun `npm ci` and the Python dependency-install command for your platform. Pulling source does not install new dependencies.
+The main team repository is **[minhajuddinm/qubit-quest](https://github.com/minhajuddinm/qubit-quest)**. They have separate branches and deployment connections. Check `git remote -v` before pulling or pushing so you update the intended repository. From a clean `main` checkout, use `git pull --ff-only origin main`; then rerun `npm ci` and the Python dependency-install command for your platform. Pulling source does not install new dependencies.
 
 Create a branch such as `feat/quest-interactions` and open a PR against this fork. Keep generated builds, Python environments, Unity caches, credentials, and large recordings out of Git. Run `npm run format` after editing web code or docs, then the checks above before merging.
 
@@ -102,6 +104,6 @@ Local accounts automatically create `data/learning.sqlite3` (excluded from Git).
 ## Troubleshooting
 
 - **API import or missing-package error after updating:** reinstall `services/api/requirements.lock.txt` using the same virtual-environment interpreter that starts Uvicorn.
-- **Windows `UnicodeDecodeError` while loading shared JSON:** update to the current `minhajuddinm/qubit-quest:main`; both data files are explicitly read as UTF-8. Recreating a working environment is unnecessary for that fix.
+- **Windows `UnicodeDecodeError` while loading shared JSON:** update to the current `AFOEK/qubit-quest:main`; both data files are explicitly read as UTF-8. Recreating a working environment is unnecessary for that fix.
 - **Lessons work but Qiskit requests fail:** check `/api/health` and keep the API terminal running. Guest lessons and daily quizzes can run without the API.
 - **Account requests fail:** local SQLite needs a writable data directory; Vercel needs PostgreSQL `DATABASE_URL`. For HTTP localhost, leave `COOKIE_SECURE=false` (the local default). For HTTPS production, use `true`.

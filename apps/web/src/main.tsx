@@ -344,9 +344,9 @@ function App() {
           </button>
           <span className="mobile-wordmark qv-header-hidden">Quantum Grove</span>
           <span className="breadcrumb qv-header-hidden">
-  Your quantum journey <ChevronRight size={14} />{' '}
-  <b>{nav.find((item) => item.id === page)?.label}</b>
-</span>
+            Your quantum journey <ChevronRight size={14} />{' '}
+            <b>{nav.find((item) => item.id === page)?.label}</b>
+          </span>
           <div className="stats">
             <span title="Completed lessons">
               <Flame size={19} /> {completed.length} <small>lessons</small>
@@ -722,38 +722,44 @@ function App() {
               <div className="page-heading">
                 <div>
                   <p className="hello">Change your point of view</p>
-                  
-<div className="qv-immersive-landing">
-  <p className="qv-immersive-eyebrow">
-    EXPERIENCE QUANTUM
-  </p>
 
-  <h1>Quantum is meant to be explored.</h1>
+                  <div className="qv-immersive-landing">
+                    <p className="qv-immersive-eyebrow">EXPERIENCE QUANTUM</p>
 
-  <div className="qv-immersive-sphere">
-    <Sphere {...d} large />
-  </div>
+                    <h1>Quantum is meant to be explored.</h1>
 
-  <p className="qv-immersive-tagline">
-    Beyond equations. Beyond screens. Into reality.
-  </p>
+                    <div className="qv-immersive-sphere">
+                      <Sphere {...d} large />
+                    </div>
 
-  <button
-    className="primary qv-immersive-enter"
-    onClick={() => {
-      const url = 'https://quantumvers.netlify.app/';
-      const launch =
-        'https://www.oculus.com/open_url/?url=' +
-        encodeURIComponent(url);
+                    <p className="qv-immersive-tagline">
+                      Beyond equations. Beyond screens. Into reality.
+                    </p>
 
-      window.open(launch, '_blank', 'noopener,noreferrer');
-    }}
-  >
-    Launch on Meta Quest
-    <ArrowRight size={19} />
-  </button>
-</div>
+                    <button className="primary qv-immersive-enter" onClick={() => setVr(true)}>
+                      Open local 3D lab
+                      <Glasses size={19} />
+                    </button>
+                    <p className="muted">
+                      Explore the built-in Bloch sphere with desktop controls or a compatible WebXR
+                      headset. Headset mode needs HTTPS or localhost. The Meta Quest launcher below
+                      opens a separate site.
+                    </p>
 
+                    <button
+                      className="primary qv-immersive-enter"
+                      onClick={() => {
+                        const url = 'https://quantumvers.netlify.app/';
+                        const launch =
+                          'https://www.oculus.com/open_url/?url=' + encodeURIComponent(url);
+
+                        window.open(launch, '_blank', 'noopener,noreferrer');
+                      }}
+                    >
+                      Launch on Meta Quest
+                      <ArrowRight size={19} />
+                    </button>
+                  </div>
                 </div>
               </div>
             </>

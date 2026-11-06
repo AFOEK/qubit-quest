@@ -1,6 +1,6 @@
-# Native Quest lab starter
+# Optional native Quest lab starter
 
-This folder contains Unity source and an editor scene generator. It is **not yet a headset-tested Unity project or APK**. The web app includes a separate functional Three.js/WebXR lab.
+The project's WebXR headset experience is implemented and confirmed working by the project maintainer. It runs in a compatible browser without a Unity build or APK. This folder supplies Unity source and an editor scene generator for an **optional native Quest application**, a separate delivery path from WebXR.
 
 1. Create a Unity 6 LTS project with the Universal 3D template. Install Android Build Support through Unity Hub.
 2. Copy this repository's `apps/unity/Assets/QubitQuest` folder into the new project's `Assets` folder. Run **Quantum Grove > Create lab scene**. This saves `Assets/QubitQuest/Scenes/QubitLab.unity` with Bloch rings, a state arrow, and API readout. Save your current scene before replacing it.
@@ -10,4 +10,4 @@ This folder contains Unity source and an editor scene generator. It is **not yet
 6. For a local HTTP development server, enable **Allow downloads over HTTP** for development builds only. Use HTTPS for distributed builds. Enable Internet access in Android Player Settings.
 7. Choose Android, ARM64, IL2CPP; add the generated scene to Build Profiles. Build and run on a developer-mode Quest 3. Check controller selection, text legibility, sphere orientation, network disconnects, and repeated gate presses.
 
-The model maps Qiskit `(x,y,z)` to Unity `(x,z,-y)`. This starter sends ideal single-qubit circuits, caps sequences at 32 gates, and normalizes the displayed arrow direction. It does not scale the arrow to represent a partially mixed state. The web/API discussions of mixed reduced qubits do not imply native support for those displays. No native build or physical headset operation has been validated. Commit scene assets and `.meta` files after creating them; exclude Library, Temp, Logs, and Builds.
+The model maps Qiskit `(x,y,z)` to Unity `(x,z,-y)`. This starter sends ideal single-qubit circuits, caps sequences at 32 gates, and normalizes the displayed arrow direction. It does not scale the arrow to represent a partially mixed state. The web/API discussions of mixed reduced qubits do not imply native support for those displays. Validate the native build separately if choosing this optional route. Commit scene assets and `.meta` files after creating them; exclude Library, Temp, Logs, and Builds.
