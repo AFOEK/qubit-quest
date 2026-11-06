@@ -17,8 +17,8 @@ Source entry points: [curriculum](../apps/web/src/curriculum.ts), [journey UI](.
 | Qubi                    | Animated local sprite companion, contextual teaching messages, checked-answer reactions, accepted-save celebrations, welcome tour, and minimize/restore preferences. No external AI service or audio. See [mascot](mascot.md).        |
 | Gate explorer           | Immediate single-qubit H/X/Y/Z/S/T statevector feedback with a Bloch visualization and optional Qiskit verification.                                                                                                                  |
 | Simulation API          | Bounded ideal circuits for the allowlisted gates, plus Bell, four-item Grover, two-qubit QFT, single-edge QAOA, and toy variational energy. See [API](api.md).                                                                        |
-| Local immersive lab     | Three.js desktop controls, H/X/S gates, and WebXR entry through **Open local 3D lab**. Hardware/headset operation remains unverified.                                                                                                 |
-| External Quest launcher | **Launch on Meta Quest** opens an Oculus handoff to a separately hosted site. Its source, availability, and progress integration are not verified by the local app tests.                                                             |
+| Local immersive lab     | Three.js desktop controls, H/X/S gates, and WebXR entry through **Open local 3D lab**. WebXR headset operation is confirmed working by the project maintainer.                                                                        |
+| External Quest launcher | **Launch on Meta Quest** opens an Oculus handoff to the hosted WebXR experience. The external site's source is separate, and learning progress is not automatically shared with this app.                                             |
 | Notebooks               | Standalone Qiskit examples plus a root embedded-demo notebook with a live-site iframe. Notebook UI/embedding requires the tooling and conditions in [the demo guide](demo.md).                                                        |
 
 ## Course content with execution tools still missing
@@ -40,7 +40,7 @@ These topics are taught in the lessons. The following interactive engines and in
 
 - Production account saving requires PostgreSQL `DATABASE_URL`. Local tests do not establish that a particular Vercel deployment is configured correctly.
 - Email verification and password recovery are not implemented; no email provider is configured by the application.
-- Unity supplies source and a scene generator, rather than a validated Unity project or APK. Native compilation and physical headset testing remain outstanding.
+- Unity supplies optional native source and a scene generator. This is a separate delivery path; the confirmed working WebXR experience does not require Unity compilation or an APK.
 - Learning-path completion labels are in-app milestones, not externally accredited certificates.
 
 The [roadmap](roadmap.md) tracks these remaining execution and deployment tasks. Add a UI entry, executable implementation, and relevant verification before describing a future lab as working.
