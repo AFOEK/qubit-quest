@@ -6,6 +6,7 @@ export type MascotState =
   | 'sad'
   | 'excited'
   | 'curious'
+  | 'lookAround'
   | 'walking'
   | 'sleeping'
   | 'playful'

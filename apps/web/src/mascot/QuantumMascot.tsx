@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Minus, X } from 'lucide-react';
 import { CatSprite } from './CatSprite';
 import { MascotEffects } from './MascotEffects';
 import { useMascot } from './MascotProvider';
-import { petMessages } from './mascot-messages';
+import { createClickInteractionPicker } from './mascot-messages';
 import './mascot.css';
 export function QuantumMascot({
   hidden = false,
@@ -17,7 +17,7 @@ export function QuantumMascot({
 }) {
   const { reaction, react, rest, visibility, changeVisibility, started, compact, playback } =
     useMascot();
-  const clicks = useRef(0);
+  const [playClickInteraction] = useState(() => createClickInteractionPicker());
   const control = useRef<HTMLButtonElement>(null);
   const focusRequested = useRef(false);
   useEffect(() => {
@@ -72,14 +72,7 @@ export function QuantumMascot({
           ref={control}
           className={`bd-cat-character state-${reaction.state}`}
           aria-label={reaction.state === 'sleeping' ? 'Wake and pet Qubi' : 'Pet Qubi'}
-          onClick={() => {
-            const index = clicks.current++;
-            react({
-              state: 'playful',
-              message: petMessages[index % petMessages.length],
-              priority: 1,
-            });
-          }}
+          onClick={() => playClickInteraction(react)}
           onKeyDown={(event) => {
             if (event.key === 'Escape') {
               event.stopPropagation();

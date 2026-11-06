@@ -187,15 +187,19 @@
 .bd-cat-sidebar {
   margin-top: auto;
   padding-top: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   flex-shrink: 0;
 }
+/* The mascot owns the free flex space; the account divider follows its 16px margin. */
+.sidebar .bd-cat-sidebar + .side-bottom {
+  margin-top: 0;
+}
 .bd-cat-sidebar .bd-cat-dock {
-  flex-direction: column-reverse;
+  flex-direction: column;
   padding: 0;
   width: 100%;
-  gap: 4px;
-  min-height: 180px;
+  gap: 8px;
+  min-height: 0;
 }
 .bd-cat-sidebar .bd-cat-stage {
   flex-basis: auto;

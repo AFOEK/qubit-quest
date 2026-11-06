@@ -4,11 +4,13 @@ import { courses, lessons } from '../curriculum';
 import { CatSprite } from './CatSprite';
 import { createAnimationController } from './animation-controller';
 import { observeLessonSave } from './learning-events';
+import { clickInteractions, createClickInteractionPicker } from './mascot-messages';
 import {
   animations,
   answerReaction,
   completionReaction,
   frameAt,
+  spriteAnimation,
   idleReaction,
   readVisibility,
   visibilityKey,
@@ -241,4 +243,84 @@ describe('visibility preferences', () => {
     vi.stubGlobal('localStorage', { getItem: () => 'invalid' });
     expect(readVisibility()).toBe('shown');
   });
+});
+
+describe('paired shuffled click interactions', () => {
+  it('visits every animation once per bag without repeating at bag boundaries', () => {
+    const pick = createClickInteractionPicker(() => 0);
+    const played: string[] = [];
+    for (let i = 0; i < clickInteractions.length * 4; i++) {
+      expect(
+        pick((reaction) => {
+          played.push(reaction.state);
+          return true;
+        }),
+      ).toBe(true);
+    }
+    for (let i = 1; i < played.length; i++) expect(played[i]).not.toBe(played[i - 1]);
+    for (let start = 0; start < played.length; start += clickInteractions.length) {
+      expect(new Set(played.slice(start, start + clickInteractions.length)).size).toBe(
+        clickInteractions.length,
+      );
+    }
+    expect(played.filter((state) => state === 'walking')).toHaveLength(4);
+  });
+  it('does not consume or replace a pair rejected by busy/important playback', () => {
+    const pick = createClickInteractionPicker(() => 0.5);
+    const offered: unknown[] = [];
+    for (let i = 0; i < 10; i++)
+      expect(
+        pick((reaction) => {
+          offered.push(reaction);
+          return false;
+        }),
+      ).toBe(false);
+    expect(
+      offered.every((reaction) => JSON.stringify(reaction) === JSON.stringify(offered[0])),
+    ).toBe(true);
+    pick((reaction) => {
+      expect(reaction).toEqual(offered[0]);
+      return true;
+    });
+    pick((reaction) => {
+      expect(reaction).not.toEqual(offered[0]);
+      return true;
+    });
+  });
+  it('pairs wave, observation, and blink dialogue with their actual mapped poses', () => {
+    expect(clickInteractions.find((item) => item.message.includes('I can wave'))?.state).toBe(
+      'happy',
+    );
+    expect(frameAt('happy', 0).y).toBe(624);
+    expect(clickInteractions.find((item) => item.message.includes('measuring'))?.state).toBe(
+      'curious',
+    );
+    expect(frameAt('curious', 0).y).toBe(1248);
+    expect(clickInteractions.find((item) => item.message.includes('look around'))?.state).toBe(
+      'lookAround',
+    );
+    expect(frameAt('lookAround', 0).y).toBe(1664);
+    expect(clickInteractions.find((item) => item.message.includes('Blink'))?.state).toBe('idle');
+  });
+  it.each(clickInteractions)(
+    'plays $state once, then resumes either resting emotion',
+    (interaction) => {
+      vi.useFakeTimers();
+      for (const sad of [false, true]) {
+        const notify = vi.fn();
+        const controller = createAnimationController(notify);
+        if (sad) controller.play(answerReaction(false));
+        expect(controller.play({ ...interaction, priority: 1 })).toBe(true);
+        const animation = spriteAnimation(interaction.state);
+        expect(animation).toBeDefined();
+        expect(controller.getFrame()).toEqual(animation.frames[0]);
+        vi.advanceTimersByTime(animation.frames.length * animation.frameDurationMs - 1);
+        expect(notify.mock.lastCall?.[0].message).toBe(interaction.message);
+        vi.advanceTimersByTime(1);
+        expect(notify.mock.lastCall?.[0].state).toBe(sad ? 'sad' : 'idle');
+        controller.dispose();
+        expect(vi.getTimerCount()).toBe(0);
+      }
+    },
+  );
 });

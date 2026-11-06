@@ -39,7 +39,7 @@ function useController() {
   const react = useCallback(
     (next: Reaction) => {
       if (next.priority > 0) activeAt.current = Date.now();
-      if (!document.hidden) controller.play(next);
+      return !document.hidden && controller.play(next);
     },
     [controller],
   );
