@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 14px;
+  gap: 10px;
   min-height: 156px;
   padding: 8px 24px;
   margin-left: auto;
@@ -13,8 +13,6 @@
 .bd-cat-stage {
   flex: 0 0 112px;
   position: relative;
-  /* Preserve the existing layout footprint after moving controls to gestures. */
-  padding-top: 32px;
 }
 .bd-cat-character {
   display: block;
@@ -155,7 +153,6 @@
   }
   .bd-cat-stage {
     flex-basis: 84px;
-    padding-top: 36px;
   }
   .bd-cat-character {
     width: 84px;
@@ -262,20 +259,29 @@
   max-width: 100%;
 }
 .bd-cat-message.has-dialogue {
-  padding-right: 36px;
+  cursor: pointer;
 }
-.bd-cat-dismiss {
+.bd-cat-message[role='button']:focus-visible {
+  outline: 3px solid #507ac4;
+  outline-offset: 4px;
+}
+.bd-cat-message:not(:empty)::after {
+  content: '';
   position: absolute;
-  top: 3px;
-  right: 3px;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border-radius: 50%;
-  color: #766987;
+  right: -5px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: #fbfaff;
+  border-top: 1px solid #ddd6e9;
+  border-right: 1px solid #ddd6e9;
+  transform: translateY(-50%) rotate(45deg);
+  pointer-events: none;
 }
-.bd-cat-dismiss:hover {
-  background: #eee9f7;
+.bd-cat-sidebar .bd-cat-message:not(:empty)::after {
+  top: auto;
+  bottom: -5px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%) rotate(135deg);
 }
